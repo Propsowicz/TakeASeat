@@ -7,7 +7,7 @@ namespace TakeASeat.Data
         public int Id { get; set; }
         public char Row { get; set; }
         public int Position { get; set; }
-        public int Price { get; set; }
+        public double Price { get; set; }
 
 
         // O2M to Event

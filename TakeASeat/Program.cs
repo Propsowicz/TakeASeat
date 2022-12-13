@@ -1,9 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using TakeASeat.Data.DatabaseContext;
+using TakeASeat.IRepository;
+using TakeASeat.Models;
+using TakeASeat.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// SERVICES
 
 builder.Services.AddControllers();
 
@@ -16,6 +19,11 @@ builder.Services.AddDbContext<DatabaseContext>(option =>
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+// Mapper conf
+builder.Services.AddAutoMapper(typeof(MapperInitializer).Assembly);
+
+// Dependency Injection
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
 
@@ -28,14 +36,10 @@ builder.Services.AddDbContext<DatabaseContext>(option =>
 
 
 
-
-
-
-
+// BUILDING
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
