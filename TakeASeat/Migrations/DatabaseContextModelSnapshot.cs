@@ -241,6 +241,9 @@ namespace TakeASeat.Migrations
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
+                    b.Property<int>("EventTypeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ImageUri")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -255,6 +258,8 @@ namespace TakeASeat.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EventTypeId");
+
                     b.ToTable("Events");
 
                     b.HasData(
@@ -263,6 +268,7 @@ namespace TakeASeat.Migrations
                             Id = 1,
                             Description = "Pink Panther does his things.",
                             Duration = 80,
+                            EventTypeId = 1,
                             ImageUri = "none",
                             Name = "Pink Panther The Movie",
                             Type = "Movie"
@@ -272,6 +278,7 @@ namespace TakeASeat.Migrations
                             Id = 2,
                             Description = "Mr Moon vs Tactical Beacon",
                             Duration = 120,
+                            EventTypeId = 2,
                             ImageUri = "none",
                             Name = "Tennis Match",
                             Type = "Sport"
@@ -281,8 +288,9 @@ namespace TakeASeat.Migrations
                             Id = 3,
                             Description = "Best of 3.",
                             Duration = 180,
+                            EventTypeId = 3,
                             ImageUri = "none",
-                            Name = "Cossacks 3 Champnionship - Final",
+                            Name = "Cossacks 3 Championships - Final",
                             Type = "E-Sport"
                         });
                 });
@@ -392,6 +400,40 @@ namespace TakeASeat.Migrations
                         });
                 });
 
+            modelBuilder.Entity("TakeASeat.Data.EventType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EventTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Movie"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Sport"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "E-Sport"
+                        });
+                });
+
             modelBuilder.Entity("TakeASeat.Data.Seat", b =>
                 {
                     b.Property<int>("Id")
@@ -406,8 +448,8 @@ namespace TakeASeat.Migrations
                     b.Property<int>("Position")
                         .HasColumnType("int");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.Property<string>("Row")
                         .IsRequired()
@@ -505,6 +547,17 @@ namespace TakeASeat.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("TakeASeat.Data.Event", b =>
+                {
+                    b.HasOne("TakeASeat.Data.EventType", "EventType")
+                        .WithMany()
+                        .HasForeignKey("EventTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EventType");
                 });
 
             modelBuilder.Entity("TakeASeat.Data.EventTagEventM2M", b =>

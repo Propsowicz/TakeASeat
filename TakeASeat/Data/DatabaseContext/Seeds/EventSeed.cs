@@ -17,7 +17,8 @@ namespace TakeASeat.Data.DatabaseContext.Seeds
                     Type = "Movie",
                     Duration = 80,
                     Description = "Pink Panther does his things.",
-                    ImageUri = "none"
+                    ImageUri = "none",
+                    EventTypeId = 1
                 },
                 new Event
                 {
@@ -26,7 +27,8 @@ namespace TakeASeat.Data.DatabaseContext.Seeds
                     Type = "Sport",
                     Duration = 120,
                     Description = "Mr Moon vs Tactical Beacon",
-                    ImageUri = "none"
+                    ImageUri = "none",
+                    EventTypeId = 2
                 },
                 new Event
                 {
@@ -35,7 +37,8 @@ namespace TakeASeat.Data.DatabaseContext.Seeds
                     Type = "E-Sport",
                     Duration = 180,
                     Description = "Best of 3.",
-                    ImageUri = "none"                                       
+                    ImageUri = "none",
+                    EventTypeId = 3
                 }
 
                 );

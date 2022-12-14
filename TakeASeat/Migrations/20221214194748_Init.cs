@@ -52,23 +52,6 @@ namespace TakeASeat.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Events",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Duration = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImageUri = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Events", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "EventTags",
                 columns: table => new
                 {
@@ -79,6 +62,19 @@ namespace TakeASeat.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EventTags", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EventTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EventTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -188,6 +184,56 @@ namespace TakeASeat.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Events",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Duration = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageUri = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EventTypeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Events", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Events_EventTypes_EventTypeId",
+                        column: x => x.EventTypeId,
+                        principalTable: "EventTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EventTagEventM2M",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EventId = table.Column<int>(type: "int", nullable: false),
+                    EventTagId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EventTagEventM2M", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EventTagEventM2M_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EventTagEventM2M_EventTags_EventTagId",
+                        column: x => x.EventTagId,
+                        principalTable: "EventTags",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Seats",
                 columns: table => new
                 {
@@ -195,7 +241,7 @@ namespace TakeASeat.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Row = table.Column<string>(type: "nvarchar(1)", nullable: false),
                     Position = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false),
                     EventId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -225,32 +271,6 @@ namespace TakeASeat.Migrations
                         name: "FK_Shows_Events_EventId",
                         column: x => x.EventId,
                         principalTable: "Events",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "eventTagEventM2Ms",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    EventId = table.Column<int>(type: "int", nullable: false),
-                    EventTagId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_eventTagEventM2Ms", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_eventTagEventM2Ms_Events_EventId",
-                        column: x => x.EventId,
-                        principalTable: "Events",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_eventTagEventM2Ms_EventTags_EventTagId",
-                        column: x => x.EventTagId,
-                        principalTable: "EventTags",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -295,13 +315,18 @@ namespace TakeASeat.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_eventTagEventM2Ms_EventId",
-                table: "eventTagEventM2Ms",
+                name: "IX_Events_EventTypeId",
+                table: "Events",
+                column: "EventTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EventTagEventM2M_EventId",
+                table: "EventTagEventM2M",
                 column: "EventId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_eventTagEventM2Ms_EventTagId",
-                table: "eventTagEventM2Ms",
+                name: "IX_EventTagEventM2M_EventTagId",
+                table: "EventTagEventM2M",
                 column: "EventTagId");
 
             migrationBuilder.CreateIndex(
@@ -333,7 +358,7 @@ namespace TakeASeat.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "eventTagEventM2Ms");
+                name: "EventTagEventM2M");
 
             migrationBuilder.DropTable(
                 name: "Seats");
@@ -352,6 +377,9 @@ namespace TakeASeat.Migrations
 
             migrationBuilder.DropTable(
                 name: "Events");
+
+            migrationBuilder.DropTable(
+                name: "EventTypes");
         }
     }
 }

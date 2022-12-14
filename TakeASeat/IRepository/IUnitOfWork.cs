@@ -8,6 +8,7 @@ namespace TakeASeat.IRepository
         IGenericRepository<EventTag> EventTags { get; }
         IGenericRepository<Seat> Seats { get; }
         IGenericRepository<EventTagEventM2M> EventTagEventM2M { get; }
+        IGenericRepository<EventType> EventTypes { get; }
 
         Task Save();
     }

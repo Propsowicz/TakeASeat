@@ -19,6 +19,8 @@ namespace TakeASeat.Models
 
             CreateMap<EventTagEventM2M, CreateEventTagEventM2MDTO>().ReverseMap();
             CreateMap<EventTagEventM2M, GetEventTagEventM2MDTO>().ReverseMap();
+
+            CreateMap<EventTypeDTO, EventType>().ReverseMap();
         }
     }
 }

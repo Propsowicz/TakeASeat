@@ -79,7 +79,7 @@ namespace TakeASeat.Repository
         public async Task<IPagedList<T>> PaginatedGetAll(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, List<string> includes = null, RequestParams requestParams = null)
         {
             IQueryable<T> query = _dbSet;
-
+                      
             if (expression != null)
             {
                 query = query.Where(expression);

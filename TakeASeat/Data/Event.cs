@@ -11,6 +11,10 @@ namespace TakeASeat.Data
         public string Description { get; set; }
         public string ImageUri { get; set; }
 
+        [ForeignKey(nameof(EventType))]
+        public int EventTypeId { get; set; }
+        public EventType EventType { get; set; }
+
         // M2M to Event TAG
         // public ICollection<EventTag> EventTypes { get; set; }        
     }
