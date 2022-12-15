@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TakeASeat.Data;
 
 namespace TakeASeat.Models
 {
@@ -24,5 +25,12 @@ namespace TakeASeat.Models
     public class GetEventDTO : CreateEventDTO
     {
         public int Id { get; set; }
+        public IList<GetEventTagEventM2MDTO> EventTags { get; set; }
+
     }
+
+    //public class GetEventWithTagsDTO : GetEventDTO
+    //{
+    //    public IList<CreateEventTagEventM2MDTO> EventTags { get; set; }
+    //}
 }

@@ -17,13 +17,7 @@ namespace TakeASeat.RequestUtils
         }
         public string SearchString { get; set; } = "";
 
-        private readonly DatabaseContext _context;
-        public RequestParams(DatabaseContext context)
-        {
-            _context = context;
-            //var typesList = _context.EventTypes.ToList();
-        }
-        //TODO: filter from db table
+        
 
 
         List<string> typesList { get; set; } = new List<string>() {

@@ -15,6 +15,8 @@ namespace TakeASeat.Data
         public int EventTypeId { get; set; }
         public EventType EventType { get; set; }
 
+        public virtual IList<EventTagEventM2M> EventTags { get; set; }
+
         // M2M to Event TAG
         // public ICollection<EventTag> EventTypes { get; set; }        
     }

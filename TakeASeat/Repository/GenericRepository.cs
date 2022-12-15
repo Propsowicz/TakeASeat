@@ -5,6 +5,7 @@ using TakeASeat.RequestUtils;
 using Microsoft.EntityFrameworkCore;
 using X.PagedList;
 using System.Linq;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace TakeASeat.Repository
 {
@@ -35,16 +36,15 @@ namespace TakeASeat.Repository
             _dbSet.Remove(entity);
         }
 
-        public async Task<T> Get(Expression<Func<T, bool>> expression = null, List<string> includes = null)
+        public async Task<T> Get(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
         {
             IQueryable<T> query = _dbSet;
                         
-            if (includes != null)
+            if (include != null)
             {
-                foreach (var include in includes)
-                {
-                    query = query.Include(include);
-                }
+                
+                query = include(query);
+                
             }
 
             return await query.AsNoTracking().FirstOrDefaultAsync(expression);
@@ -64,7 +64,7 @@ namespace TakeASeat.Repository
                 foreach (var include in includes)
                 {
                     query = query.Include(include);
-                }               
+                }
             }
 
             if (orderBy != null)
@@ -76,7 +76,9 @@ namespace TakeASeat.Repository
 
         }
 
-        public async Task<IPagedList<T>> PaginatedGetAll(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, List<string> includes = null, RequestParams requestParams = null)
+        //public async Task<IPagedList<T>> PaginatedGetAll(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, List<string> includes = null, RequestParams requestParams = null)
+        public async Task<IPagedList<T>> PaginatedGetAll(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null, RequestParams requestParams = null)
         {
             IQueryable<T> query = _dbSet;
                       
@@ -85,13 +87,19 @@ namespace TakeASeat.Repository
                 query = query.Where(expression);
             }
 
-            if (includes != null)
+            //if (includes != null)
+            //{
+            //    foreach (var include in includes)
+            //    {
+            //        query = query.Include(include);
+            //    }
+            //}
+
+            if (include != null)
             {
-                foreach (var include in includes)
-                {
-                    query = query.Include(include);
-                }
+                query = include(query);
             }
+
 
             if (orderBy != null)
             {
