@@ -36,7 +36,7 @@ namespace TakeASeat.Controllers
                             .Select(q => q.Name)
                             .ToList();
 
-            if (r_params.FilterString[0] != "all")
+            if (r_params.FilterString != null)
             {
                 typesList = r_params.FilterString;
             }
@@ -46,21 +46,24 @@ namespace TakeASeat.Controllers
                             .Equals(r_params.SearchString))
                             .Select(t => t.EventId)
                             .ToList();
-            //source.Include(a => a.EventTags)
-            var events = await _unitOfWork.Events.PaginatedGetAll(include: null, 
+
+            var events = await _unitOfWork.Events.PaginatedGetAll(includes: new List<string> { "EventTags", "EventType", "Creator", "Shows" },
                 requestParams: r_params, expression: ev => ev.Name.Contains(r_params.SearchString)
                                                         || tagIdList.Contains(ev.Id)
                                                         && typesList.Contains(ev.EventType.Name));
 
-            var response = _mapper.Map<List<GetEventDTO>>(events);
+            var response = _mapper.Map<List<GetEventDetailsDTO>>(events);
             return Ok(response);
         }
 
         [HttpGet("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetSingleEvent(int id)
         {
-            var event_ = await _unitOfWork.Events.Get(ev => ev.Id == id); 
-            var response = _mapper.Map<GetEventDTO>(event_);
+            var event_ = await _unitOfWork.Events.Get(ev => ev.Id == id, includes: new List<string> { "EventTags", "EventType", "Creator", "Shows" }); 
+            var response = _mapper.Map<GetEventDetailsDTO>(event_);
 
             return Ok(response);
         }

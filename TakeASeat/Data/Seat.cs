@@ -8,12 +8,13 @@ namespace TakeASeat.Data
         public char Row { get; set; }
         public int Position { get; set; }
         public double Price { get; set; }
+        public bool isTaken { get; set; } = false;
+        public bool isSold { get; set; } = false;
 
 
-        // O2M to Event
-        [ForeignKey(nameof(Event))]
-        public int EventId { get; set; }
-        public Event Event { get; set; }
+        [ForeignKey(nameof(Show))]
+        public int ShowId { get; set; }
+        public Show Show { get; set; }
 
     }
 }

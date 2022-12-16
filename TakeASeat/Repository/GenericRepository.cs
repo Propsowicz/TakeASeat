@@ -36,15 +36,16 @@ namespace TakeASeat.Repository
             _dbSet.Remove(entity);
         }
 
-        public async Task<T> Get(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
+        public async Task<T> Get(Expression<Func<T, bool>> expression = null, List<string> includes = null)
         {
             IQueryable<T> query = _dbSet;
-                        
-            if (include != null)
+
+            if (includes != null)
             {
-                
-                query = include(query);
-                
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
             }
 
             return await query.AsNoTracking().FirstOrDefaultAsync(expression);
@@ -76,9 +77,10 @@ namespace TakeASeat.Repository
 
         }
 
-        //public async Task<IPagedList<T>> PaginatedGetAll(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, List<string> includes = null, RequestParams requestParams = null)
         public async Task<IPagedList<T>> PaginatedGetAll(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-            Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null, RequestParams requestParams = null)
+            List<string> includes = null, RequestParams requestParams = null)
+        //public async Task<IPagedList<T>> PaginatedGetAll(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+        //    Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null, RequestParams requestParams = null)
         {
             IQueryable<T> query = _dbSet;
                       
@@ -87,18 +89,19 @@ namespace TakeASeat.Repository
                 query = query.Where(expression);
             }
 
-            //if (includes != null)
-            //{
-            //    foreach (var include in includes)
-            //    {
-            //        query = query.Include(include);
-            //    }
-            //}
-
-            if (include != null)
+            if (includes != null)
             {
-                query = include(query);
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
             }
+                       
+
+            //if (include != null)
+            //{
+            //    query = include(query);
+            //}
 
 
             if (orderBy != null)

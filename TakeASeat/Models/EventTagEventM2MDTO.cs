@@ -9,6 +9,8 @@
     public class GetEventTagEventM2MDTO : CreateEventTagEventM2MDTO
     {
         public int Id { get; set; }
+
+        public CreateEventTagDTO EventTagName { get; set; }
     }
 
     

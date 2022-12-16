@@ -14,31 +14,31 @@ namespace TakeASeat.Data.DatabaseContext.Seeds
                 {
                     Id = 1,
                     Name = "Pink Panther The Movie",
-                    Type = "Movie",
                     Duration = 80,
                     Description = "Pink Panther does his things.",
                     ImageUri = "none",
-                    EventTypeId = 1
+                    EventTypeId = 1,
+                    CreatorId = 1, 
                 },
                 new Event
                 {
                     Id = 2,
                     Name = "Tennis Match",
-                    Type = "Sport",
                     Duration = 120,
-                    Description = "Mr Moon vs Tactical Beacon",
+                    Description = "Amatour League",
                     ImageUri = "none",
-                    EventTypeId = 2
+                    EventTypeId = 2,
+                    CreatorId = 1,
                 },
                 new Event
                 {
                     Id = 3,
-                    Name = "Cossacks 3 Championships - Final",
-                    Type = "E-Sport",
+                    Name = "Cossacks 3 Championships",
                     Duration = 180,
                     Description = "Best of 3.",
                     ImageUri = "none",
-                    EventTypeId = 3
+                    EventTypeId = 3,
+                    CreatorId = 2,
                 }
 
                 );

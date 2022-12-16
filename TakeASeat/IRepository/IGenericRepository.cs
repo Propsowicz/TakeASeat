@@ -13,18 +13,20 @@ namespace TakeASeat.IRepository
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
             List<string> includes = null           
             );
-        //Task<IPagedList<T>> PaginatedGetAll(
-        //    Expression<Func<T, bool>> expression = null,
-        //    Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-        //    List<string> includes = null,
-        //    RequestParams requestParams= null
-        //    );
         Task<IPagedList<T>> PaginatedGetAll(
             Expression<Func<T, bool>> expression = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-            Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
+            List<string> includes = null,
             RequestParams requestParams = null
             );
+
+        
+        //Task<IPagedList<T>> PaginatedGetAll(
+        //    Expression<Func<T, bool>> expression = null,
+        //    Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+        //    Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
+        //    RequestParams requestParams = null
+        //    );
 
         //Task<T> Get(
         //    Expression<Func<T, bool>> expression = null,
@@ -32,7 +34,7 @@ namespace TakeASeat.IRepository
         //    );
         Task<T> Get(
             Expression<Func<T, bool>> expression = null,
-            Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null
+            List<string> includes = null
             );
         Task Create(T entity);   
         Task CreateRange(IEnumerable<T> entities);

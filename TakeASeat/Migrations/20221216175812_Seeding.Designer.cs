@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TakeASeat.Data.DatabaseContext;
 
@@ -11,9 +12,10 @@ using TakeASeat.Data.DatabaseContext;
 namespace TakeASeat.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20221216175812_Seeding")]
+    partial class Seeding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -272,7 +274,7 @@ namespace TakeASeat.Migrations
                         {
                             Id = 2,
                             CreatorId = 1,
-                            Description = "Amatour League",
+                            Description = "Mr Moon vs Tactical Beacon",
                             Duration = 120,
                             EventTypeId = 2,
                             ImageUri = "none",
@@ -486,43 +488,6 @@ namespace TakeASeat.Migrations
                     b.HasIndex("EventId");
 
                     b.ToTable("Shows");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Date = new DateTime(2022, 12, 16, 21, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Night Showing",
-                            EventId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Date = new DateTime(2022, 12, 17, 9, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Morning Showing",
-                            EventId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Date = new DateTime(2022, 12, 21, 19, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Gonzo vs Bonzo",
-                            EventId = 2
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Date = new DateTime(2022, 12, 23, 19, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "GGG vs Canelo",
-                            EventId = 2
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Date = new DateTime(2022, 12, 28, 16, 30, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Final match",
-                            EventId = 3
-                        });
                 });
 
             modelBuilder.Entity("TakeASeat.Data.Ticket", b =>

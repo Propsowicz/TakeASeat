@@ -19,14 +19,18 @@ namespace TakeASeat.Data.DatabaseContext
         public DbSet<EventType> EventTypes { get; set; }
         public DbSet<EventTagEventM2M> EventTagEventM2M { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Ticket> Ticket { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            builder.ApplyConfiguration(new UserSeed());
             builder.ApplyConfiguration(new EventTypeSeed());
             builder.ApplyConfiguration(new EventTagSeed());
             builder.ApplyConfiguration(new EventSeed());
             builder.ApplyConfiguration(new EventTagEventM2MSeed());
+            builder.ApplyConfiguration(new ShowSeed());
+
         }
 
     }

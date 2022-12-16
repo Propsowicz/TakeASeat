@@ -12,6 +12,7 @@ namespace TakeASeat.Repository
         private IGenericRepository<Seat> _seats;
         private IGenericRepository<EventTagEventM2M> _eventM2M;
         private IGenericRepository<EventType> _eventTypes;
+        private IGenericRepository<Show> _show;
 
         public UnitOfWork(DatabaseContext context)
         {
@@ -27,6 +28,7 @@ namespace TakeASeat.Repository
         public IGenericRepository<EventTagEventM2M> EventTagEventM2M => _eventM2M ??= new GenericRepository<EventTagEventM2M>(_context);
 
         public IGenericRepository<EventType> EventTypes => _eventTypes ??= new GenericRepository<EventType>(_context);
+        public IGenericRepository<Show> Show => _show ??= new GenericRepository<Show>(_context);
 
         public void Dispose()
         {
