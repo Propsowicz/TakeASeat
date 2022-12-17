@@ -16,8 +16,8 @@ namespace TakeASeat.Data
         public EventType EventType { get; set; }
 
         [ForeignKey(nameof(Creator))]
-        public int CreatorId { get; set; }
-        public User Creator { get; set; }
+        public string? CreatorId { get; set; }
+        public User? Creator { get; set; }
 
         public virtual IList<EventTagEventM2M> EventTags { get; set; }
         public virtual IList<Show> Shows { get; set; }

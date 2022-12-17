@@ -11,14 +11,14 @@ namespace TakeASeat.Data.DatabaseContext.Seeds
             builder.HasData(
                 new User
                 {           
-                    Id = 1,
+                    
                     FirstName = "George",
                     LastName = "Flinston",
                                   
                 },
                 new User
                 {
-                    Id = 2,
+                    
                     FirstName = "Logan",
                     LastName = "Capuchino",
                     

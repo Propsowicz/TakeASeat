@@ -2,7 +2,7 @@
 using TakeASeat.Data;
 using TakeASeat.Models;
 
-namespace TakeASeat.Models
+namespace TakeASeat.Configurations
 {
     public class MapperInitializer : Profile
     {
@@ -17,6 +17,7 @@ namespace TakeASeat.Models
 
             CreateMap<Seat, CreateSeatDTO>().ReverseMap();
             CreateMap<Seat, GetSeatDTO>().ReverseMap();
+            CreateMap<Seat, ReserveSeatsDTO>().ReverseMap();
 
             CreateMap<EventTagEventM2M, CreateEventTagEventM2MDTO>().ReverseMap();
             CreateMap<EventTagEventM2M, GetEventTagEventM2MDTO>().ReverseMap();
@@ -24,6 +25,7 @@ namespace TakeASeat.Models
             CreateMap<EventType, CreateEventTypeDTO>().ReverseMap();
             CreateMap<EventType, GetEventTypeDTO>().ReverseMap();
 
+            CreateMap<User, CreateUserDTO>().ReverseMap();
             CreateMap<User, GetUserDTO>().ReverseMap();
 
             CreateMap<Show, CreateShowDTO>().ReverseMap();

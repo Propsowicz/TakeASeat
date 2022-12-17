@@ -12,7 +12,7 @@ using TakeASeat.Data.DatabaseContext;
 namespace TakeASeat.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20221216173715_Init")]
+    [Migration("20221217120438_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -88,6 +88,10 @@ namespace TakeASeat.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -139,6 +143,8 @@ namespace TakeASeat.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -230,8 +236,8 @@ namespace TakeASeat.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CreatorId")
-                        .HasColumnType("int");
+                    b.Property<string>("CreatorId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -263,7 +269,6 @@ namespace TakeASeat.Migrations
                         new
                         {
                             Id = 1,
-                            CreatorId = 1,
                             Description = "Pink Panther does his things.",
                             Duration = 80,
                             EventTypeId = 1,
@@ -273,8 +278,7 @@ namespace TakeASeat.Migrations
                         new
                         {
                             Id = 2,
-                            CreatorId = 1,
-                            Description = "Mr Moon vs Tactical Beacon",
+                            Description = "Amatour League",
                             Duration = 120,
                             EventTypeId = 2,
                             ImageUri = "none",
@@ -283,12 +287,11 @@ namespace TakeASeat.Migrations
                         new
                         {
                             Id = 3,
-                            CreatorId = 2,
                             Description = "Best of 3.",
                             Duration = 180,
                             EventTypeId = 3,
                             ImageUri = "none",
-                            Name = "Cossacks 3 Championships - Final"
+                            Name = "Cossacks 3 Championships"
                         });
                 });
 
@@ -439,28 +442,34 @@ namespace TakeASeat.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("EventId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Position")
                         .HasColumnType("int");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
+                    b.Property<DateTime>("ReservedTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Row")
                         .IsRequired()
                         .HasColumnType("nvarchar(1)");
 
-                    b.Property<bool>("isSold")
+                    b.Property<int>("ShowId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SoldTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("isReserved")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("isTaken")
+                    b.Property<bool>("isSold")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EventId");
+                    b.HasIndex("ShowId");
 
                     b.ToTable("Seats");
                 });
@@ -476,6 +485,10 @@ namespace TakeASeat.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("EventId")
                         .HasColumnType("int");
 
@@ -484,6 +497,43 @@ namespace TakeASeat.Migrations
                     b.HasIndex("EventId");
 
                     b.ToTable("Shows");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Date = new DateTime(2022, 12, 16, 21, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Night Showing",
+                            EventId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Date = new DateTime(2022, 12, 17, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Morning Showing",
+                            EventId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Date = new DateTime(2022, 12, 21, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Gonzo vs Bonzo",
+                            EventId = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Date = new DateTime(2022, 12, 23, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "GGG vs Canelo",
+                            EventId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Date = new DateTime(2022, 12, 28, 16, 30, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Final match",
+                            EventId = 3
+                        });
                 });
 
             modelBuilder.Entity("TakeASeat.Data.Ticket", b =>
@@ -494,8 +544,9 @@ namespace TakeASeat.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("BuyerId")
-                        .HasColumnType("int");
+                    b.Property<string>("BuyerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("EventId")
                         .HasColumnType("int");
@@ -516,11 +567,7 @@ namespace TakeASeat.Migrations
 
             modelBuilder.Entity("TakeASeat.Data.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -530,20 +577,32 @@ namespace TakeASeat.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
+                    b.HasDiscriminator().HasValue("User");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = "3a92d253-d3ac-4d84-8a19-4d44eaf90a20",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "fb41ae57-6b43-4168-a088-1f4f9e802afd",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "8348fe73-9433-4ae8-be30-624b2f290fed",
+                            TwoFactorEnabled = false,
                             FirstName = "George",
                             LastName = "Flinston"
                         },
                         new
                         {
-                            Id = 2,
+                            Id = "c7fd472d-6cc1-4180-9f5a-b3401b52c87a",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "8b392bcd-55a3-4440-8d19-1d75b6d106ce",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "28f3fba3-bb34-48bf-bc5a-10a9037a06f1",
+                            TwoFactorEnabled = false,
                             FirstName = "Logan",
                             LastName = "Capuchino"
                         });
@@ -604,9 +663,7 @@ namespace TakeASeat.Migrations
                 {
                     b.HasOne("TakeASeat.Data.User", "Creator")
                         .WithMany()
-                        .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CreatorId");
 
                     b.HasOne("TakeASeat.Data.EventType", "EventType")
                         .WithMany()
@@ -640,19 +697,19 @@ namespace TakeASeat.Migrations
 
             modelBuilder.Entity("TakeASeat.Data.Seat", b =>
                 {
-                    b.HasOne("TakeASeat.Data.Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId")
+                    b.HasOne("TakeASeat.Data.Show", "Show")
+                        .WithMany("Seats")
+                        .HasForeignKey("ShowId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Event");
+                    b.Navigation("Show");
                 });
 
             modelBuilder.Entity("TakeASeat.Data.Show", b =>
                 {
                     b.HasOne("TakeASeat.Data.Event", "Event")
-                        .WithMany()
+                        .WithMany("Shows")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -686,6 +743,13 @@ namespace TakeASeat.Migrations
             modelBuilder.Entity("TakeASeat.Data.Event", b =>
                 {
                     b.Navigation("EventTags");
+
+                    b.Navigation("Shows");
+                });
+
+            modelBuilder.Entity("TakeASeat.Data.Show", b =>
+                {
+                    b.Navigation("Seats");
                 });
 #pragma warning restore 612, 618
         }

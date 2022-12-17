@@ -8,8 +8,11 @@ namespace TakeASeat.Data
         public char Row { get; set; }
         public int Position { get; set; }
         public double Price { get; set; }
-        public bool isTaken { get; set; } = false;
+
+        public bool isReserved { get; set; } = false;
+        public DateTime ReservedTime { get; set; }
         public bool isSold { get; set; } = false;
+        public DateTime SoldTime { get; set; }
 
 
         [ForeignKey(nameof(Show))]

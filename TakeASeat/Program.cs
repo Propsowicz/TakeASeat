@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using TakeASeat.BackgroundServices;
+using TakeASeat.Configurations;
 using TakeASeat.Data.DatabaseContext;
 using TakeASeat.IRepository;
-using TakeASeat.Models;
 using TakeASeat.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,7 +26,8 @@ builder.Services.AddAutoMapper(typeof(MapperInitializer).Assembly);
 // Dependency Injection
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-
+// Backgorund service
+builder.Services.AddHostedService<ReleaseReservation>();
 
 
 

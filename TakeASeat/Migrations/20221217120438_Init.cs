@@ -28,6 +28,9 @@ namespace TakeASeat.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -72,20 +75,6 @@ namespace TakeASeat.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EventTypes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -205,21 +194,20 @@ namespace TakeASeat.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageUri = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EventTypeId = table.Column<int>(type: "int", nullable: false),
-                    CreatorId = table.Column<int>(type: "int", nullable: false)
+                    CreatorId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Events", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Events_AspNetUsers_CreatorId",
+                        column: x => x.CreatorId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_Events_EventTypes_EventTypeId",
                         column: x => x.EventTypeId,
                         principalTable: "EventTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Events_Users_CreatorId",
-                        column: x => x.CreatorId,
-                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -251,36 +239,13 @@ namespace TakeASeat.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Seats",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Row = table.Column<string>(type: "nvarchar(1)", nullable: false),
-                    Position = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<double>(type: "float", nullable: false),
-                    isTaken = table.Column<bool>(type: "bit", nullable: false),
-                    isSold = table.Column<bool>(type: "bit", nullable: false),
-                    EventId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Seats", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Seats_Events_EventId",
-                        column: x => x.EventId,
-                        principalTable: "Events",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Shows",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EventId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -295,6 +260,32 @@ namespace TakeASeat.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Seats",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Row = table.Column<string>(type: "nvarchar(1)", nullable: false),
+                    Position = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false),
+                    isReserved = table.Column<bool>(type: "bit", nullable: false),
+                    ReservedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    isSold = table.Column<bool>(type: "bit", nullable: false),
+                    SoldTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ShowId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Seats", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Seats_Shows_ShowId",
+                        column: x => x.ShowId,
+                        principalTable: "Shows",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Ticket",
                 columns: table => new
                 {
@@ -302,11 +293,17 @@ namespace TakeASeat.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EventId = table.Column<int>(type: "int", nullable: true),
                     SeatId = table.Column<int>(type: "int", nullable: true),
-                    BuyerId = table.Column<int>(type: "int", nullable: false)
+                    BuyerId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Ticket", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Ticket_AspNetUsers_BuyerId",
+                        column: x => x.BuyerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Ticket_Events_EventId",
                         column: x => x.EventId,
@@ -317,12 +314,15 @@ namespace TakeASeat.Migrations
                         column: x => x.SeatId,
                         principalTable: "Seats",
                         principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Ticket_Users_BuyerId",
-                        column: x => x.BuyerId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "3a92d253-d3ac-4d84-8a19-4d44eaf90a20", 0, "fb41ae57-6b43-4168-a088-1f4f9e802afd", "User", null, false, "George", "Flinston", false, null, null, null, null, null, false, "8348fe73-9433-4ae8-be30-624b2f290fed", false, null },
+                    { "c7fd472d-6cc1-4180-9f5a-b3401b52c87a", 0, "8b392bcd-55a3-4440-8d19-1d75b6d106ce", "User", null, false, "Logan", "Capuchino", false, null, null, null, null, null, false, "28f3fba3-bb34-48bf-bc5a-10a9037a06f1", false, null }
                 });
 
             migrationBuilder.InsertData(
@@ -348,28 +348,19 @@ namespace TakeASeat.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "FirstName", "LastName" },
-                values: new object[,]
-                {
-                    { 1, "George", "Flinston" },
-                    { 2, "Logan", "Capuchino" }
-                });
+                table: "Events",
+                columns: new[] { "Id", "CreatorId", "Description", "Duration", "EventTypeId", "ImageUri", "Name" },
+                values: new object[] { 1, null, "Pink Panther does his things.", 80, 1, "none", "Pink Panther The Movie" });
 
             migrationBuilder.InsertData(
                 table: "Events",
                 columns: new[] { "Id", "CreatorId", "Description", "Duration", "EventTypeId", "ImageUri", "Name" },
-                values: new object[] { 1, 1, "Pink Panther does his things.", 80, 1, "none", "Pink Panther The Movie" });
+                values: new object[] { 2, null, "Amatour League", 120, 2, "none", "Tennis Match" });
 
             migrationBuilder.InsertData(
                 table: "Events",
                 columns: new[] { "Id", "CreatorId", "Description", "Duration", "EventTypeId", "ImageUri", "Name" },
-                values: new object[] { 2, 1, "Mr Moon vs Tactical Beacon", 120, 2, "none", "Tennis Match" });
-
-            migrationBuilder.InsertData(
-                table: "Events",
-                columns: new[] { "Id", "CreatorId", "Description", "Duration", "EventTypeId", "ImageUri", "Name" },
-                values: new object[] { 3, 2, "Best of 3.", 180, 3, "none", "Cossacks 3 Championships - Final" });
+                values: new object[] { 3, null, "Best of 3.", 180, 3, "none", "Cossacks 3 Championships" });
 
             migrationBuilder.InsertData(
                 table: "EventTagEventM2M",
@@ -382,6 +373,18 @@ namespace TakeASeat.Migrations
                     { 4, 2, 3 },
                     { 5, 2, 4 },
                     { 6, 3, 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Shows",
+                columns: new[] { "Id", "Date", "Description", "EventId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2022, 12, 16, 21, 0, 0, 0, DateTimeKind.Unspecified), "Night Showing", 1 },
+                    { 2, new DateTime(2022, 12, 17, 9, 0, 0, 0, DateTimeKind.Unspecified), "Morning Showing", 1 },
+                    { 3, new DateTime(2022, 12, 21, 19, 0, 0, 0, DateTimeKind.Unspecified), "Gonzo vs Bonzo", 2 },
+                    { 4, new DateTime(2022, 12, 23, 19, 0, 0, 0, DateTimeKind.Unspecified), "GGG vs Canelo", 2 },
+                    { 5, new DateTime(2022, 12, 28, 16, 30, 0, 0, DateTimeKind.Unspecified), "Final match", 3 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -444,9 +447,9 @@ namespace TakeASeat.Migrations
                 column: "EventTagId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Seats_EventId",
+                name: "IX_Seats_ShowId",
                 table: "Seats",
-                column: "EventId");
+                column: "ShowId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Shows_EventId",
@@ -490,16 +493,10 @@ namespace TakeASeat.Migrations
                 name: "EventTagEventM2M");
 
             migrationBuilder.DropTable(
-                name: "Shows");
-
-            migrationBuilder.DropTable(
                 name: "Ticket");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "EventTags");
@@ -508,13 +505,16 @@ namespace TakeASeat.Migrations
                 name: "Seats");
 
             migrationBuilder.DropTable(
+                name: "Shows");
+
+            migrationBuilder.DropTable(
                 name: "Events");
 
             migrationBuilder.DropTable(
-                name: "EventTypes");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "EventTypes");
         }
     }
 }

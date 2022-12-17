@@ -15,7 +15,7 @@ namespace TakeASeat.Data
         public Seat? Seat { get; set; }
 
         [ForeignKey(nameof(Buyer))]
-        public int BuyerId { get; set; }
+        public string BuyerId { get; set; }
         public User Buyer { get; set; }
     }
 

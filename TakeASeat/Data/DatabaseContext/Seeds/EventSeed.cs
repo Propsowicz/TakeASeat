@@ -18,7 +18,7 @@ namespace TakeASeat.Data.DatabaseContext.Seeds
                     Description = "Pink Panther does his things.",
                     ImageUri = "none",
                     EventTypeId = 1,
-                    CreatorId = 1, 
+                    //CreatorId = 1, 
                 },
                 new Event
                 {
@@ -28,7 +28,7 @@ namespace TakeASeat.Data.DatabaseContext.Seeds
                     Description = "Amatour League",
                     ImageUri = "none",
                     EventTypeId = 2,
-                    CreatorId = 1,
+                    //CreatorId = 1,
                 },
                 new Event
                 {
@@ -38,7 +38,7 @@ namespace TakeASeat.Data.DatabaseContext.Seeds
                     Description = "Best of 3.",
                     ImageUri = "none",
                     EventTypeId = 3,
-                    CreatorId = 2,
+                    //CreatorId = 2,
                 }
 
                 );
