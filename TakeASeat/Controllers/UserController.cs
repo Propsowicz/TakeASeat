@@ -6,6 +6,7 @@ using TakeASeat.Data;
 using TakeASeat.IRepository;
 using TakeASeat.Models;
 using TakeASeat.Repository;
+using TakeASeat.UserServices;
 
 namespace TakeASeat.Controllers
 {
@@ -15,11 +16,13 @@ namespace TakeASeat.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
+        private readonly IAuthManager _authManager;
 
-        public UserController(UserManager<User> userManager, IMapper mapper)
+        public UserController(UserManager<User> userManager, IMapper mapper, IAuthManager authManager)
         {
             _userManager = userManager;
             _mapper = mapper;
+            _authManager = authManager;
         }
 
         [HttpPost("register")]
@@ -36,6 +39,24 @@ namespace TakeASeat.Controllers
             var response = await _userManager.CreateAsync(user, userDTO.Password);
 
             return Ok();
+        }
+
+        [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> LoginUser([FromBody] LoginUserDTO userDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            if (!await _authManager.ValidateUser(userDTO))
+            {
+                return Unauthorized();
+            }
+            return Accepted(new {AccessToken = await _authManager.CreateJWToken(userDTO)});
+
         }
     }
 }

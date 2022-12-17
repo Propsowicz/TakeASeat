@@ -25,7 +25,8 @@ namespace TakeASeat.Configurations
             CreateMap<EventType, CreateEventTypeDTO>().ReverseMap();
             CreateMap<EventType, GetEventTypeDTO>().ReverseMap();
 
-            CreateMap<User, CreateUserDTO>().ReverseMap();
+            CreateMap<User, LoginUserDTO>().ReverseMap();
+            CreateMap<User, RegisterUserDTO>().ReverseMap();
             CreateMap<User, GetUserDTO>().ReverseMap();
 
             CreateMap<Show, CreateShowDTO>().ReverseMap();
