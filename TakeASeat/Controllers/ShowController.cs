@@ -29,7 +29,7 @@ namespace TakeASeat.Controllers
             var show = await _unitOfWork.Show.Get(s => s.Id == id, includes: new List<string> { "Seats", "Event" });
 
             var response = _mapper.Map<GetShowDetailsDTO>(show);
-            return Ok(response);
+            return StatusCode(200, response);
         }
 
     }

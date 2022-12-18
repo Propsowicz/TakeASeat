@@ -38,14 +38,16 @@ namespace TakeASeat.Controllers
             var user = _mapper.Map<User>(userDTO);
             var response = await _userManager.CreateAsync(user, userDTO.Password);
 
-            return Ok();
+            return StatusCode(201);
         }
 
         [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> LoginUser([FromBody] LoginUserDTO userDTO)
         {
+            //throw new Exception();
             if (!ModelState.IsValid)
             {
                 return BadRequest();
@@ -56,7 +58,6 @@ namespace TakeASeat.Controllers
                 return Unauthorized();
             }
             return Accepted(new {AccessToken = await _authManager.CreateJWToken(userDTO)});
-
         }
     }
 }

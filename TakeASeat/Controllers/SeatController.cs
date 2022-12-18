@@ -5,6 +5,7 @@ using TakeASeat.Data;
 using TakeASeat.IRepository;
 using TakeASeat.Models;
 using TakeASeat.BackgroundServices;
+using Azure;
 
 namespace TakeASeat.Controllers
 {
@@ -37,7 +38,7 @@ namespace TakeASeat.Controllers
             await _unitOfWork.Seats.CreateRange(seats);
             await _unitOfWork.Save();
 
-            return Ok();
+            return StatusCode(201);
         }
 
         [HttpPut("reservation")]
@@ -62,7 +63,7 @@ namespace TakeASeat.Controllers
                 _unitOfWork.Seats.Update(seatToUpdate);
                 await _unitOfWork.Save();
             }
-            return NoContent();
+            return StatusCode(200);
         }
 
     }

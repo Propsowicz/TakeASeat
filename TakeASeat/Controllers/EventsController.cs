@@ -53,7 +53,7 @@ namespace TakeASeat.Controllers
                                                         && typesList.Contains(ev.EventType.Name));
 
             var response = _mapper.Map<List<GetEventDetailsDTO>>(events);
-            return Ok(response);
+            return StatusCode(200, response);
         }
 
         [HttpGet("{id:int}")]
@@ -65,7 +65,7 @@ namespace TakeASeat.Controllers
             var event_ = await _unitOfWork.Events.Get(ev => ev.Id == id, includes: new List<string> { "EventTags", "EventType", "Creator", "Shows" }); 
             var response = _mapper.Map<GetEventDetailsDTO>(event_);
 
-            return Ok(response);
+            return StatusCode(200, response);
         }
     }
 }

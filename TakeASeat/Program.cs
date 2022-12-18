@@ -10,14 +10,26 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TakeASeat.UserServices;
 using TakeASeat.Data;
-using TakeASeat;
+using System.Configuration;
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Diagnostics;
+using Serilog;
+using TakeASeat.ProgramConfigurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // SERVICES
-
+/// builder.Services.Configure*** are custom methods
 builder.Services.AddControllers();
 
+// CORS
+var corsPolicy = "_corsPolicy";
+builder.Services.ConfigureCORS(corsPolicy);
+
+// LOGS
+builder.Host.ConfigureSerilog();
+
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -25,6 +37,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DatabaseContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
+// Newton/JSON
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    options.JsonSerializerOptions.WriteIndented = true;
 });
 
 // Mapper conf
@@ -40,30 +59,7 @@ builder.Services.AddHostedService<ReleaseReservation>();
 //JWT
 builder.Services.AddAuthentication();
 builder.Services.ConfigureIdentity();
-
-//// set connection to appsettings
-var jwtSettings = builder.Configuration.GetSection("Jwt");
-//// get key
-var key = AuthKey.AppKey;
-
-builder.Services.AddAuthentication(option =>
-{
-    option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
-})
-        // validation options
-        .AddJwtBearer(o =>
-        {
-            o.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,  // validate if token is from our app
-                ValidateLifetime = true,    // exp date
-                ValidateIssuerSigningKey = true,    // validate SECRET_KEY
-                ValidIssuer = jwtSettings.GetSection("Issuer").Value,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))    // encoding and hashing the SECRET_KEY
-            };
-        });
+builder.Services.ConfigureJWT(builder.Configuration);
 
 
 
@@ -78,7 +74,30 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+//app.UseExceptionHandler(error =>
+//{
+//    error.Run(async context =>
+//    {
+//        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+//        context.Response.ContentType = "application/json";
+//        var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+//        if (contextFeature != null)
+//        {
+//            Log.Error($"Something went wrong in the {contextFeature.Error}");
+//            await context.Response.WriteAsync(new ErrorProps
+//            {
+//                StatusCode = StatusCodes.Status500InternalServerError,
+//                Message = "Internal server error. Please try again later."
+//            }.ToString());
+//        }
+//    });
+//});
+
+app.ConfigureGlobalExceptionHandler(app);
+
 app.UseHttpsRedirection();
+
+app.UseCors(corsPolicy);
 
 app.UseAuthentication();
 
