@@ -1,8 +1,7 @@
 ﻿using TakeASeat.Data;
 using TakeASeat.Data.DatabaseContext;
-using TakeASeat.IRepository;
 
-namespace TakeASeat.Repository
+namespace TakeASeat.Services.Generic
 {
     public class UnitOfWork : IUnitOfWork
     {
@@ -16,7 +15,7 @@ namespace TakeASeat.Repository
 
         public UnitOfWork(DatabaseContext context)
         {
-            _context= context;
+            _context = context;
         }
 
         public IGenericRepository<Event> Events => _events ??= new GenericRepository<Event>(_context);

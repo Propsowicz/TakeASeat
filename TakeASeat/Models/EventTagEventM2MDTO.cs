@@ -10,7 +10,7 @@
     {
         public int Id { get; set; }
 
-        public CreateEventTagDTO EventTagName { get; set; }
+        public CreateEventTagDTO EventTag { get; set; }
     }
 
     

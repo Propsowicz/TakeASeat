@@ -3,10 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TakeASeat.Data;
-using TakeASeat.IRepository;
 using TakeASeat.Models;
-using TakeASeat.Repository;
-using TakeASeat.UserServices;
+using TakeASeat.Services.UserService;
 
 namespace TakeASeat.Controllers
 {
@@ -57,7 +55,7 @@ namespace TakeASeat.Controllers
             {
                 return Unauthorized();
             }
-            return Accepted(new {AccessToken = await _authManager.CreateJWToken(userDTO)});
+            return Accepted(new {AccessToken = await _authManager.CreateAccessJWToken(userDTO), RefreshToken = await _authManager.CreateRefreshJWToken(userDTO)});
         }
     }
 }

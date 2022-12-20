@@ -48,7 +48,7 @@ namespace TakeASeat.ProgramConfigurations
             });
 
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), services);
-            builder.AddTokenProvider("HotelList", typeof(DataProtectorTokenProvider<User>));
+            builder.AddTokenProvider("TakeASeat", typeof(DataProtectorTokenProvider<User>));
             builder.AddEntityFrameworkStores<DatabaseContext>().AddDefaultTokenProviders();
         }
 

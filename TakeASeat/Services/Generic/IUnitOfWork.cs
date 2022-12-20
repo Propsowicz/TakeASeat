@@ -1,6 +1,6 @@
 ﻿using TakeASeat.Data;
 
-namespace TakeASeat.IRepository
+namespace TakeASeat.Services.Generic
 {
     public interface IUnitOfWork : IDisposable
     {

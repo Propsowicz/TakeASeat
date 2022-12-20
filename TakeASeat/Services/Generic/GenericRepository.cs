@@ -1,13 +1,12 @@
 ﻿using System.Linq.Expressions;
 using TakeASeat.Data.DatabaseContext;
-using TakeASeat.IRepository;
 using TakeASeat.RequestUtils;
 using Microsoft.EntityFrameworkCore;
 using X.PagedList;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Query;
 
-namespace TakeASeat.Repository
+namespace TakeASeat.Services.Generic
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
@@ -16,7 +15,7 @@ namespace TakeASeat.Repository
 
         public GenericRepository(DatabaseContext context)
         {
-            _context= context;
+            _context = context;
             _dbSet = _context.Set<T>();
         }
 
@@ -83,7 +82,7 @@ namespace TakeASeat.Repository
         //    Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null, RequestParams requestParams = null)
         {
             IQueryable<T> query = _dbSet;
-                      
+
             if (expression != null)
             {
                 query = query.Where(expression);
@@ -96,7 +95,7 @@ namespace TakeASeat.Repository
                     query = query.Include(include);
                 }
             }
-                       
+
 
             //if (include != null)
             //{

@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TakeASeat.IRepository;
 using TakeASeat.Models;
-using TakeASeat.Repository;
+using TakeASeat.Services.Generic;
 
 namespace TakeASeat.Controllers
 {

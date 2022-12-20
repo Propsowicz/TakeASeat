@@ -18,8 +18,6 @@ namespace TakeASeat.RequestUtils
         public string SearchString { get; set; } = "";
 
         
-
-
         List<string> typesList { get; set; } = new List<string>() {
             "Movie", "Sport", "E-Sport"
             };
@@ -33,6 +31,7 @@ namespace TakeASeat.RequestUtils
             } 
         }
 
+        public string Order { get; set; } = "Name";
         
     }
 }

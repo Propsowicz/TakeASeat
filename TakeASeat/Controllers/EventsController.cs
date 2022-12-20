@@ -2,12 +2,16 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
-using System.Data.Entity;
+//using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
+
 using System.Linq;
+using TakeASeat.Data;
 using TakeASeat.Data.DatabaseContext;
-using TakeASeat.IRepository;
 using TakeASeat.Models;
 using TakeASeat.RequestUtils;
+using TakeASeat.Services;
+using TakeASeat.Services.Generic;
 
 namespace TakeASeat.Controllers
 {
@@ -18,41 +22,29 @@ namespace TakeASeat.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly DatabaseContext _context;
+        private readonly IEventRepository _eventRepo;
 
-        public EventsController(IUnitOfWork unitOfWork, IMapper mapper, DatabaseContext context)
+        public EventsController(IUnitOfWork unitOfWork, 
+            IMapper mapper, DatabaseContext context, IEventRepository eventRepo
+            )
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _context = context;
+            _eventRepo = eventRepo;   
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> PaginatedGetAll([FromQuery] RequestParams r_params)
+        public async Task<IActionResult> GetAllWtihDetails([FromQuery] RequestParams r_params)
         {
-            var typesList = _context.EventTypes
-                            .Select(q => q.Name)
-                            .ToList();
+            // ordering needs to be done
 
-            if (r_params.FilterString != null)
-            {
-                typesList = r_params.FilterString;
-            }
+            var query = await _eventRepo.GetPaginatedAllWithoutPastShowsOrderAsc(r_params, orderBy: q => q.EventType.Name);
+            var response = _mapper.Map<List<GetEventDetailsDTO>>(query);
 
-            var tagIdList = _context.EventTagEventM2M
-                            .Where(t => t.EventTag.TagName
-                            .Equals(r_params.SearchString))
-                            .Select(t => t.EventId)
-                            .ToList();
-
-            var events = await _unitOfWork.Events.PaginatedGetAll(includes: new List<string> { "EventTags", "EventType", "Creator", "Shows" },
-                requestParams: r_params, expression: ev => ev.Name.Contains(r_params.SearchString)
-                                                        || tagIdList.Contains(ev.Id)
-                                                        && typesList.Contains(ev.EventType.Name));
-
-            var response = _mapper.Map<List<GetEventDetailsDTO>>(events);
             return StatusCode(200, response);
         }
 
@@ -66,6 +58,14 @@ namespace TakeASeat.Controllers
             var response = _mapper.Map<GetEventDetailsDTO>(event_);
 
             return StatusCode(200, response);
+        }
+
+        [HttpGet("eloszka")]
+        public async Task<IActionResult> GetSomeTest([FromQuery] RequestParams r_params)
+        {
+
+            //var response = await _ev.GetAll();
+            return Ok(await _eventRepo.GetPaginatedAllWithoutPastShowsOrderAsc(r_params, orderBy: q => q.EventType.Name));
         }
     }
 }

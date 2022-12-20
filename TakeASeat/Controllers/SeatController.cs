@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TakeASeat.Data;
-using TakeASeat.IRepository;
 using TakeASeat.Models;
 using TakeASeat.BackgroundServices;
 using Azure;
+using TakeASeat.Services.Generic;
 
 namespace TakeASeat.Controllers
 {

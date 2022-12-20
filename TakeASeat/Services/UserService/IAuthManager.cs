@@ -1,13 +1,13 @@
 ﻿using TakeASeat.Models;
 using TakeASeat.RequestUtils;
 
-namespace TakeASeat.UserServices
+namespace TakeASeat.Services.UserService
 {
     public interface IAuthManager
     {
         Task<bool> ValidateUser(LoginUserDTO userDTO);
-        Task<string> CreateJWToken(LoginUserDTO userDTO);
-        Task<string> RefreshJWToken(string username);
+        Task<string> CreateAccessJWToken(LoginUserDTO userDTO);
+        Task<string> CreateRefreshJWToken(LoginUserDTO userDTO);
         Task<JWTokenRequest> VerifyRefreshToken(JWTokenRequest request);
 
     }
