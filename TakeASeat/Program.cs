@@ -12,9 +12,10 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Diagnostics;
 using Serilog;
 using TakeASeat.ProgramConfigurations;
-using TakeASeat.Services;
 using TakeASeat.Services.Generic;
 using TakeASeat.Services.UserService;
+using TakeASeat.Services.EventService;
+using TakeASeat.Services.ShowService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,6 +54,7 @@ builder.Services.AddAutoMapper(typeof(MapperInitializer).Assembly);
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAuthManager, AuthManager>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
+builder.Services.AddScoped<IShowRepository, ShowRepository>();
 
 // Backgorund service
 builder.Services.AddHostedService<ReleaseReservation>();

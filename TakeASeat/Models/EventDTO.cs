@@ -17,6 +17,7 @@ namespace TakeASeat.Models
         [MinLength(20, ErrorMessage = "Description is too short. Minimum length is 20 characters.")]
         public string Description { get; set; }
         public string ImageUri { get; set; }
+        public string Place { get; set; }   
     }
     public class GetEventDTO : CreateEventDTO
     {
@@ -30,6 +31,13 @@ namespace TakeASeat.Models
         public CreateEventTypeDTO EventType { get; set; }
         public GetUserDTO Creator { get; set; }
         public IList<GetShowDTO> Shows { get; set; }
+    }
+
+    public class GetEventDetailsToShowDTO : GetEventDTO
+    {
+        public GetUserDTO Creator { get; set; }
+        public CreateEventTypeDTO EventType { get; set; }
+        public IList<GetEventTagEventM2MDTO> EventTags { get; set; }
     }
 
 }

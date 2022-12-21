@@ -11,6 +11,7 @@ namespace TakeASeat.Configurations
             CreateMap<Event, CreateEventDTO>().ReverseMap();
             CreateMap<Event, GetEventDTO>().ReverseMap();
             CreateMap<Event, GetEventDetailsDTO>().ReverseMap();
+            CreateMap<Event, GetEventDetailsToShowDTO>().ReverseMap();
 
             CreateMap<EventTag, CreateEventTagDTO>().ReverseMap();
             CreateMap<EventTag, GetEventTagDTO>().ReverseMap();
@@ -32,6 +33,7 @@ namespace TakeASeat.Configurations
             CreateMap<Show, CreateShowDTO>().ReverseMap();
             CreateMap<Show, GetShowDTO>().ReverseMap();
             CreateMap<Show, GetShowDetailsDTO>().ReverseMap();
+            CreateMap<Show, GetClosestShows>().ReverseMap();
         }
     }
 }

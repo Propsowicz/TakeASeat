@@ -8,41 +8,114 @@ namespace TakeASeat.Data.DatabaseContext.Seeds
         public void Configure(EntityTypeBuilder<Show> builder)
         {
             builder.HasData(
+                // "Pink Panther The Movie"
                 new Show
                 {
                     Id = 1,
-                    Date= new DateTime(2022, 12, 16, 21, 0, 0),
+                    Date= new DateTime(2022, 12, 21, 21, 0, 0),
                     Description = "Night Showing",
                     EventId= 1,
                 },
                 new Show
                 {
                 Id = 2,
-                    Date = new DateTime(2022, 12, 17, 9, 0, 0),
+                    Date = new DateTime(2022, 12, 30, 9, 0, 0),
                     Description = "Morning Showing",
                     EventId = 1,
                 },
                 new Show
                 {
-                Id = 3,
+                    Id = 3,
+                    Date = new DateTime(2023, 1, 2, 9, 0, 0),
+                    Description = "Morning Showing",
+                    EventId = 1,
+                },
+
+                // "Tennis Local League"
+                new Show
+                {
+                Id = 4,
                     Date = new DateTime(2022, 12, 21, 19, 0, 0),
                     Description = "Gonzo vs Bonzo",
                     EventId = 2,
                 },
                 new Show
                 {
-                Id = 4,
+                Id = 5,
                     Date = new DateTime(2022, 12, 23, 19, 0, 0),
                     Description = "GGG vs Canelo",
                     EventId = 2,
                 },
                 new Show
                 {
-                Id = 5,
+                    Id = 6,
+                    Date = new DateTime(2022, 12, 28, 19, 0, 0),
+                    Description = "GGG vs Canelo II",
+                    EventId = 2,
+                },
+
+                // "Cossacks 3 Championships"
+                new Show
+                {
+                    Id = 7,
+                    Date = new DateTime(2022, 12, 27, 16, 30, 0),
+                    Description = "Semifinal match I",
+                    EventId = 3,
+                },
+                new Show
+                {
+                    Id = 8,
                     Date = new DateTime(2022, 12, 28, 16, 30, 0),
+                    Description = "Semifinal match I",
+                    EventId = 3,
+                },
+                new Show
+                {
+                    Id = 9,
+                    Date = new DateTime(2023, 1, 5, 16, 30, 0),
                     Description = "Final match",
                     EventId = 3,
+                },
+
+                // "Fitness for everyone"
+                new Show
+                {
+                    Id = 10,
+                    Date = new DateTime(2022, 12, 27, 16, 30, 0),
+                    Description = "Morning Routine",
+                    EventId = 4,
+                },
+                new Show
+                {
+                    Id = 11,
+                    Date = new DateTime(2022, 12, 28, 16, 30, 0),
+                    Description = "Morning Routine",
+                    EventId = 4,
+                },
+                new Show
+                {
+                    Id = 12,
+                    Date = new DateTime(2022, 12, 29, 16, 30, 0),
+                    Description = "Morning Routine",
+                    EventId = 4,
+                },
+
+                // "FIFA playroom"
+                new Show
+                {
+                    Id = 13,
+                    Date = new DateTime(2022, 12, 27, 19, 30, 0),
+                    Description = "Casual Games",
+                    EventId = 5,
+                },
+                new Show
+                {
+                    Id = 14,
+                    Date = new DateTime(2022, 12, 30, 16, 30, 0),
+                    Description = "Local Final",
+                    EventId = 5,
                 }
+
                 );
         }
 

@@ -10,8 +10,8 @@ using TakeASeat.Data;
 using TakeASeat.Data.DatabaseContext;
 using TakeASeat.Models;
 using TakeASeat.RequestUtils;
-using TakeASeat.Services;
 using TakeASeat.Services.Generic;
+using TakeASeat.Services.EventService;
 
 namespace TakeASeat.Controllers
 {
@@ -40,9 +40,7 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAllWtihDetails([FromQuery] RequestParams r_params)
         {
-            // ordering needs to be done
-
-            var query = await _eventRepo.GetPaginatedAllWithoutPastShowsOrderAsc(r_params, orderBy: q => q.EventType.Name);
+            var query = await _eventRepo.GetPaginatedAllWithoutPastShows(r_params);
             var response = _mapper.Map<List<GetEventDetailsDTO>>(query);
 
             return StatusCode(200, response);
@@ -65,7 +63,7 @@ namespace TakeASeat.Controllers
         {
 
             //var response = await _ev.GetAll();
-            return Ok(await _eventRepo.GetPaginatedAllWithoutPastShowsOrderAsc(r_params, orderBy: q => q.EventType.Name));
+            return Ok(await _eventRepo.GetPaginatedAllWithoutPastShows(r_params));
         }
     }
 }

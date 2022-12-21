@@ -43,6 +43,30 @@ namespace TakeASeat.Data.DatabaseContext.Seeds
                     Id = 6,
                     EventId = 3,
                     EventTagId = 3,
+                },
+                new EventTagEventM2M
+                {
+                    Id = 7,
+                    EventId = 4,
+                    EventTagId = 2,
+                },
+                new EventTagEventM2M
+                {
+                    Id = 8,
+                    EventId = 4,
+                    EventTagId = 4,
+                },
+                new EventTagEventM2M
+                {
+                    Id = 9,
+                    EventId = 5,
+                    EventTagId = 3,
+                },
+                new EventTagEventM2M
+                {
+                    Id = 10,
+                    EventId = 5,
+                    EventTagId = 4,
                 }
                 );
         }

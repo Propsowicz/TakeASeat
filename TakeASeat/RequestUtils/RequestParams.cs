@@ -31,7 +31,7 @@ namespace TakeASeat.RequestUtils
             } 
         }
 
-        public string Order { get; set; } = "Name";
+        public string Order { get; set; } = "name";
         
     }
 }

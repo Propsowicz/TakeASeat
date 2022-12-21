@@ -9,6 +9,7 @@ namespace TakeASeat.Data
         public int Duration { get; set; }   
         public string Description { get; set; }
         public string ImageUri { get; set; }
+        public string Place { get; set; }
 
 
         [ForeignKey(nameof(EventType))]

@@ -193,6 +193,7 @@ namespace TakeASeat.Migrations
                     Duration = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageUri = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Place = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EventTypeId = table.Column<int>(type: "int", nullable: false),
                     CreatorId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
@@ -321,8 +322,8 @@ namespace TakeASeat.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "3a92d253-d3ac-4d84-8a19-4d44eaf90a20", 0, "fb41ae57-6b43-4168-a088-1f4f9e802afd", "User", null, false, "George", "Flinston", false, null, null, null, null, null, false, "8348fe73-9433-4ae8-be30-624b2f290fed", false, null },
-                    { "c7fd472d-6cc1-4180-9f5a-b3401b52c87a", 0, "8b392bcd-55a3-4440-8d19-1d75b6d106ce", "User", null, false, "Logan", "Capuchino", false, null, null, null, null, null, false, "28f3fba3-bb34-48bf-bc5a-10a9037a06f1", false, null }
+                    { "8e445865-a24d-4543-a6c6-9443d048cdb0", 0, "4d1f062e-135b-445c-bd33-0bdff5d10ffd", "User", null, false, "Logan", "Capuchino", false, null, null, null, "AQAAAAEAACcQAAAAEG/Bvl7/diTTMh9pAWhSGAEnwwjjFSWDWdLeW4SDD0YeAH1rboZmUhahTSN8mdA0fQ==", null, false, "303c25ee-da25-46e0-9608-41d89013efa8", false, "LOG" },
+                    { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "f4ca8522-94ac-4ad1-be6e-191e0f4cb9b8", "User", null, false, "George", "Flinston", false, null, null, null, "AQAAAAEAACcQAAAAEO31AmDZA/VfSslasQ37f5lEJ0VF9UOHBfFanYtVM1sPJwRd3C+ixfZ/DUsx1iRGVw==", null, false, "b503871d-3ca2-41e3-84e1-c9631a2e5190", false, "Flinston" }
                 });
 
             migrationBuilder.InsertData(
@@ -330,11 +331,11 @@ namespace TakeASeat.Migrations
                 columns: new[] { "Id", "TagName" },
                 values: new object[,]
                 {
-                    { 1, "Animated Movie" },
-                    { 2, "Family Friendly" },
-                    { 3, "Competition" },
-                    { 4, "Sport" },
-                    { 5, "Comedy" }
+                    { 1, "#AnimatedMovie" },
+                    { 2, "#FamilyFriendly" },
+                    { 3, "#Competition" },
+                    { 4, "#Sport" },
+                    { 5, "#Comedy" }
                 });
 
             migrationBuilder.InsertData(
@@ -349,18 +350,15 @@ namespace TakeASeat.Migrations
 
             migrationBuilder.InsertData(
                 table: "Events",
-                columns: new[] { "Id", "CreatorId", "Description", "Duration", "EventTypeId", "ImageUri", "Name" },
-                values: new object[] { 1, null, "Pink Panther does his things.", 80, 1, "none", "Pink Panther The Movie" });
-
-            migrationBuilder.InsertData(
-                table: "Events",
-                columns: new[] { "Id", "CreatorId", "Description", "Duration", "EventTypeId", "ImageUri", "Name" },
-                values: new object[] { 2, null, "Amatour League", 120, 2, "none", "Tennis Match" });
-
-            migrationBuilder.InsertData(
-                table: "Events",
-                columns: new[] { "Id", "CreatorId", "Description", "Duration", "EventTypeId", "ImageUri", "Name" },
-                values: new object[] { 3, null, "Best of 3.", 180, 3, "none", "Cossacks 3 Championships" });
+                columns: new[] { "Id", "CreatorId", "Description", "Duration", "EventTypeId", "ImageUri", "Name", "Place" },
+                values: new object[,]
+                {
+                    { 1, "8e445865-a24d-4543-a6c6-9443d048cdb9", "Pink Panther does his things.", 90, 1, "none", "Pink Panther The Movie", "Moskwa Cinema" },
+                    { 2, "8e445865-a24d-4543-a6c6-9443d048cdb9", "Tennis Amatour League", 120, 2, "none", "Tennis Local League", "Tennis Wschodnia" },
+                    { 3, "8e445865-a24d-4543-a6c6-9443d048cdb0", "Weekly e-sport tournament.", 180, 3, "none", "Cossacks 3 Championships", "Moskwa Cinema" },
+                    { 4, "8e445865-a24d-4543-a6c6-9443d048cdb9", "Daily fitness showcase.", 60, 2, "none", "Fitness for everyone", "Town Hall" },
+                    { 5, "8e445865-a24d-4543-a6c6-9443d048cdb0", "Winter FIFA tournament", 90, 3, "none", "FIFA playroom", "Quest pub" }
+                });
 
             migrationBuilder.InsertData(
                 table: "EventTagEventM2M",
@@ -372,7 +370,11 @@ namespace TakeASeat.Migrations
                     { 3, 1, 5 },
                     { 4, 2, 3 },
                     { 5, 2, 4 },
-                    { 6, 3, 3 }
+                    { 6, 3, 3 },
+                    { 7, 4, 2 },
+                    { 8, 4, 4 },
+                    { 9, 5, 3 },
+                    { 10, 5, 4 }
                 });
 
             migrationBuilder.InsertData(
@@ -380,11 +382,20 @@ namespace TakeASeat.Migrations
                 columns: new[] { "Id", "Date", "Description", "EventId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2022, 12, 16, 21, 0, 0, 0, DateTimeKind.Unspecified), "Night Showing", 1 },
-                    { 2, new DateTime(2022, 12, 17, 9, 0, 0, 0, DateTimeKind.Unspecified), "Morning Showing", 1 },
-                    { 3, new DateTime(2022, 12, 21, 19, 0, 0, 0, DateTimeKind.Unspecified), "Gonzo vs Bonzo", 2 },
-                    { 4, new DateTime(2022, 12, 23, 19, 0, 0, 0, DateTimeKind.Unspecified), "GGG vs Canelo", 2 },
-                    { 5, new DateTime(2022, 12, 28, 16, 30, 0, 0, DateTimeKind.Unspecified), "Final match", 3 }
+                    { 1, new DateTime(2022, 12, 21, 21, 0, 0, 0, DateTimeKind.Unspecified), "Night Showing", 1 },
+                    { 2, new DateTime(2022, 12, 30, 9, 0, 0, 0, DateTimeKind.Unspecified), "Morning Showing", 1 },
+                    { 3, new DateTime(2023, 1, 2, 9, 0, 0, 0, DateTimeKind.Unspecified), "Morning Showing", 1 },
+                    { 4, new DateTime(2022, 12, 21, 19, 0, 0, 0, DateTimeKind.Unspecified), "Gonzo vs Bonzo", 2 },
+                    { 5, new DateTime(2022, 12, 23, 19, 0, 0, 0, DateTimeKind.Unspecified), "GGG vs Canelo", 2 },
+                    { 6, new DateTime(2022, 12, 28, 19, 0, 0, 0, DateTimeKind.Unspecified), "GGG vs Canelo II", 2 },
+                    { 7, new DateTime(2022, 12, 27, 16, 30, 0, 0, DateTimeKind.Unspecified), "Semifinal match I", 3 },
+                    { 8, new DateTime(2022, 12, 28, 16, 30, 0, 0, DateTimeKind.Unspecified), "Semifinal match I", 3 },
+                    { 9, new DateTime(2023, 1, 5, 16, 30, 0, 0, DateTimeKind.Unspecified), "Final match", 3 },
+                    { 10, new DateTime(2022, 12, 27, 16, 30, 0, 0, DateTimeKind.Unspecified), "Morning Routine", 4 },
+                    { 11, new DateTime(2022, 12, 28, 16, 30, 0, 0, DateTimeKind.Unspecified), "Morning Routine", 4 },
+                    { 12, new DateTime(2022, 12, 29, 16, 30, 0, 0, DateTimeKind.Unspecified), "Morning Routine", 4 },
+                    { 13, new DateTime(2022, 12, 27, 19, 30, 0, 0, DateTimeKind.Unspecified), "Casual Games", 5 },
+                    { 14, new DateTime(2022, 12, 30, 16, 30, 0, 0, DateTimeKind.Unspecified), "Local Final", 5 }
                 });
 
             migrationBuilder.CreateIndex(

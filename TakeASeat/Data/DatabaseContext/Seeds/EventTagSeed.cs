@@ -11,27 +11,27 @@ namespace TakeASeat.Data.DatabaseContext.Seeds
                 new EventTag
                 {
                     Id= 1,
-                    TagName = "Animated Movie"
+                    TagName = "#AnimatedMovie"
                 },
                 new EventTag
                 {
                     Id = 2,
-                    TagName = "Family Friendly"
+                    TagName = "#FamilyFriendly"
                 }, 
                 new EventTag
                 {
                     Id = 3,
-                    TagName = "Competition"
+                    TagName = "#Competition"
                 },
                 new EventTag
                 {
                     Id = 4,
-                    TagName = "Sport"
+                    TagName = "#Sport"
                 },
                 new EventTag
                 {
                     Id = 5,
-                    TagName = "Comedy"
+                    TagName = "#Comedy"
                 }
                 );
         }
