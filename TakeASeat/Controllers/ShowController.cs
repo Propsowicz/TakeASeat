@@ -27,7 +27,7 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetClosestShowsHomePage()
+        public async Task<IActionResult> GetClosestShowsHomePage()                  // USED
         {
             var query = await _showRepository.GetClosestShows();
 
@@ -36,15 +36,15 @@ namespace TakeASeat.Controllers
             return StatusCode(200, response);
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}")]                                                       
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetSingleShow(int id)
+        public async Task<IActionResult> GetSingleShow(int id)                      // USED
         {
-            var show = await _unitOfWork.Show.Get(s => s.Id == id, includes: new List<string> { "Seats", "Event" });
+            var query = await _showRepository.GetShowDetails();
 
-            var response = _mapper.Map<GetShowDetailsDTO>(show);
+            var response = _mapper.Map<GetClosestShows>(query);
             return StatusCode(200, response);
         }
 

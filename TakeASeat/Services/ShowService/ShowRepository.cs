@@ -16,7 +16,7 @@ namespace TakeASeat.Services.ShowService
         public async Task<IPagedList<Show>> GetClosestShows()
         {           
             return await _context.Shows
-                //.AsNoTracking()
+                .AsNoTracking()
                 .Where(s => s.Date > DateTime.Now)
                 .Include(sh => sh.Event)
                     .ThenInclude(e => e.EventType)
@@ -27,6 +27,22 @@ namespace TakeASeat.Services.ShowService
                         .ThenInclude(t => t.EventTag)
                 .OrderBy(s => s.Date)
                 .ToPagedListAsync(1, 5); 
+        }
+
+        public async Task<Show> GetShowDetails()
+        {
+            return await _context.Shows
+                .AsNoTracking()
+                .Where(s => s.Date > DateTime.Now)
+                .Include(sh => sh.Event)
+                    .ThenInclude(e => e.EventType)
+                 .Include(sh => sh.Event)
+                    .ThenInclude(e => e.Creator)
+                .Include(sh => sh.Event)
+                    .ThenInclude(e => e.EventTags)
+                        .ThenInclude(t => t.EventTag)
+                .FirstOrDefaultAsync();
+                
         }
     }
 }

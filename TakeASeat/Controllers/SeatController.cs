@@ -6,6 +6,7 @@ using TakeASeat.Models;
 using TakeASeat.BackgroundServices;
 using Azure;
 using TakeASeat.Services.Generic;
+using TakeASeat.Services.SeatService;
 
 namespace TakeASeat.Controllers
 {
@@ -16,18 +17,30 @@ namespace TakeASeat.Controllers
 
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ISeatRepository _seatRepository;
 
-        public SeatController(IUnitOfWork unitOfWork, IMapper mapper)
+        public SeatController(IServiceProvider serviceProvider)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            _unitOfWork = serviceProvider.GetRequiredService<IUnitOfWork>();
+            _mapper = serviceProvider.GetRequiredService<IMapper>();
+            _seatRepository = serviceProvider.GetRequiredService<ISeatRepository>();
         }
-
-        [HttpPost("multiple-creation")]
+        [HttpGet("ShowId-{showId:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateSeats([FromBody] IEnumerable<CreateSeatDTO> seatsDTO)
+        public async Task<IActionResult> GetSeats(int showId)                               // USED
+        {
+            var seats = await _seatRepository.GetSeats(showId);
+            var response = _mapper.Map<IList<GetSeatDTO>>(seats);
+            return StatusCode(200, response);
+        }
+
+        [HttpPost("create-multiple")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateMultipleSeats([FromBody] IEnumerable<CreateSeatDTO> seatsDTO)    // USED
         {
             if (!ModelState.IsValid)
             {
@@ -35,9 +48,7 @@ namespace TakeASeat.Controllers
             }
 
             var seats = _mapper.Map<IEnumerable<Seat>>(seatsDTO);
-            await _unitOfWork.Seats.CreateRange(seats);
-            await _unitOfWork.Save();
-
+            await _seatRepository.CreateMultipleSeats(seats);
             return StatusCode(201);
         }
 
