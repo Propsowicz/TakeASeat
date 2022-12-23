@@ -9,7 +9,6 @@ import PanelMainInfo from './PanelMainInfo';
 
 const ClosestShow = (props) => {
     const [eventTags, setEventTags] = useState(props.tags)
-    console.log(eventTags)
   return (
     <div className='show-panel' >
         <Panel header={props.event} id={props.key}>

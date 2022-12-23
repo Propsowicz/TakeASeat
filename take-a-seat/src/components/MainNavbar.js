@@ -4,15 +4,20 @@ import 'primereact/resources/primereact.min.css';
 import 'primeflex/primeflex.css';
 import '../css/HomePage.css'
 import { Button } from 'primereact/button';
+import { Link, useNavigate } from 'react-router-dom';
 
 import React from 'react'
 
 export const MainNavbar = () => {
+    const navigate = useNavigate()
+    const goToHomePage = () => {
+        navigate(`/`)
+     }
   return (
     <div className="card site-header">
         <div className="flex flex-row flex-wrap card-container yellow-container">
             <div className="flex align-items-center justify-content-center">
-                <Button label="Home Page" className="p-button-text" />
+                <Button label="Home Page" className="p-button-text" onClick={goToHomePage}/>
             </div>
             <div className="flex align-items-center justify-content-center">
                 <Button label="All Events" className="p-button-text" />

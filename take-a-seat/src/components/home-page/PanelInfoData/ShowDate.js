@@ -1,14 +1,14 @@
+/* eslint-disable */
+
 import React from 'react';
+import { dateSerializer } from '../../../utils/dateSerializer';
 
 const ShowDate = (props) => {
-    function dateParser(dateString) {
-        const date = new Date(dateString);
-        return `${date.getDate()}-${date.getMonth()}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
-    }
+    
     return (
         <div className="grid">
             <div className="col-12"><p className="panel-text-descr">DATE</p></div>
-            <div className="col-12"><p className="panel-text">{dateParser(props.date)}</p></div>
+            <div className="col-12"><p className="panel-text">{dateSerializer(props.date)}</p></div>
         </div>
     );
 };

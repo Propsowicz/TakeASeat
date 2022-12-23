@@ -5,7 +5,7 @@ import 'primereact/resources/primereact.min.css';
 import 'primeflex/primeflex.css';
 
 import React from 'react';
-import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import { Routes, Route, BrowserRouter, HashRouter } from 'react-router-dom';
 import './App.css';
 import MainNavbar from './components/MainNavbar';
 import HomePage from './pages/HomePage';
@@ -16,14 +16,14 @@ import ShowDetails from './pages/ShowDetails';
 function App() {
     return (
         <div>
-            <BrowserRouter>
+            <HashRouter>
                 <MainNavbar />
                 <Routes>    
                     <Route path="/" element={<HomePage />}/>
                     <Route path="/:eventId/:showId/" element={<ShowDetails />}/>
                 </Routes>
                 <MainFooter />
-            </BrowserRouter>            
+            </HashRouter>            
         </div>
     );
 }

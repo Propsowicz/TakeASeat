@@ -1,0 +1,3 @@
+const url = 'https://localhost:7252'
+
+export {url}
