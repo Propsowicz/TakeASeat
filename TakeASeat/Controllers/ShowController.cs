@@ -42,7 +42,7 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetSingleShow(int id)                      // USED
         {
-            var query = await _showRepository.GetShowDetails();
+            var query = await _showRepository.GetShowDetails(id);
 
             var response = _mapper.Map<GetClosestShows>(query);
             return StatusCode(200, response);

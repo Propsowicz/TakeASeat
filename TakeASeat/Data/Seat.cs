@@ -8,6 +8,7 @@ namespace TakeASeat.Data
         public char Row { get; set; }
         public int Position { get; set; }
         public double Price { get; set; }
+        public string SeatColor { get; set; }
 
         public bool isReserved { get; set; } = false;
         public DateTime ReservedTime { get; set; }

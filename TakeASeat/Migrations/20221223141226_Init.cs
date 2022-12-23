@@ -192,7 +192,7 @@ namespace TakeASeat.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Duration = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImageUri = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Place = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EventTypeId = table.Column<int>(type: "int", nullable: false),
                     CreatorId = table.Column<string>(type: "nvarchar(450)", nullable: true)
@@ -247,6 +247,7 @@ namespace TakeASeat.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsReadyToSell = table.Column<bool>(type: "bit", nullable: false),
                     EventId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -269,6 +270,7 @@ namespace TakeASeat.Migrations
                     Row = table.Column<string>(type: "nvarchar(1)", nullable: false),
                     Position = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
+                    SeatColor = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     isReserved = table.Column<bool>(type: "bit", nullable: false),
                     ReservedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     isSold = table.Column<bool>(type: "bit", nullable: false),
@@ -322,8 +324,8 @@ namespace TakeASeat.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "8e445865-a24d-4543-a6c6-9443d048cdb0", 0, "4d1f062e-135b-445c-bd33-0bdff5d10ffd", "User", null, false, "Logan", "Capuchino", false, null, null, null, "AQAAAAEAACcQAAAAEG/Bvl7/diTTMh9pAWhSGAEnwwjjFSWDWdLeW4SDD0YeAH1rboZmUhahTSN8mdA0fQ==", null, false, "303c25ee-da25-46e0-9608-41d89013efa8", false, "LOG" },
-                    { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "f4ca8522-94ac-4ad1-be6e-191e0f4cb9b8", "User", null, false, "George", "Flinston", false, null, null, null, "AQAAAAEAACcQAAAAEO31AmDZA/VfSslasQ37f5lEJ0VF9UOHBfFanYtVM1sPJwRd3C+ixfZ/DUsx1iRGVw==", null, false, "b503871d-3ca2-41e3-84e1-c9631a2e5190", false, "Flinston" }
+                    { "8e445865-a24d-4543-a6c6-9443d048cdb0", 0, "ffc06f09-38ed-403d-b3a3-42ed80dca97a", "User", null, false, "Logan", "Capuchino", false, null, null, null, "AQAAAAEAACcQAAAAEDRLMAcMnJS0PZf5BqmX+TwpEqcPjx7fHHAefCiV2UJWfYnJDwvVCXmN6LVi4f9NlQ==", null, false, "0cebf720-cc90-46ad-8d44-b38b278ef0dc", false, "LOG" },
+                    { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "5aa81763-ffda-423a-8b7a-b90b3fadf628", "User", null, false, "George", "Flinston", false, null, null, null, "AQAAAAEAACcQAAAAEHeUx+LNOkPlx0oW/vZpE+mdsYaDcVmNyOlMhM297j9HhpICa5am3tjNE7ZNOKniNQ==", null, false, "063e4572-1d0d-4e76-ba7e-a9fe2196c7a9", false, "Flinston" }
                 });
 
             migrationBuilder.InsertData(
@@ -350,7 +352,7 @@ namespace TakeASeat.Migrations
 
             migrationBuilder.InsertData(
                 table: "Events",
-                columns: new[] { "Id", "CreatorId", "Description", "Duration", "EventTypeId", "ImageUri", "Name", "Place" },
+                columns: new[] { "Id", "CreatorId", "Description", "Duration", "EventTypeId", "ImageUrl", "Name", "Place" },
                 values: new object[,]
                 {
                     { 1, "8e445865-a24d-4543-a6c6-9443d048cdb9", "Pink Panther does his things.", 90, 1, "none", "Pink Panther The Movie", "Moskwa Cinema" },
@@ -379,23 +381,23 @@ namespace TakeASeat.Migrations
 
             migrationBuilder.InsertData(
                 table: "Shows",
-                columns: new[] { "Id", "Date", "Description", "EventId" },
+                columns: new[] { "Id", "Date", "Description", "EventId", "IsReadyToSell" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2022, 12, 21, 21, 0, 0, 0, DateTimeKind.Unspecified), "Night Showing", 1 },
-                    { 2, new DateTime(2022, 12, 30, 9, 0, 0, 0, DateTimeKind.Unspecified), "Morning Showing", 1 },
-                    { 3, new DateTime(2023, 1, 2, 9, 0, 0, 0, DateTimeKind.Unspecified), "Morning Showing", 1 },
-                    { 4, new DateTime(2022, 12, 21, 19, 0, 0, 0, DateTimeKind.Unspecified), "Gonzo vs Bonzo", 2 },
-                    { 5, new DateTime(2022, 12, 23, 19, 0, 0, 0, DateTimeKind.Unspecified), "GGG vs Canelo", 2 },
-                    { 6, new DateTime(2022, 12, 28, 19, 0, 0, 0, DateTimeKind.Unspecified), "GGG vs Canelo II", 2 },
-                    { 7, new DateTime(2022, 12, 27, 16, 30, 0, 0, DateTimeKind.Unspecified), "Semifinal match I", 3 },
-                    { 8, new DateTime(2022, 12, 28, 16, 30, 0, 0, DateTimeKind.Unspecified), "Semifinal match I", 3 },
-                    { 9, new DateTime(2023, 1, 5, 16, 30, 0, 0, DateTimeKind.Unspecified), "Final match", 3 },
-                    { 10, new DateTime(2022, 12, 27, 16, 30, 0, 0, DateTimeKind.Unspecified), "Morning Routine", 4 },
-                    { 11, new DateTime(2022, 12, 28, 16, 30, 0, 0, DateTimeKind.Unspecified), "Morning Routine", 4 },
-                    { 12, new DateTime(2022, 12, 29, 16, 30, 0, 0, DateTimeKind.Unspecified), "Morning Routine", 4 },
-                    { 13, new DateTime(2022, 12, 27, 19, 30, 0, 0, DateTimeKind.Unspecified), "Casual Games", 5 },
-                    { 14, new DateTime(2022, 12, 30, 16, 30, 0, 0, DateTimeKind.Unspecified), "Local Final", 5 }
+                    { 1, new DateTime(2022, 12, 21, 21, 0, 0, 0, DateTimeKind.Unspecified), "Night Showing", 1, false },
+                    { 2, new DateTime(2022, 12, 30, 9, 0, 0, 0, DateTimeKind.Unspecified), "Morning Showing", 1, false },
+                    { 3, new DateTime(2023, 1, 2, 9, 0, 0, 0, DateTimeKind.Unspecified), "Morning Showing", 1, false },
+                    { 4, new DateTime(2022, 12, 21, 19, 0, 0, 0, DateTimeKind.Unspecified), "Gonzo vs Bonzo", 2, false },
+                    { 5, new DateTime(2022, 12, 23, 19, 0, 0, 0, DateTimeKind.Unspecified), "GGG vs Canelo", 2, false },
+                    { 6, new DateTime(2022, 12, 28, 19, 0, 0, 0, DateTimeKind.Unspecified), "GGG vs Canelo II", 2, false },
+                    { 7, new DateTime(2022, 12, 27, 16, 30, 0, 0, DateTimeKind.Unspecified), "Semifinal match I", 3, false },
+                    { 8, new DateTime(2022, 12, 28, 16, 30, 0, 0, DateTimeKind.Unspecified), "Semifinal match I", 3, false },
+                    { 9, new DateTime(2023, 1, 5, 16, 30, 0, 0, DateTimeKind.Unspecified), "Final match", 3, false },
+                    { 10, new DateTime(2022, 12, 27, 16, 30, 0, 0, DateTimeKind.Unspecified), "Morning Routine", 4, false },
+                    { 11, new DateTime(2022, 12, 28, 16, 30, 0, 0, DateTimeKind.Unspecified), "Morning Routine", 4, false },
+                    { 12, new DateTime(2022, 12, 29, 16, 30, 0, 0, DateTimeKind.Unspecified), "Morning Routine", 4, false },
+                    { 13, new DateTime(2022, 12, 27, 19, 30, 0, 0, DateTimeKind.Unspecified), "Casual Games", 5, false },
+                    { 14, new DateTime(2022, 12, 30, 16, 30, 0, 0, DateTimeKind.Unspecified), "Local Final", 5, false }
                 });
 
             migrationBuilder.CreateIndex(

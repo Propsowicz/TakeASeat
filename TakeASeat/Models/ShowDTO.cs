@@ -9,7 +9,8 @@
 
     public class GetShowDTO : CreateShowDTO
     {
-        public int Id { get; set; }       
+        public int Id { get; set; }   
+        public bool IsReadyToSell { get; set; }
     }
 
     public class GetShowDetailsDTO : CreateShowDTO 

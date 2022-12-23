@@ -12,7 +12,7 @@ using TakeASeat.Data.DatabaseContext;
 namespace TakeASeat.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20221221183837_Init")]
+    [Migration("20221223141226_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -249,7 +249,7 @@ namespace TakeASeat.Migrations
                     b.Property<int>("EventTypeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ImageUri")
+                    b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -277,7 +277,7 @@ namespace TakeASeat.Migrations
                             Description = "Pink Panther does his things.",
                             Duration = 90,
                             EventTypeId = 1,
-                            ImageUri = "none",
+                            ImageUrl = "none",
                             Name = "Pink Panther The Movie",
                             Place = "Moskwa Cinema"
                         },
@@ -288,7 +288,7 @@ namespace TakeASeat.Migrations
                             Description = "Tennis Amatour League",
                             Duration = 120,
                             EventTypeId = 2,
-                            ImageUri = "none",
+                            ImageUrl = "none",
                             Name = "Tennis Local League",
                             Place = "Tennis Wschodnia"
                         },
@@ -299,7 +299,7 @@ namespace TakeASeat.Migrations
                             Description = "Weekly e-sport tournament.",
                             Duration = 180,
                             EventTypeId = 3,
-                            ImageUri = "none",
+                            ImageUrl = "none",
                             Name = "Cossacks 3 Championships",
                             Place = "Moskwa Cinema"
                         },
@@ -310,7 +310,7 @@ namespace TakeASeat.Migrations
                             Description = "Daily fitness showcase.",
                             Duration = 60,
                             EventTypeId = 2,
-                            ImageUri = "none",
+                            ImageUrl = "none",
                             Name = "Fitness for everyone",
                             Place = "Town Hall"
                         },
@@ -321,7 +321,7 @@ namespace TakeASeat.Migrations
                             Description = "Winter FIFA tournament",
                             Duration = 90,
                             EventTypeId = 3,
-                            ImageUri = "none",
+                            ImageUrl = "none",
                             Name = "FIFA playroom",
                             Place = "Quest pub"
                         });
@@ -511,6 +511,10 @@ namespace TakeASeat.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(1)");
 
+                    b.Property<string>("SeatColor")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("ShowId")
                         .HasColumnType("int");
 
@@ -548,6 +552,9 @@ namespace TakeASeat.Migrations
                     b.Property<int>("EventId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsReadyToSell")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EventId");
@@ -560,98 +567,112 @@ namespace TakeASeat.Migrations
                             Id = 1,
                             Date = new DateTime(2022, 12, 21, 21, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Night Showing",
-                            EventId = 1
+                            EventId = 1,
+                            IsReadyToSell = false
                         },
                         new
                         {
                             Id = 2,
                             Date = new DateTime(2022, 12, 30, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Morning Showing",
-                            EventId = 1
+                            EventId = 1,
+                            IsReadyToSell = false
                         },
                         new
                         {
                             Id = 3,
                             Date = new DateTime(2023, 1, 2, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Morning Showing",
-                            EventId = 1
+                            EventId = 1,
+                            IsReadyToSell = false
                         },
                         new
                         {
                             Id = 4,
                             Date = new DateTime(2022, 12, 21, 19, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Gonzo vs Bonzo",
-                            EventId = 2
+                            EventId = 2,
+                            IsReadyToSell = false
                         },
                         new
                         {
                             Id = 5,
                             Date = new DateTime(2022, 12, 23, 19, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "GGG vs Canelo",
-                            EventId = 2
+                            EventId = 2,
+                            IsReadyToSell = false
                         },
                         new
                         {
                             Id = 6,
                             Date = new DateTime(2022, 12, 28, 19, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "GGG vs Canelo II",
-                            EventId = 2
+                            EventId = 2,
+                            IsReadyToSell = false
                         },
                         new
                         {
                             Id = 7,
                             Date = new DateTime(2022, 12, 27, 16, 30, 0, 0, DateTimeKind.Unspecified),
                             Description = "Semifinal match I",
-                            EventId = 3
+                            EventId = 3,
+                            IsReadyToSell = false
                         },
                         new
                         {
                             Id = 8,
                             Date = new DateTime(2022, 12, 28, 16, 30, 0, 0, DateTimeKind.Unspecified),
                             Description = "Semifinal match I",
-                            EventId = 3
+                            EventId = 3,
+                            IsReadyToSell = false
                         },
                         new
                         {
                             Id = 9,
                             Date = new DateTime(2023, 1, 5, 16, 30, 0, 0, DateTimeKind.Unspecified),
                             Description = "Final match",
-                            EventId = 3
+                            EventId = 3,
+                            IsReadyToSell = false
                         },
                         new
                         {
                             Id = 10,
                             Date = new DateTime(2022, 12, 27, 16, 30, 0, 0, DateTimeKind.Unspecified),
                             Description = "Morning Routine",
-                            EventId = 4
+                            EventId = 4,
+                            IsReadyToSell = false
                         },
                         new
                         {
                             Id = 11,
                             Date = new DateTime(2022, 12, 28, 16, 30, 0, 0, DateTimeKind.Unspecified),
                             Description = "Morning Routine",
-                            EventId = 4
+                            EventId = 4,
+                            IsReadyToSell = false
                         },
                         new
                         {
                             Id = 12,
                             Date = new DateTime(2022, 12, 29, 16, 30, 0, 0, DateTimeKind.Unspecified),
                             Description = "Morning Routine",
-                            EventId = 4
+                            EventId = 4,
+                            IsReadyToSell = false
                         },
                         new
                         {
                             Id = 13,
                             Date = new DateTime(2022, 12, 27, 19, 30, 0, 0, DateTimeKind.Unspecified),
                             Description = "Casual Games",
-                            EventId = 5
+                            EventId = 5,
+                            IsReadyToSell = false
                         },
                         new
                         {
                             Id = 14,
                             Date = new DateTime(2022, 12, 30, 16, 30, 0, 0, DateTimeKind.Unspecified),
                             Description = "Local Final",
-                            EventId = 5
+                            EventId = 5,
+                            IsReadyToSell = false
                         });
                 });
 
@@ -703,12 +724,12 @@ namespace TakeASeat.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f4ca8522-94ac-4ad1-be6e-191e0f4cb9b8",
+                            ConcurrencyStamp = "5aa81763-ffda-423a-8b7a-b90b3fadf628",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEO31AmDZA/VfSslasQ37f5lEJ0VF9UOHBfFanYtVM1sPJwRd3C+ixfZ/DUsx1iRGVw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHeUx+LNOkPlx0oW/vZpE+mdsYaDcVmNyOlMhM297j9HhpICa5am3tjNE7ZNOKniNQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b503871d-3ca2-41e3-84e1-c9631a2e5190",
+                            SecurityStamp = "063e4572-1d0d-4e76-ba7e-a9fe2196c7a9",
                             TwoFactorEnabled = false,
                             UserName = "Flinston",
                             FirstName = "George",
@@ -718,12 +739,12 @@ namespace TakeASeat.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4d1f062e-135b-445c-bd33-0bdff5d10ffd",
+                            ConcurrencyStamp = "ffc06f09-38ed-403d-b3a3-42ed80dca97a",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEG/Bvl7/diTTMh9pAWhSGAEnwwjjFSWDWdLeW4SDD0YeAH1rboZmUhahTSN8mdA0fQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDRLMAcMnJS0PZf5BqmX+TwpEqcPjx7fHHAefCiV2UJWfYnJDwvVCXmN6LVi4f9NlQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "303c25ee-da25-46e0-9608-41d89013efa8",
+                            SecurityStamp = "0cebf720-cc90-46ad-8d44-b38b278ef0dc",
                             TwoFactorEnabled = false,
                             UserName = "LOG",
                             FirstName = "Logan",

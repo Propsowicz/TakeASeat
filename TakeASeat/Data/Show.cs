@@ -7,6 +7,7 @@ namespace TakeASeat.Data
         public int Id { get; set; }
         public DateTime Date { get; set; }
         public string Description { get; set; }
+        public bool IsReadyToSell { get; set; } = false;
 
         // O2M to Event
         [ForeignKey(nameof(Event))]

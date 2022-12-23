@@ -8,7 +8,7 @@ namespace TakeASeat.Data
         public string Name { get; set; }
         public int Duration { get; set; }   
         public string Description { get; set; }
-        public string ImageUri { get; set; }
+        public string ImageUrl { get; set; }
         public string Place { get; set; }
 
 

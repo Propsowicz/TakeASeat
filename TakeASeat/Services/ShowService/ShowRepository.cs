@@ -29,11 +29,11 @@ namespace TakeASeat.Services.ShowService
                 .ToPagedListAsync(1, 5); 
         }
 
-        public async Task<Show> GetShowDetails()
+        public async Task<Show> GetShowDetails(int id)
         {
             return await _context.Shows
                 .AsNoTracking()
-                .Where(s => s.Date > DateTime.Now)
+                .Where(s => s.Id == id)
                 .Include(sh => sh.Event)
                     .ThenInclude(e => e.EventType)
                  .Include(sh => sh.Event)

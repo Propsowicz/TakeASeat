@@ -7,7 +7,7 @@ namespace TakeASeat.Services.ShowService
     public interface IShowRepository
     {
         Task<IPagedList<Show>> GetClosestShows();
-        Task<Show> GetShowDetails();
+        Task<Show> GetShowDetails(int id);
 
     }
 }

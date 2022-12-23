@@ -16,12 +16,12 @@ namespace TakeASeat.Models
         [Required]
         [Range(0, 2000, ErrorMessage = "Single ticket should cost between 0$ and 2000$.")]
         public double Price { get; set; }
-        
+        public string SeatColor { get; set; }
+
     }
     public class GetSeatDTO : CreateSeatDTO
     {
         public int Id { get; set; }
-
         public bool isReserved { get; set; } = false;
         public DateTime ReservedTime { get; set; }
         public bool isSold { get; set; } = false;
