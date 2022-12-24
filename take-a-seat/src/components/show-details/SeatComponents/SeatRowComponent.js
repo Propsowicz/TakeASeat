@@ -4,9 +4,7 @@ import React, {useState} from 'react'
 import SeatComponent from './SeatComponent'
 
 export const SeatRowComponent = (props) => {
-    console.log('')
     const [rowData, setRowData]= useState(props.row)
-    console.log(rowData)
 
   return (    
     <div className="card">

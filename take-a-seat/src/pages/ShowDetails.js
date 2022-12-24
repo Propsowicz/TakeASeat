@@ -5,41 +5,58 @@ import ShowDescription from '../components/show-details/ShowDescription';
 import {url} from '../const/constValues'
 import { Panel } from 'primereact/panel';
 import { Fieldset } from 'primereact/fieldset';
+import { ProgressSpinner } from 'primereact/progressspinner';
+import DisplaySeats from '../components/show-details/DisplaySeats';
 
 
 const ShowDetails = () => {    
     const showId = window.location.href.split('/')[5]
     
-    const [seats, setSeats] = useState([])
-
+    const [showDetails, setShowDetails] = useState([])
     
-    const getSeats = async () => {
-      let response = await fetch (`${url}/api/Seat/ShowId-${showId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
+    const getShow = async () => {
+      let response = await fetch (`${url}/api/Show/${showId}`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json'
+          }
       })
       if (response.status == 200){
-        let data = await response.json()
-        setSeats(data)
+          let data = await response.json()
+          setShowDetails(data)
       }else{
-        console.log(response.status) 
-        console.log(response.statusText) 
-      }
-    }
+          console.log(response.status) 
+          console.log(response.statusText) 
+      }               
+  }
 
     useEffect (() => {
-        getSeats()
+        getShow()
     }, [])
 
     return (
-      <div className='site-main-body'>        
-        <ShowDescription showId={showId}/>   
+      <div className='site-main-body'>      
+        {
+          showDetails.event
+          ?
+            <ShowDescription description={showDetails.description} date={showDetails.date} place={showDetails.event.place} 
+            type={showDetails.event.eventType.name} creator={`${showDetails.event.creator.firstName} ${showDetails.event.creator.lastName}`}
+            eventDescription={showDetails.event.description} tags={showDetails.event.eventTags} name={showDetails.name} 
+            imageUrl={showDetails.event.imageUrl} eventName={showDetails.event.name}            
+            />
+          :
+            <ProgressSpinner />
+        }
+           
         <Fieldset className='scene-comp'>
           <p className='scene-comp-descr'>EVENT SCENE</p>
         </Fieldset> 
-        <CreateSeats showId={showId}/>
+        {showDetails.isReadyToSell
+          ?
+          <DisplaySeats showId={showId}/>
+          :
+          <CreateSeats showId={showId}/>
+        }        
       </div>
       );
 };

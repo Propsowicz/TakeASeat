@@ -1,15 +1,18 @@
 /* eslint-disable */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import { InputNumber } from 'primereact/inputnumber';
-import SeatComponent from './SeatComponent';
-import { SeatRowComponent } from './SeatRowComponent';
+import { SeatRowComponent } from './SeatComponents/SeatRowComponent';
+import { Toast } from 'primereact/toast';
+import {url} from '../../const/constValues'
+import { json } from 'react-router-dom';
 
 
 const CreateSeats = (props) => {
+    const toast = useRef(null)
     const seatsColorDropdown = [
         {label: "Red", value: 'red'},
         {label: "Blue", value: 'blue'},
@@ -50,8 +53,57 @@ const CreateSeats = (props) => {
         tempListOfRows.splice(0, 1)
         setListOfRows(tempListOfRows)        
         setRowsCounter(rowsCounter + 1)
+    }    
+
+    const CreateSeats = async () => {
+        const tempSeatTable = []
+        newSeats.forEach(row => {
+            row.forEach(seat => {
+                tempSeatTable.push(seat)
+            });
+        });
+        const response = await fetch(`${url}/api/Seat/create-multiple`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(tempSeatTable)
+        })     
+        if(response.status != 201) {
+            console.log("error")
+            // console.log(response.status)
+            // console.log(response)
+        }  
     }
 
+    const showConfirmToast = () => {
+        toast.current.show({ severity: 'warn', sticky: true, content: (
+            <div className="flex flex-column" style={{flex: '1'}}>
+                <div className="text-center">
+                    <i className="pi pi-exclamation-triangle" style={{fontSize: '3rem'}}></i>
+                    <h4>Are you sure?</h4>
+                    <p>Confirm to proceed</p>
+                </div>
+                <div className="grid p-fluid">
+                    <div className="col-6">
+                        <Button type="button" label="Yes" className="p-button-success" onClick={YesConfirmToast}/>
+                    </div>
+                    <div className="col-6">
+                        <Button type="button" label="No" className="p-button-secondary" onClick={NoConfirmToast}/>
+                    </div>
+                </div>
+            </div>
+        ) });
+    }    
+
+    const NoConfirmToast = () => {
+        toast.current.clear();
+    }
+
+    const YesConfirmToast = () => {
+        NoConfirmToast()
+        CreateSeats()        
+    }
 
     useEffect(() => {
         console.log(newSeats)
@@ -59,6 +111,8 @@ const CreateSeats = (props) => {
 
     return (
         <div>
+            <Toast ref={toast} position="top-center"/>
+
             <div className="card">
                 <div className="card-container overflow-hidden">
                     <div>
@@ -73,7 +127,11 @@ const CreateSeats = (props) => {
                                 <div className="flex align-items-center justify-content-center"><Dropdown name='rowColor' value={seatColorTemp} options={seatsColorDropdown} onChange={(e) => setSeatsColorTemp(e.value)} placeholder="Select seats color" required/></div>
                                 <div className="flex align-items-center justify-content-center"><Button label="Add new row" /></div>
                             </form>    
-                        </div>                    
+                        </div>    
+                        <div className="flex flex-row-reverse">
+                            <Button label="Create audience" onClick={showConfirmToast}/>   
+                        </div> 
+                                    
                 </div>
             </div>
         </div>
