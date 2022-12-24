@@ -44,5 +44,12 @@ namespace TakeASeat.Services.ShowService
                 .FirstOrDefaultAsync();
                 
         }
+
+        public async Task SetShowReadyToSell(int id)
+        {
+            var show = await _context.Shows.Where(s => s.Id == id).FirstOrDefaultAsync();
+            show.IsReadyToSell = true;
+            await _context.SaveChangesAsync();
+        }
     }
 }

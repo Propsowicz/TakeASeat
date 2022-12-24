@@ -7,6 +7,7 @@ using TakeASeat.BackgroundServices;
 using Azure;
 using TakeASeat.Services.Generic;
 using TakeASeat.Services.SeatService;
+using TakeASeat.Services.ShowService;
 
 namespace TakeASeat.Controllers
 {
@@ -18,12 +19,14 @@ namespace TakeASeat.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ISeatRepository _seatRepository;
+        private readonly IShowRepository _showRepository;
 
         public SeatController(IServiceProvider serviceProvider)
         {
             _unitOfWork = serviceProvider.GetRequiredService<IUnitOfWork>();
             _mapper = serviceProvider.GetRequiredService<IMapper>();
             _seatRepository = serviceProvider.GetRequiredService<ISeatRepository>();
+            _showRepository = serviceProvider.GetRequiredService<IShowRepository>();
         }
         [HttpGet("ShowId-{showId:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -32,8 +35,8 @@ namespace TakeASeat.Controllers
         public async Task<IActionResult> GetSeats(int showId)                               // USED
         {
             var seats = await _seatRepository.GetSeats(showId);
-            var response = _mapper.Map<IList<GetSeatDTO>>(seats);
-            return StatusCode(200, response);
+            //var response = _mapper.Map<IList<GetSeatDTO>>(seats);
+            return StatusCode(200, seats);
         }
 
         [HttpPost("create-multiple")]
@@ -46,6 +49,8 @@ namespace TakeASeat.Controllers
             {
                 return BadRequest();
             }
+            var showId = seatsDTO.FirstOrDefault().ShowId;
+            await _showRepository.SetShowReadyToSell(showId);
 
             var seats = _mapper.Map<IEnumerable<Seat>>(seatsDTO);
             await _seatRepository.CreateMultipleSeats(seats);

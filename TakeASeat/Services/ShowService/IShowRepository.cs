@@ -9,5 +9,7 @@ namespace TakeASeat.Services.ShowService
         Task<IPagedList<Show>> GetClosestShows();
         Task<Show> GetShowDetails(int id);
 
+        Task SetShowReadyToSell(int id);
+
     }
 }

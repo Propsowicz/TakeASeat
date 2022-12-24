@@ -21,11 +21,16 @@ namespace TakeASeat.Services.SeatService
             
         }       
 
-        public async Task<IList<Seat>> GetSeats(int showId)
+        public async Task<IList<Seat[]>> GetSeats(int showId)
         {
+            //return await _context.Seats
+            //    .Where(s => s.ShowId == showId)
+            //    .ToListAsync();
             return await _context.Seats
-                .Where(s => s.ShowId == showId)
-                .ToListAsync();
+                    .Where(s => s.ShowId == showId)
+                    .GroupBy(s => s.Row)
+                    .Select(grp => grp.ToArray())
+                    .ToListAsync();
         }
                 
     }
