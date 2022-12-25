@@ -6,33 +6,43 @@ import {url} from '../../const/constValues'
 import ReserveSeatComponent from './ReserveSeats/ReserveSeatComponent';
 import { Tooltip } from 'primereact/tooltip';
 import { Button } from 'primereact/button';
+import ReservedSeats from './ReserveSeats/ReservedSeats';
 
 const DisplaySeats = (props) => {
     const [seats, setSeats] = useState([]);
     const [reservedSeatsList, setReservedSeatsList] = useState([])
 
-    // TOOLTIP NEEDS TO BE REPAIRED
+    const reserveSeats = async (e) => { 
+        
+        if (e.target.className.substr(e.target.className.length-23) === 'seat-component-reserved') {
+            e.target.classList.remove('seat-component-reserved')
+            let tempTable = reservedSeatsList        
+            for(let i = 0;i < tempTable.length;i++){
+                if(tempTable[i].row === e.target.innerText[0] && tempTable[i].position === e.target.innerText.slice(1)){
+                    tempTable.splice(i, 1)                    
+                }
+            }
+            setReservedSeatsList(reservedSeatsList => [...tempTable])
 
-    const reserveSeats = async (e) => {    
-        let price = 0
-        if(e.target.offsetParent.className === 'p-button p-component seat-component'){
-            e.target.offsetParent.style.background = "black"
-            price = e.target.offsetParent.name
-        }else if (e.target.offsetParent.className === ''){
-            e.target.style.background = "black"
-            price = e.target.name
-        }            
-        e.target.style.color = "white"
+        }else{
+            e.target.classList.add('seat-component-reserved')
 
+            let reservedTempSeatData = {
+                "showId": parseInt(props.showId),
+                "row": e.target.innerText[0],
+                "position": e.target.innerText.slice(1),
+                "price": e.target.name    
+            }         
+            setReservedSeatsList(reservedSeatsList => [...reservedSeatsList, reservedTempSeatData])
+        }  
+    }
 
-        let reservedTempSeatData = {
-            "showId": parseInt(props.showId),
-            "row": e.target.innerText[0],
-            "position": e.target.innerText.slice(1),
-            "price": price,            
-        }         
-
-        setReservedSeatsList(reservedSeatsList => [...reservedSeatsList, reservedTempSeatData])
+    const getPrice = () => {
+        let totalPrice = 0
+        reservedSeatsList.forEach(seat => {
+            totalPrice += parseInt(seat.price)
+        });
+        return totalPrice
     }
 
     const getSeats = async () => {
@@ -45,50 +55,68 @@ const DisplaySeats = (props) => {
         if (response.status == 200) {
             const data = await response.json();
             setSeats(data);
-            console.log(data)
         } else {
             console.log(response.status);
             console.log(response.statusText);
         }
     };
 
+    const postOrder = async () => {
+        let orderCost = getPrice()
+
+
+
+        
+        console.log(orderCost)
+    }
+
+
     useEffect(() => {
         getSeats()
+        getPrice()
     }, [])
 
     return (
         <div>
-            {reservedSeatsList.map((map) => (<p>{map.row + map.position + map.price}</p>))}
+            
+            
             {seats.map((row) => (
                 <div className="card">
                     <div className="card-container overflow-hidden">
                         <div className="flex gap-2 seat-rows">                           
                             {row.map((seat) => (
-                                <div onClick={reserveSeats} >
-                                    <Button type="button" label={seat.row + seat.position} className='seat-component' 
-                                    style={{'background': `${seat.seatColor}`}} name={seat.price}
-                                    tooltip={`${seat.price}$`}>
-                                        {/* <Tooltip target=".seat-component" autoHide={false}>
-                                            <div className='seat-tooltip'>
-                                                <p>Price: {seat.price}$</p>              
+                                <div>
+                                    <button type="button" className={`seat-component text-500 bg-${seat.seatColor}`}
+                                    name={seat.price} onClick={reserveSeats}> 
+                                        {seat.row + seat.position}
+                                    </button>   
+                                    {/* <Tooltip target=".seat-component" autoHide={true}>
+                                        <div className='seat-tooltip'>
+                                            <p>Price: {seat.price}$</p>              
+                               
                                             </div>
-                                        </Tooltip> */}
-                                    </Button>                                    
+                                    </Tooltip> */}                                    
                                 </div>                
                             ))}
                         </div>                                     
                     </div>
                 </div>
             ))}
+            <div className="flex gap-2 seat-rows">
+                <span>Reserved seats:</span>
+                {/* {reservedSeatsList.map((seat) => (
+                    //<ReservedSeats row={seat.row} position={seat.position}/>
+                    // <button type="button" className={'seat-component text-500'} key={seat.inx}>
+                    //     {seat.row + seat.position}
+                    // </button>
+                ))} */}
+                <ReservedSeats list={reservedSeatsList}/>
+                <span>{getPrice()}$</span>
+                <Button label="Make an order" onClick={postOrder}/>
+            </div>
 
         </div>
-        // <div>
-        //     <p>seats:</p>
-        //     {seats.map((row) => (
-        //         <ReserveSeatComponent row={row} showId={props.showId}/>
-        //     ))}
-
-        // </div>
+        
     );
 };
 

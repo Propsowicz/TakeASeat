@@ -38,10 +38,41 @@
   max-width: 50rem;
 }
 
+.bg-yellow {
+  background: yellow;
+}
+
+.bg-red {
+  background: red;
+}
+
+.bg-green {
+  background: green;
+}
+
+.bg-blue {
+  background: blue;
+}
+
+.bg-orange {
+  background: orange;
+}
+
 .seat-component {
   height: 2.5rem;
   width: 2.5rem;
   padding: 0;
+  border-radius: 2px;
+  color:black
+}
+
+.seat-component:hover {
+  cursor: pointer;
+}
+
+.seat-component-reserved {
+  color: red;
+  background: rgb(64, 64, 64);
 }
 
 .seat-tooltip {
