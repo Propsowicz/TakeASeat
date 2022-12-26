@@ -10,7 +10,12 @@
   margin: 3rem auto 0 auto;    
   width: 70%;
   min-height: 50rem;
-  /* border: 1px solid red; */
+}
+
+.site-main-body-login {    
+  margin: 3rem auto 0 auto;    
+  width: 70%;
+  min-height: 30rem;
 }
 
 .show-panel {
@@ -131,4 +136,19 @@
   width: 100%;
   height: 4rem;
   
+}
+
+.login-container {
+  margin: 0 auto 0 auto;
+  width: 35%;
+}
+
+.login-component {
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+}
+
+.l-log-comp {
+  padding: 0rem;
 }

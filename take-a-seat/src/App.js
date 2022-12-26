@@ -11,18 +11,24 @@ import MainNavbar from './components/MainNavbar';
 import HomePage from './pages/HomePage';
 import MainFooter from './components/MainFooter';
 import ShowDetails from './pages/ShowDetails';
+import Login from './pages/UserService/Login';
+import { UserContextProvider } from './context/UserContext';
 
 
 function App() {
     return (
         <div>
             <HashRouter>
-                <MainNavbar />
-                <Routes>    
-                    <Route path="/" element={<HomePage />}/>
-                    <Route path="/:eventId/:showId/" element={<ShowDetails />}/>
-                </Routes>
-                <MainFooter />
+                <UserContextProvider>
+                    <MainNavbar />
+                    <Routes>    
+                        <Route path="/" element={<HomePage />}/>
+                        <Route path="/:eventId/:showId/" element={<ShowDetails />}/>
+
+                        <Route path="/login/" element={<Login />}/>
+                    </Routes>
+                    <MainFooter />
+                </UserContextProvider>
             </HashRouter>            
         </div>
     );

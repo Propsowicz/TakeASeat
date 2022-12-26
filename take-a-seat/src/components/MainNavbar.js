@@ -13,6 +13,10 @@ export const MainNavbar = () => {
     const goToHomePage = () => {
         navigate(`/`)
      }
+
+    const goToLogin = () => {
+        navigate('/login/')
+    }
   return (
     <div className="card site-header">
         <div className="flex flex-row flex-wrap card-container yellow-container">
@@ -23,7 +27,7 @@ export const MainNavbar = () => {
                 <Button label="All Events" className="p-button-text" />
             </div>
             <div className="flex align-items-center justify-content-center">
-                <Button label="Account" className="p-button-text" />
+                <Button label="Login" className="p-button-text" onClick={goToLogin}/>
             </div>
         </div>
     </div>
