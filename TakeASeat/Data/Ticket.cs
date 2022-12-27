@@ -7,18 +7,9 @@ namespace TakeASeat.Data
         public int Id { get; set; }
 
         [ForeignKey(nameof(Event))]
-        public int? EventId { get; set; }
-        public Event? Event { get; set; }
+        public int SeatReservationId { get; set; }
+        public SeatReservation SeatReservation { get; set; }
 
-        [ForeignKey(nameof(Seat))]        
-        public int? SeatId { get; set; }
-        public Seat? Seat { get; set; }
-
-        [ForeignKey(nameof(Buyer))]
-        public string BuyerId { get; set; }
-        public User Buyer { get; set; }
+        
     }
-
-
-
 }

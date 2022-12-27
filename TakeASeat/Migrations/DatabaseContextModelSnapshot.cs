@@ -244,6 +244,10 @@ namespace TakeASeat.Migrations
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
+                    b.Property<string>("EventSlug")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("EventTypeId")
                         .HasColumnType("int");
 
@@ -274,8 +278,9 @@ namespace TakeASeat.Migrations
                             CreatorId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             Description = "Pink Panther does his things.",
                             Duration = 90,
+                            EventSlug = "pink-panther-the-movie",
                             EventTypeId = 1,
-                            ImageUrl = "none",
+                            ImageUrl = "https://cdn.pixabay.com/photo/2016/09/08/10/21/kermit-1653777_960_720.jpg",
                             Name = "Pink Panther The Movie",
                             Place = "Moskwa Cinema"
                         },
@@ -285,8 +290,9 @@ namespace TakeASeat.Migrations
                             CreatorId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             Description = "Tennis Amatour League",
                             Duration = 120,
+                            EventSlug = "tennis-local-league",
                             EventTypeId = 2,
-                            ImageUrl = "none",
+                            ImageUrl = "https://cdn.pixabay.com/photo/2016/09/15/15/27/tennis-court-1671852__340.jpg",
                             Name = "Tennis Local League",
                             Place = "Tennis Wschodnia"
                         },
@@ -296,8 +302,9 @@ namespace TakeASeat.Migrations
                             CreatorId = "8e445865-a24d-4543-a6c6-9443d048cdb0",
                             Description = "Weekly e-sport tournament.",
                             Duration = 180,
+                            EventSlug = "cossacks-3-championships",
                             EventTypeId = 3,
-                            ImageUrl = "none",
+                            ImageUrl = "https://cdn.pixabay.com/photo/2022/06/12/21/31/helmet-7258913_960_720.png",
                             Name = "Cossacks 3 Championships",
                             Place = "Moskwa Cinema"
                         },
@@ -307,8 +314,9 @@ namespace TakeASeat.Migrations
                             CreatorId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             Description = "Daily fitness showcase.",
                             Duration = 60,
+                            EventSlug = "fitness-for-everyone",
                             EventTypeId = 2,
-                            ImageUrl = "none",
+                            ImageUrl = "https://cdn.pixabay.com/photo/2017/07/02/19/24/dumbbells-2465478_960_720.jpg",
                             Name = "Fitness for everyone",
                             Place = "Town Hall"
                         },
@@ -318,8 +326,9 @@ namespace TakeASeat.Migrations
                             CreatorId = "8e445865-a24d-4543-a6c6-9443d048cdb0",
                             Description = "Winter FIFA tournament",
                             Duration = 90,
+                            EventSlug = "fifa-playroom",
                             EventTypeId = 3,
-                            ImageUrl = "none",
+                            ImageUrl = "https://cdn.pixabay.com/photo/2019/04/10/15/08/xbox-4117267_960_720.jpg",
                             Name = "FIFA playroom",
                             Place = "Quest pub"
                         });
@@ -532,6 +541,35 @@ namespace TakeASeat.Migrations
                     b.ToTable("Seats");
                 });
 
+            modelBuilder.Entity("TakeASeat.Data.SeatReservation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("EventId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SeatId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("SeatId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SeatReservation");
+                });
+
             modelBuilder.Entity("TakeASeat.Data.Show", b =>
                 {
                     b.Property<int>("Id")
@@ -682,23 +720,12 @@ namespace TakeASeat.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("BuyerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int?>("EventId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SeatId")
+                    b.Property<int>("SeatReservationId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BuyerId");
-
-                    b.HasIndex("EventId");
-
-                    b.HasIndex("SeatId");
+                    b.HasIndex("SeatReservationId");
 
                     b.ToTable("Ticket");
                 });
@@ -722,12 +749,12 @@ namespace TakeASeat.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5aa81763-ffda-423a-8b7a-b90b3fadf628",
+                            ConcurrencyStamp = "aefad965-962c-478a-85ee-219b361fc2b0",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEHeUx+LNOkPlx0oW/vZpE+mdsYaDcVmNyOlMhM297j9HhpICa5am3tjNE7ZNOKniNQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIkfCyfxNrbhRvBnX56t6BcuLag2jk6fDTULGCcHlfBsGos+r2JNi7o9R15Cfb0bTw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "063e4572-1d0d-4e76-ba7e-a9fe2196c7a9",
+                            SecurityStamp = "304cd08c-f96e-4eba-845c-40ed3e0c1fb9",
                             TwoFactorEnabled = false,
                             UserName = "Flinston",
                             FirstName = "George",
@@ -737,12 +764,12 @@ namespace TakeASeat.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ffc06f09-38ed-403d-b3a3-42ed80dca97a",
+                            ConcurrencyStamp = "1e88714a-d55a-461f-bca5-75b5ba807846",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEDRLMAcMnJS0PZf5BqmX+TwpEqcPjx7fHHAefCiV2UJWfYnJDwvVCXmN6LVi4f9NlQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECRX4KwtbA8oQTIjsVm77/UPcUoADHYS/YAGv+8ppYsZNFKzd8eGaaAj2fcfcGPe8g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0cebf720-cc90-46ad-8d44-b38b278ef0dc",
+                            SecurityStamp = "a52a43f5-ea8f-4042-9c8a-4da2eae677e4",
                             TwoFactorEnabled = false,
                             UserName = "LOG",
                             FirstName = "Logan",
@@ -848,6 +875,29 @@ namespace TakeASeat.Migrations
                     b.Navigation("Show");
                 });
 
+            modelBuilder.Entity("TakeASeat.Data.SeatReservation", b =>
+                {
+                    b.HasOne("TakeASeat.Data.Event", "Event")
+                        .WithMany()
+                        .HasForeignKey("EventId");
+
+                    b.HasOne("TakeASeat.Data.Seat", "Seat")
+                        .WithMany()
+                        .HasForeignKey("SeatId");
+
+                    b.HasOne("TakeASeat.Data.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Event");
+
+                    b.Navigation("Seat");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("TakeASeat.Data.Show", b =>
                 {
                     b.HasOne("TakeASeat.Data.Event", "Event")
@@ -861,25 +911,13 @@ namespace TakeASeat.Migrations
 
             modelBuilder.Entity("TakeASeat.Data.Ticket", b =>
                 {
-                    b.HasOne("TakeASeat.Data.User", "Buyer")
+                    b.HasOne("TakeASeat.Data.SeatReservation", "SeatReservation")
                         .WithMany()
-                        .HasForeignKey("BuyerId")
+                        .HasForeignKey("SeatReservationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TakeASeat.Data.Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId");
-
-                    b.HasOne("TakeASeat.Data.Seat", "Seat")
-                        .WithMany()
-                        .HasForeignKey("SeatId");
-
-                    b.Navigation("Buyer");
-
-                    b.Navigation("Event");
-
-                    b.Navigation("Seat");
+                    b.Navigation("SeatReservation");
                 });
 
             modelBuilder.Entity("TakeASeat.Data.Event", b =>

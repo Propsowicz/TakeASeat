@@ -194,6 +194,7 @@ namespace TakeASeat.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Place = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EventSlug = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EventTypeId = table.Column<int>(type: "int", nullable: false),
                     CreatorId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
@@ -289,34 +290,53 @@ namespace TakeASeat.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Ticket",
+                name: "SeatReservation",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EventId = table.Column<int>(type: "int", nullable: true),
                     SeatId = table.Column<int>(type: "int", nullable: true),
-                    BuyerId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SeatReservation", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SeatReservation_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SeatReservation_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_SeatReservation_Seats_SeatId",
+                        column: x => x.SeatId,
+                        principalTable: "Seats",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ticket",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SeatReservationId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Ticket", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Ticket_AspNetUsers_BuyerId",
-                        column: x => x.BuyerId,
-                        principalTable: "AspNetUsers",
+                        name: "FK_Ticket_SeatReservation_SeatReservationId",
+                        column: x => x.SeatReservationId,
+                        principalTable: "SeatReservation",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Ticket_Events_EventId",
-                        column: x => x.EventId,
-                        principalTable: "Events",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Ticket_Seats_SeatId",
-                        column: x => x.SeatId,
-                        principalTable: "Seats",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.InsertData(
@@ -324,8 +344,8 @@ namespace TakeASeat.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "8e445865-a24d-4543-a6c6-9443d048cdb0", 0, "ffc06f09-38ed-403d-b3a3-42ed80dca97a", "User", null, false, "Logan", "Capuchino", false, null, null, null, "AQAAAAEAACcQAAAAEDRLMAcMnJS0PZf5BqmX+TwpEqcPjx7fHHAefCiV2UJWfYnJDwvVCXmN6LVi4f9NlQ==", null, false, "0cebf720-cc90-46ad-8d44-b38b278ef0dc", false, "LOG" },
-                    { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "5aa81763-ffda-423a-8b7a-b90b3fadf628", "User", null, false, "George", "Flinston", false, null, null, null, "AQAAAAEAACcQAAAAEHeUx+LNOkPlx0oW/vZpE+mdsYaDcVmNyOlMhM297j9HhpICa5am3tjNE7ZNOKniNQ==", null, false, "063e4572-1d0d-4e76-ba7e-a9fe2196c7a9", false, "Flinston" }
+                    { "8e445865-a24d-4543-a6c6-9443d048cdb0", 0, "1e88714a-d55a-461f-bca5-75b5ba807846", "User", null, false, "Logan", "Capuchino", false, null, null, null, "AQAAAAEAACcQAAAAECRX4KwtbA8oQTIjsVm77/UPcUoADHYS/YAGv+8ppYsZNFKzd8eGaaAj2fcfcGPe8g==", null, false, "a52a43f5-ea8f-4042-9c8a-4da2eae677e4", false, "LOG" },
+                    { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "aefad965-962c-478a-85ee-219b361fc2b0", "User", null, false, "George", "Flinston", false, null, null, null, "AQAAAAEAACcQAAAAEIkfCyfxNrbhRvBnX56t6BcuLag2jk6fDTULGCcHlfBsGos+r2JNi7o9R15Cfb0bTw==", null, false, "304cd08c-f96e-4eba-845c-40ed3e0c1fb9", false, "Flinston" }
                 });
 
             migrationBuilder.InsertData(
@@ -352,14 +372,14 @@ namespace TakeASeat.Migrations
 
             migrationBuilder.InsertData(
                 table: "Events",
-                columns: new[] { "Id", "CreatorId", "Description", "Duration", "EventTypeId", "ImageUrl", "Name", "Place" },
+                columns: new[] { "Id", "CreatorId", "Description", "Duration", "EventSlug", "EventTypeId", "ImageUrl", "Name", "Place" },
                 values: new object[,]
                 {
-                    { 1, "8e445865-a24d-4543-a6c6-9443d048cdb9", "Pink Panther does his things.", 90, 1, "none", "Pink Panther The Movie", "Moskwa Cinema" },
-                    { 2, "8e445865-a24d-4543-a6c6-9443d048cdb9", "Tennis Amatour League", 120, 2, "none", "Tennis Local League", "Tennis Wschodnia" },
-                    { 3, "8e445865-a24d-4543-a6c6-9443d048cdb0", "Weekly e-sport tournament.", 180, 3, "none", "Cossacks 3 Championships", "Moskwa Cinema" },
-                    { 4, "8e445865-a24d-4543-a6c6-9443d048cdb9", "Daily fitness showcase.", 60, 2, "none", "Fitness for everyone", "Town Hall" },
-                    { 5, "8e445865-a24d-4543-a6c6-9443d048cdb0", "Winter FIFA tournament", 90, 3, "none", "FIFA playroom", "Quest pub" }
+                    { 1, "8e445865-a24d-4543-a6c6-9443d048cdb9", "Pink Panther does his things.", 90, "pink-panther-the-movie", 1, "https://cdn.pixabay.com/photo/2016/09/08/10/21/kermit-1653777_960_720.jpg", "Pink Panther The Movie", "Moskwa Cinema" },
+                    { 2, "8e445865-a24d-4543-a6c6-9443d048cdb9", "Tennis Amatour League", 120, "tennis-local-league", 2, "https://cdn.pixabay.com/photo/2016/09/15/15/27/tennis-court-1671852__340.jpg", "Tennis Local League", "Tennis Wschodnia" },
+                    { 3, "8e445865-a24d-4543-a6c6-9443d048cdb0", "Weekly e-sport tournament.", 180, "cossacks-3-championships", 3, "https://cdn.pixabay.com/photo/2022/06/12/21/31/helmet-7258913_960_720.png", "Cossacks 3 Championships", "Moskwa Cinema" },
+                    { 4, "8e445865-a24d-4543-a6c6-9443d048cdb9", "Daily fitness showcase.", 60, "fitness-for-everyone", 2, "https://cdn.pixabay.com/photo/2017/07/02/19/24/dumbbells-2465478_960_720.jpg", "Fitness for everyone", "Town Hall" },
+                    { 5, "8e445865-a24d-4543-a6c6-9443d048cdb0", "Winter FIFA tournament", 90, "fifa-playroom", 3, "https://cdn.pixabay.com/photo/2019/04/10/15/08/xbox-4117267_960_720.jpg", "FIFA playroom", "Quest pub" }
                 });
 
             migrationBuilder.InsertData(
@@ -460,6 +480,21 @@ namespace TakeASeat.Migrations
                 column: "EventTagId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SeatReservation_EventId",
+                table: "SeatReservation",
+                column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SeatReservation_SeatId",
+                table: "SeatReservation",
+                column: "SeatId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SeatReservation_UserId",
+                table: "SeatReservation",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Seats_ShowId",
                 table: "Seats",
                 column: "ShowId");
@@ -470,19 +505,9 @@ namespace TakeASeat.Migrations
                 column: "EventId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ticket_BuyerId",
+                name: "IX_Ticket_SeatReservationId",
                 table: "Ticket",
-                column: "BuyerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Ticket_EventId",
-                table: "Ticket",
-                column: "EventId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Ticket_SeatId",
-                table: "Ticket",
-                column: "SeatId");
+                column: "SeatReservationId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -513,6 +538,9 @@ namespace TakeASeat.Migrations
 
             migrationBuilder.DropTable(
                 name: "EventTags");
+
+            migrationBuilder.DropTable(
+                name: "SeatReservation");
 
             migrationBuilder.DropTable(
                 name: "Seats");

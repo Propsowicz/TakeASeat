@@ -17,6 +17,8 @@ using TakeASeat.Services.UserService;
 using TakeASeat.Services.EventService;
 using TakeASeat.Services.ShowService;
 using TakeASeat.Services.SeatService;
+using TakeASeat.Services.SeatReservationService;
+using TakeASeat.Services.BackgroundService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,6 +59,8 @@ builder.Services.AddScoped<IAuthManager, AuthManager>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IShowRepository, ShowRepository>();
 builder.Services.AddScoped<ISeatRepository, SeatRepository>();
+builder.Services.AddScoped<ISeatResRepository, SeatResRepository>();
+builder.Services.AddScoped<IReleaseReservationService, ReleaseReservationService>();
 
 // Backgorund service
 builder.Services.AddHostedService<ReleaseReservation>();

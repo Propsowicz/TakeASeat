@@ -20,6 +20,7 @@ namespace TakeASeat.Data.DatabaseContext
         public DbSet<EventTagEventM2M> EventTagEventM2M { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Ticket> Ticket { get; set; }
+        public DbSet<SeatReservation> SeatReservation { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

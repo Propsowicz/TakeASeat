@@ -53,7 +53,8 @@ namespace TakeASeat.Services.UserService
             var _user = await _userManager.FindByNameAsync(userDTO.UserName);
             var claims = new List<Claim>
             {
-                new Claim("UserName", _user.UserName)
+                new Claim("UserName", _user.UserName),
+                new Claim("UserId", _user.Id)
             };
 
             var userRoles = await _userManager.GetRolesAsync(_user);
