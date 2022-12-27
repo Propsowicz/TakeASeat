@@ -26,15 +26,19 @@ const CreateSeats = (props) => {
     const [listOfRows, setListOfRows] = useState(listOfRowsDefault)
     const [rowsCounter, setRowsCounter] = useState(0)
     
+    function parsePrice(input) {
+        if (input.length < 4){return input}
+        else{return input[0] + input[2] + input[3] + input[4]}
+    }
 
     const createNewRow = (e) => {
         e.preventDefault()
         let tempListOfRows = listOfRows
         let tempTable = []
         let numOfSeats = e.target.numOfSeats.value
-        let rowPrice = e.target.rowPrice.value
+        let rowPrice = parsePrice(e.target.rowPrice.value)
         let rowColor = e.target.rowColor.value
-        
+                
         if (rowsCounter < listOfRowsDefault.length){
             for(let i = 0; i < numOfSeats; i++){
                 tempTable.push({
@@ -61,18 +65,17 @@ const CreateSeats = (props) => {
             row.forEach(seat => {
                 tempSeatTable.push(seat)
             });
-        });
-        const response = await fetch(`${url}/api/Seat/create-multiple`, {
+        });        
+        console.log(tempSeatTable)
+        const response = await fetch(`${url}/api/Seats/create-multiple`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(tempSeatTable)
-        })     
+        })            
         if(response.status != 201) {
-            console.log("error")
-            // console.log(response.status)
-            // console.log(response)
+            console.log("error")            
         }  
     }
 
@@ -123,7 +126,7 @@ const CreateSeats = (props) => {
                         <div className="flex gap-2"> 
                             <form onSubmit={createNewRow} className="flex gap-2 add-seat-form">     
                                 <div className="flex align-items-center justify-content-center"><InputNumber name='numOfSeats' min={1} max={20} placeholder="Number of seats in a row" tooltip='Between 1 and 40 seats.' required/></div>
-                                <div className="flex align-items-center justify-content-center"><InputNumber name='rowPrice' min={0} max={2000} placeholder="Tickets price in a row" tooltip='Between 0 and 2000$' currency='USD' required/></div>
+                                <div className="flex align-items-center justify-content-center"><InputNumber name='rowPrice'  min={0} max={2000} placeholder="Tickets price in a row" tooltip='Between 0 and 2000$' currency='USD' required/></div>
                                 <div className="flex align-items-center justify-content-center"><Dropdown name='rowColor' value={seatColorTemp} options={seatsColorDropdown} onChange={(e) => setSeatsColorTemp(e.value)} placeholder="Select seats color" required/></div>
                                 <div className="flex align-items-center justify-content-center"><Button label="Add new row" /></div>
                             </form>    

@@ -1,16 +1,17 @@
 /* eslint-disable */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import { SeatRowComponent } from './SeatComponents/SeatRowComponent';
 import {url} from '../../const/constValues'
-import ReserveSeatComponent from './ReserveSeats/ReserveSeatComponent';
 import { Tooltip } from 'primereact/tooltip';
 import { Button } from 'primereact/button';
 import ReservedSeats from './ReserveSeats/ReservedSeats';
+import {UserContext} from '../../context/UserContext'
 
 const DisplaySeats = (props) => {
     const [seats, setSeats] = useState([]);
     const [reservedSeatsList, setReservedSeatsList] = useState([])
+    const {userData} = useContext(UserContext)
 
     const reserveSeats = async (e) => { 
         
@@ -28,10 +29,11 @@ const DisplaySeats = (props) => {
             e.target.classList.add('seat-component-reserved')
 
             let reservedTempSeatData = {
+                "id": e.target.title,
                 "showId": parseInt(props.showId),
                 "row": e.target.innerText[0],
                 "position": e.target.innerText.slice(1),
-                "price": e.target.name    
+                "price": e.target.name,                
             }         
             setReservedSeatsList(reservedSeatsList => [...reservedSeatsList, reservedTempSeatData])
         }  
@@ -46,7 +48,7 @@ const DisplaySeats = (props) => {
     }
 
     const getSeats = async () => {
-        const response = await fetch(`${url}/api/Seat/ShowId-${props.showId}`, {
+        const response = await fetch(`${url}/api/Seats/ShowId-${props.showId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -62,12 +64,23 @@ const DisplaySeats = (props) => {
     };
 
     const postOrder = async () => {
-        let orderCost = getPrice()
-
-
-
-        
-        console.log(orderCost)
+        let buyerId = userData.UserId
+        let eventId = props.eventId
+        let result = {
+            "buyerId": buyerId,
+            "eventId": eventId,
+            "seats": reservedSeatsList            
+        }
+        let response = await fetch(`${url}/api/SeatsReservation`,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(result)
+        })
+        if (response.status !== 202){
+            console.log("error")
+        }        
     }
 
 
@@ -86,8 +99,8 @@ const DisplaySeats = (props) => {
                         <div className="flex gap-2 seat-rows">                           
                             {row.map((seat) => (
                                 <div>
-                                    <button type="button" className={`seat-component text-500 bg-${seat.seatColor}`}
-                                    name={seat.price} onClick={reserveSeats}> 
+                                    <button type="button" className={`text-500 seat-component bg-${seat.seatColor}`}
+                                    name={seat.price} onClick={reserveSeats} title={seat.id}> 
                                         {seat.row + seat.position}
                                     </button>   
                                     {/* <Tooltip target=".seat-component" autoHide={true}>

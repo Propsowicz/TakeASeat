@@ -23,7 +23,7 @@ function App() {
                     <MainNavbar />
                     <Routes>    
                         <Route path="/" element={<HomePage />}/>
-                        <Route path="/:eventId/:showId/" element={<ShowDetails />}/>
+                        <Route path="/:slug/:showId/" element={<ShowDetails />}/>
 
                         <Route path="/login/" element={<Login />}/>
                     </Routes>

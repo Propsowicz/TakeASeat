@@ -11,11 +11,12 @@ import DisplaySeats from '../components/show-details/DisplaySeats';
 
 const ShowDetails = () => {    
     const showId = window.location.href.split('/')[5]
-    
+    const eventSlug = window.location.href.split('/')[4]
+
     const [showDetails, setShowDetails] = useState([])
     
     const getShow = async () => {
-      let response = await fetch (`${url}/api/Show/${showId}`, {
+      let response = await fetch (`${url}/api/Shows/${showId}`, {
           method: 'GET',
           headers: {
               'Content-Type': 'application/json'
@@ -24,6 +25,7 @@ const ShowDetails = () => {
       if (response.status == 200){
           let data = await response.json()
           setShowDetails(data)
+          console.log(data)
       }else{
           console.log(response.status) 
           console.log(response.statusText) 
@@ -53,7 +55,7 @@ const ShowDetails = () => {
         </Fieldset> 
         {showDetails.isReadyToSell
           ?
-          <DisplaySeats showId={showId}/>
+          <DisplaySeats eventId={showDetails.event.id} eventSlug={eventSlug} showId={showId}/>
           :
           <CreateSeats showId={showId}/>
         }        

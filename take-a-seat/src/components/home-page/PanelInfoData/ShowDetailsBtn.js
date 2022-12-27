@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 const ShowDetailsBtn = (props) => {
     const navigate = useNavigate()
     const goToShowDetails = () => {
-       navigate(`/${props.eventId}/${props.showId}/`)
+       navigate(`/${props.eventSlug}/${props.showId}/`)
     }
 
     return (
