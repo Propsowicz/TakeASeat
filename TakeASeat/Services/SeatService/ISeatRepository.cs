@@ -6,7 +6,7 @@ namespace TakeASeat.Services.SeatService
     {
         Task<IList<Seat[]>> GetSeats(int showId);
         Task CreateMultipleSeats(IEnumerable<Seat> seats);
-        Task SetReservation(IEnumerable<Seat> seats);
+        Task SetReservation(IEnumerable<Seat> seats, int? ReservationId);
         
     }
 }

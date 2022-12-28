@@ -38,15 +38,14 @@ namespace TakeASeat.Services.SeatService
 
         
 
-        public async Task SetReservation(IEnumerable<Seat> seats)
-        {
-          
-            foreach(var seat in seats)
+        public async Task SetReservation(IEnumerable<Seat> seats, int? ReservationId)
+        {            
+            foreach (var seat in seats)
             {
-                var _seat = await _context.Seats.Where(s => s.Id == seat.Id).FirstOrDefaultAsync();
-                _seat.isReserved = true;
-                _seat.ReservedTime = DateTime.UtcNow;
-            }            
+                var _ = await _context.Seats.FindAsync(seat.Id);
+                _.ReservationId = ReservationId;                
+            }
+            await _context.SaveChangesAsync();
         }
     }
 }

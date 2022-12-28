@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TakeASeat.Data.DatabaseContext;
 
@@ -11,9 +12,10 @@ using TakeASeat.Data.DatabaseContext;
 namespace TakeASeat.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20221228075131_Init")]
+    partial class Init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -744,12 +746,12 @@ namespace TakeASeat.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e7c4d0f8-33f7-449c-8832-fabbd97c4584",
+                            ConcurrencyStamp = "04343b26-1068-4b71-8ef6-ed97785dfd7f",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEANExFwPc+Q93I6XoLVajnyHF7bhaJCY6gXyAWp2qquWk1jbQEDI58er/pVlQVkGHg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEHuY3/p/R5qYP+Qlzqn9ZvDOkPLTkEN3eazE2AU0rScPivO4g8vCgia+opeqi0Yxg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a45b8eab-2fa8-4ffc-90b6-bfe319efd632",
+                            SecurityStamp = "ecc7131d-c7f9-42fa-81c9-a327486dd50c",
                             TwoFactorEnabled = false,
                             UserName = "Flinston",
                             FirstName = "George",
@@ -759,12 +761,12 @@ namespace TakeASeat.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a5b3ee6c-e295-45b3-be0c-7cda2780a17c",
+                            ConcurrencyStamp = "5e6e09f7-eec3-4f7f-b3c4-a51c5ee16d1b",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEKEpfNyAy8Sic+ITDeDnG7UcDyxGk6mkSXPs7yzjRNQtoPm7AMxJ/3CJFJHtMW+a4A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENAlInmt4VwnC7K9FLHYdSyfwxyJd2eizWSE6oXCoK99DcV0GegC9O+so59W1gvd0A==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b3914bef-2972-4c83-96d3-fb6ef8672bbf",
+                            SecurityStamp = "de54f36d-6ea3-4a31-bc9d-b88d853afac0",
                             TwoFactorEnabled = false,
                             UserName = "LOG",
                             FirstName = "Logan",
@@ -862,7 +864,7 @@ namespace TakeASeat.Migrations
             modelBuilder.Entity("TakeASeat.Data.Seat", b =>
                 {
                     b.HasOne("TakeASeat.Data.SeatReservation", "SeatReservation")
-                        .WithMany("Seats")
+                        .WithMany()
                         .HasForeignKey("ReservationId");
 
                     b.HasOne("TakeASeat.Data.Show", "Show")
@@ -914,11 +916,6 @@ namespace TakeASeat.Migrations
                     b.Navigation("EventTags");
 
                     b.Navigation("Shows");
-                });
-
-            modelBuilder.Entity("TakeASeat.Data.SeatReservation", b =>
-                {
-                    b.Navigation("Seats");
                 });
 
             modelBuilder.Entity("TakeASeat.Data.Show", b =>

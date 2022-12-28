@@ -12,8 +12,8 @@ using TakeASeat.Data.DatabaseContext;
 namespace TakeASeat.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20221227113152_Init")]
-    partial class Init
+    [Migration("20221228091621_AddSeatList")]
+    partial class AddSeatList
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -513,8 +513,8 @@ namespace TakeASeat.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<DateTime>("ReservedTime")
-                        .HasColumnType("datetime2");
+                    b.Property<int?>("ReservationId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Row")
                         .IsRequired()
@@ -527,16 +527,9 @@ namespace TakeASeat.Migrations
                     b.Property<int>("ShowId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("SoldTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("isReserved")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("isSold")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("ReservationId");
 
                     b.HasIndex("ShowId");
 
@@ -551,21 +544,23 @@ namespace TakeASeat.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("EventId")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("ReservedTime")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int?>("SeatId")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("SoldTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<bool>("isReserved")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isSold")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
-
-                    b.HasIndex("EventId");
-
-                    b.HasIndex("SeatId");
 
                     b.HasIndex("UserId");
 
@@ -751,12 +746,12 @@ namespace TakeASeat.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "aefad965-962c-478a-85ee-219b361fc2b0",
+                            ConcurrencyStamp = "e7c4d0f8-33f7-449c-8832-fabbd97c4584",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEIkfCyfxNrbhRvBnX56t6BcuLag2jk6fDTULGCcHlfBsGos+r2JNi7o9R15Cfb0bTw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEANExFwPc+Q93I6XoLVajnyHF7bhaJCY6gXyAWp2qquWk1jbQEDI58er/pVlQVkGHg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "304cd08c-f96e-4eba-845c-40ed3e0c1fb9",
+                            SecurityStamp = "a45b8eab-2fa8-4ffc-90b6-bfe319efd632",
                             TwoFactorEnabled = false,
                             UserName = "Flinston",
                             FirstName = "George",
@@ -766,12 +761,12 @@ namespace TakeASeat.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1e88714a-d55a-461f-bca5-75b5ba807846",
+                            ConcurrencyStamp = "a5b3ee6c-e295-45b3-be0c-7cda2780a17c",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAECRX4KwtbA8oQTIjsVm77/UPcUoADHYS/YAGv+8ppYsZNFKzd8eGaaAj2fcfcGPe8g==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKEpfNyAy8Sic+ITDeDnG7UcDyxGk6mkSXPs7yzjRNQtoPm7AMxJ/3CJFJHtMW+a4A==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a52a43f5-ea8f-4042-9c8a-4da2eae677e4",
+                            SecurityStamp = "b3914bef-2972-4c83-96d3-fb6ef8672bbf",
                             TwoFactorEnabled = false,
                             UserName = "LOG",
                             FirstName = "Logan",
@@ -868,34 +863,28 @@ namespace TakeASeat.Migrations
 
             modelBuilder.Entity("TakeASeat.Data.Seat", b =>
                 {
+                    b.HasOne("TakeASeat.Data.SeatReservation", "SeatReservation")
+                        .WithMany("Seats")
+                        .HasForeignKey("ReservationId");
+
                     b.HasOne("TakeASeat.Data.Show", "Show")
                         .WithMany("Seats")
                         .HasForeignKey("ShowId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("SeatReservation");
+
                     b.Navigation("Show");
                 });
 
             modelBuilder.Entity("TakeASeat.Data.SeatReservation", b =>
                 {
-                    b.HasOne("TakeASeat.Data.Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId");
-
-                    b.HasOne("TakeASeat.Data.Seat", "Seat")
-                        .WithMany()
-                        .HasForeignKey("SeatId");
-
                     b.HasOne("TakeASeat.Data.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Event");
-
-                    b.Navigation("Seat");
 
                     b.Navigation("User");
                 });
@@ -927,6 +916,11 @@ namespace TakeASeat.Migrations
                     b.Navigation("EventTags");
 
                     b.Navigation("Shows");
+                });
+
+            modelBuilder.Entity("TakeASeat.Data.SeatReservation", b =>
+                {
+                    b.Navigation("Seats");
                 });
 
             modelBuilder.Entity("TakeASeat.Data.Show", b =>

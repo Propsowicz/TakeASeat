@@ -5,9 +5,9 @@ namespace TakeASeat.RequestUtils
 {
     public class RequestOrderParams
     {
-        public string BuyerId { get; set; }
-        public int EventId { get; set; }
-       public IEnumerable<ReserveSeatsDTO> Seats { get; set; }
+        public string UserId { get; set; }
+        //public int EventId { get; set; }
+        public IEnumerable<ReserveSeatsDTO> Seats { get; set; }
 
     }
 }

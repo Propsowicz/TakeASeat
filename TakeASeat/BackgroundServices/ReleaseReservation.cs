@@ -32,8 +32,10 @@ namespace TakeASeat.BackgroundServices
         public async Task UnpaidReservationCleaner()
         {
             Console.WriteLine("Cleaning up unpaid reservations..");
-            //await _seatRepository.ReleaseReservation();
             await _reservationReleaseRepository.ReleaseUnpaidReservations();
+
+
+
             //var seatsList = await _context.Seats
             //                .Where(s => s.Show.Date > DateTime.UtcNow
             //                && s.isReserved.Equals(true)

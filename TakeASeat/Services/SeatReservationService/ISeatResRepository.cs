@@ -5,6 +5,7 @@ namespace TakeASeat.Services.SeatReservationService
 {
     public interface ISeatResRepository
     {
-        Task CreateSeatReservations(string buyerId, int eventId, IEnumerable<Seat> seats);
+        Task CreateSeatReservation(string userId, IEnumerable<Seat> seats);
+        Task DeleteSeatReservation(IEnumerable<SeatReservation> seatReservation);
     }
 }

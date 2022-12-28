@@ -18,22 +18,33 @@ namespace TakeASeat.Services.SeatReservationService
             _seatRepository= seatRepository;
             _mapper= mapper;
         }
-        public async Task CreateSeatReservations(string buyerId, int eventId, IEnumerable<Seat> seats)
+        public async Task CreateSeatReservation(string userId, IEnumerable<Seat> seats)
         {
-            await _seatRepository.SetReservation(seats);
-            
-            foreach(var seatRes in seats)
-            {
-                await _context.SeatReservation
-                .AddAsync(new SeatReservation { EventId = eventId, 
-                                                UserId = buyerId, 
-                                                SeatId = seatRes.Id });
-            }
-
+            var reservation = await _context.SeatReservation
+                .AddAsync(new SeatReservation
+                {
+                    isReserved = true,
+                    ReservedTime= DateTime.UtcNow,
+                    UserId= userId,
+                });
             await _context.SaveChangesAsync();
-
+            await _seatRepository.SetReservation(seats, reservation.Entity.Id);
         }
 
-        
+        public async Task DeleteSeatReservation(IEnumerable<SeatReservation> seatReservation)
+        {
+            foreach (var reservation in seatReservation)
+            {
+                var listOfSeats = reservation.Seats.ToList();
+                foreach (var seat in listOfSeats)
+                {
+                    seat.ReservationId = null;
+                }
+                
+                //_context.Remove(reservation);
+            }
+            _context.SaveChanges();
+            _context.RemoveRange(seatReservation);
+        }
     }
 }

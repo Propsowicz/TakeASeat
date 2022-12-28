@@ -20,21 +20,16 @@ namespace TakeASeat.Models
     }
     public class GetSeatDTO : CreateSeatDTO
     {
-        public int Id { get; set; }
-        public bool isReserved { get; set; } = false;
-        public DateTime ReservedTime { get; set; }
-        public bool isSold { get; set; } = false;
-        public DateTime SoldTime { get; set; }
+        public int Id { get; set; }        
     }
 
     public class ReserveSeatsDTO
     {
         public int Id { get; set; }
-        public int ShowId { get; set; }
+        //public int ShowId { get; set; }
         public char Row { get; set; }        
         public int Position { get; set; }
         public double Price { get; set; }
-        //public bool isReserved { get; set; }
-        //public DateTime ReservedTime { get; set; } = DateTime.UtcNow;
+        
     }
 }

@@ -10,11 +10,9 @@ namespace TakeASeat.Data
         public double Price { get; set; }
         public string SeatColor { get; set; }
 
-        public bool isReserved { get; set; } = false;
-        public DateTime ReservedTime { get; set; }
-        public bool isSold { get; set; } = false;
-        public DateTime SoldTime { get; set; }
-
+        [ForeignKey(nameof(SeatReservation))]
+        public int? ReservationId { get; set; }
+        public SeatReservation? SeatReservation { get; set; }
 
         [ForeignKey(nameof(Show))]
         public int ShowId { get; set; }

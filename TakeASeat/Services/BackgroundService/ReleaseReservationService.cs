@@ -7,37 +7,37 @@ namespace TakeASeat.Services.BackgroundService
 {
     public class ReleaseReservationService : IReleaseReservationService
     {
-        private readonly DatabaseContext _context;       
-
+        private readonly DatabaseContext _context;
+        private readonly ISeatResRepository _seatReservationRepository;
         public ReleaseReservationService(DatabaseContext context, IServiceProvider serviceProvider)
         {
             _context = context;
+            _seatReservationRepository = serviceProvider.GetRequiredService<ISeatResRepository>();
         }
 
         public async Task ReleaseUnpaidReservations()
         {
-            var seatsQuery = await _context.Seats
-                            .Where(s => s.Show.Date > DateTime.UtcNow
-                            && s.isReserved.Equals(true)
-                            && s.isSold.Equals(false))
-                            .ToListAsync();
-
-            List<int?> seatsIdList = new List<int?>() { };
-
-            foreach (var seat in seatsQuery)
+            var seatReservationQuery = await _context.SeatReservation
+                                            .Where(r => r.isReserved == true
+                                            && r.isSold == false)
+                                            .Include(r => r.Seats)
+                                            .ToListAsync();
+            if (seatReservationQuery.Count > 0 )
             {
-                if ((DateTime.UtcNow - seat.ReservedTime).TotalMinutes > 1)
-                {
-                    seatsIdList.Add(seat.Id);
-                    seat.isReserved = false;
-                    seat.ReservedTime = new DateTime(0001, 01, 01, 0, 0, 0);
-                }
+                await _seatReservationRepository.DeleteSeatReservation(seatReservationQuery);
             }
-            await _context.SaveChangesAsync();
-            var seatsResQuery = await _context.SeatReservation
-                            .Where(sr => seatsIdList.Contains(sr.SeatId))
-                            .ToListAsync();
-            _context.SeatReservation.RemoveRange(seatsResQuery);
+            
+            //foreach (var reservation in seatReservationQuery)
+            //{
+            //    var listOfSeats = reservation.Seats.ToList();
+            //    foreach (var seat in listOfSeats)
+            //    {
+            //        seat.ReservationId = null;
+            //    }
+            //    await _context.SaveChangesAsync();
+            //    _context.Remove(reservation);
+            //}         
+
         }
 
     }
