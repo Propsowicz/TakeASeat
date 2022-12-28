@@ -8,7 +8,7 @@ import { InputNumber } from 'primereact/inputnumber';
 import { SeatRowComponent } from './SeatComponents/SeatRowComponent';
 import { Toast } from 'primereact/toast';
 import {url} from '../../const/constValues'
-import { json } from 'react-router-dom';
+import { json, useNavigate } from 'react-router-dom';
 
 
 const CreateSeats = (props) => {
@@ -25,6 +25,7 @@ const CreateSeats = (props) => {
     const listOfRowsDefault = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K']
     const [listOfRows, setListOfRows] = useState(listOfRowsDefault)
     const [rowsCounter, setRowsCounter] = useState(0)
+    const navigator = useNavigate()
     
     function parsePrice(input) {
         if (input.length < 4){return input}
@@ -76,6 +77,8 @@ const CreateSeats = (props) => {
         })            
         if(response.status != 201) {
             console.log("error")            
+        }else{
+            navigator('/')
         }  
     }
 

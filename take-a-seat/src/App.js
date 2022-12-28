@@ -13,6 +13,7 @@ import MainFooter from './components/MainFooter';
 import ShowDetails from './pages/ShowDetails';
 import Login from './pages/UserService/Login';
 import { UserContextProvider } from './context/UserContext';
+import Payment from './pages/Payment';
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
                         <Route path="/:slug/:showId/" element={<ShowDetails />}/>
 
                         <Route path="/login/" element={<Login />}/>
+                        <Route path="/payment/" element={<Payment />}/>
                     </Routes>
                     <MainFooter />
                 </UserContextProvider>
