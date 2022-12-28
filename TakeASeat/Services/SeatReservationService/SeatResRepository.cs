@@ -39,11 +39,10 @@ namespace TakeASeat.Services.SeatReservationService
                 foreach (var seat in listOfSeats)
                 {
                     seat.ReservationId = null;
-                }
+                }   
                 
-                //_context.Remove(reservation);
             }
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             _context.RemoveRange(seatReservation);
         }
     }

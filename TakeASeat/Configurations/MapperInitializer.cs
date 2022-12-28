@@ -35,7 +35,10 @@ namespace TakeASeat.Configurations
             CreateMap<Show, GetShowDetailsDTO>().ReverseMap();
             CreateMap<Show, GetClosestShows>().ReverseMap();
 
-            CreateMap<SeatReservation, SeatReservationDTO>().ReverseMap();
+            CreateMap<SeatReservation, GetSeatReservationDTO>().ReverseMap();
+
+            CreateMap<PaymentTransaction, PaymentDataDTO>().ReverseMap();
+            CreateMap<PaymentTransaction, PaymentTransactionDTO>().ReverseMap();
         }
     }
 }

@@ -497,6 +497,31 @@ namespace TakeASeat.Migrations
                         });
                 });
 
+            modelBuilder.Entity("TakeASeat.Data.PaymentTransaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<double>("TotalCost")
+                        .HasColumnType("float");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("isAccepted")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PaymentTransaction");
+                });
+
             modelBuilder.Entity("TakeASeat.Data.Seat", b =>
                 {
                     b.Property<int>("Id")
@@ -744,12 +769,12 @@ namespace TakeASeat.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e7c4d0f8-33f7-449c-8832-fabbd97c4584",
+                            ConcurrencyStamp = "71aa6a5e-5f37-416a-9140-d7dd1e1a75a5",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEANExFwPc+Q93I6XoLVajnyHF7bhaJCY6gXyAWp2qquWk1jbQEDI58er/pVlQVkGHg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOnarT8yDGdeIivM2WgbWcavOXQdBGreYTLa90ICMMOyrB1v148tOTl8aFhNxooO3A==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a45b8eab-2fa8-4ffc-90b6-bfe319efd632",
+                            SecurityStamp = "8b1b3498-fcb9-4c5d-9831-f94cea889f52",
                             TwoFactorEnabled = false,
                             UserName = "Flinston",
                             FirstName = "George",
@@ -759,12 +784,12 @@ namespace TakeASeat.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a5b3ee6c-e295-45b3-be0c-7cda2780a17c",
+                            ConcurrencyStamp = "94a6a332-6e86-401d-bc9d-c01f7d39ac77",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEKEpfNyAy8Sic+ITDeDnG7UcDyxGk6mkSXPs7yzjRNQtoPm7AMxJ/3CJFJHtMW+a4A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECD31FSdTjWcWr4E1hprJw5TXnnERD6a/KDoxNsV2An13f3cFhS6s/9SwfoxgoSTCg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b3914bef-2972-4c83-96d3-fb6ef8672bbf",
+                            SecurityStamp = "97cf8e98-594d-454e-81f8-df359803484c",
                             TwoFactorEnabled = false,
                             UserName = "LOG",
                             FirstName = "Logan",
@@ -857,6 +882,17 @@ namespace TakeASeat.Migrations
                     b.Navigation("Event");
 
                     b.Navigation("EventTag");
+                });
+
+            modelBuilder.Entity("TakeASeat.Data.PaymentTransaction", b =>
+                {
+                    b.HasOne("TakeASeat.Data.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("TakeASeat.Data.Seat", b =>

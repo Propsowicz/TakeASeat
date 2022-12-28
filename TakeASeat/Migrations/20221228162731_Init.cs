@@ -184,6 +184,27 @@ namespace TakeASeat.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PaymentTransaction",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TotalCost = table.Column<double>(type: "float", nullable: false),
+                    isAccepted = table.Column<bool>(type: "bit", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentTransaction", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PaymentTransaction_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SeatReservation",
                 columns: table => new
                 {
@@ -338,8 +359,8 @@ namespace TakeASeat.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "8e445865-a24d-4543-a6c6-9443d048cdb0", 0, "5e6e09f7-eec3-4f7f-b3c4-a51c5ee16d1b", "User", null, false, "Logan", "Capuchino", false, null, null, null, "AQAAAAEAACcQAAAAENAlInmt4VwnC7K9FLHYdSyfwxyJd2eizWSE6oXCoK99DcV0GegC9O+so59W1gvd0A==", null, false, "de54f36d-6ea3-4a31-bc9d-b88d853afac0", false, "LOG" },
-                    { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "04343b26-1068-4b71-8ef6-ed97785dfd7f", "User", null, false, "George", "Flinston", false, null, null, null, "AQAAAAEAACcQAAAAEEHuY3/p/R5qYP+Qlzqn9ZvDOkPLTkEN3eazE2AU0rScPivO4g8vCgia+opeqi0Yxg==", null, false, "ecc7131d-c7f9-42fa-81c9-a327486dd50c", false, "Flinston" }
+                    { "8e445865-a24d-4543-a6c6-9443d048cdb0", 0, "94a6a332-6e86-401d-bc9d-c01f7d39ac77", "User", null, false, "Logan", "Capuchino", false, null, null, null, "AQAAAAEAACcQAAAAECD31FSdTjWcWr4E1hprJw5TXnnERD6a/KDoxNsV2An13f3cFhS6s/9SwfoxgoSTCg==", null, false, "97cf8e98-594d-454e-81f8-df359803484c", false, "LOG" },
+                    { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "71aa6a5e-5f37-416a-9140-d7dd1e1a75a5", "User", null, false, "George", "Flinston", false, null, null, null, "AQAAAAEAACcQAAAAEOnarT8yDGdeIivM2WgbWcavOXQdBGreYTLa90ICMMOyrB1v148tOTl8aFhNxooO3A==", null, false, "8b1b3498-fcb9-4c5d-9831-f94cea889f52", false, "Flinston" }
                 });
 
             migrationBuilder.InsertData(
@@ -474,6 +495,11 @@ namespace TakeASeat.Migrations
                 column: "EventTagId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PaymentTransaction_UserId",
+                table: "PaymentTransaction",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SeatReservation_UserId",
                 table: "SeatReservation",
                 column: "UserId");
@@ -518,6 +544,9 @@ namespace TakeASeat.Migrations
 
             migrationBuilder.DropTable(
                 name: "EventTagEventM2M");
+
+            migrationBuilder.DropTable(
+                name: "PaymentTransaction");
 
             migrationBuilder.DropTable(
                 name: "Seats");

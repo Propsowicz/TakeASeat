@@ -1,6 +1,7 @@
 ﻿using TakeASeat.Data.DatabaseContext;
 using TakeASeat.Services.SeatReservationService;
 using Microsoft.EntityFrameworkCore;
+using TakeASeat.Data;
 
 
 namespace TakeASeat.Services.BackgroundService
@@ -19,25 +20,16 @@ namespace TakeASeat.Services.BackgroundService
         {
             var seatReservationQuery = await _context.SeatReservation
                                             .Where(r => r.isReserved == true
-                                            && r.isSold == false)
+                                            && r.isSold == false
+                                            && r.ReservedTime.Minute + 1 < DateTime.UtcNow.Minute)      // here shoul be 5 minutes added
                                             .Include(r => r.Seats)
                                             .ToListAsync();
+
             if (seatReservationQuery.Count > 0 )
             {
                 await _seatReservationRepository.DeleteSeatReservation(seatReservationQuery);
             }
             
-            //foreach (var reservation in seatReservationQuery)
-            //{
-            //    var listOfSeats = reservation.Seats.ToList();
-            //    foreach (var seat in listOfSeats)
-            //    {
-            //        seat.ReservationId = null;
-            //    }
-            //    await _context.SaveChangesAsync();
-            //    _context.Remove(reservation);
-            //}         
-
         }
 
     }

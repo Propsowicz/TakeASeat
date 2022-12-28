@@ -30,8 +30,14 @@ namespace TakeASeat.Controllers
             _context = serviceProvider.GetRequiredService<DatabaseContext>();
             
         }
+        [HttpGet]
+        public async Task<IActionResult> test()
+        {
+            await _releaseResRepository.ReleaseUnpaidReservations();
+            return Ok();
+        }
 
-        [HttpPost]
+        [HttpPost("create")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -43,11 +49,6 @@ namespace TakeASeat.Controllers
             return StatusCode(202);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> test()
-        {
-            await _releaseResRepository.ReleaseUnpaidReservations();
-            return Ok();
-        }
+        
     }
 }

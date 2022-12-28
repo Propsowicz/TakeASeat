@@ -3,10 +3,12 @@ using TakeASeat.Data;
 
 namespace TakeASeat.Models
 {
-    public class SeatReservationDTO
+    public class GetSeatReservationDTO
     {
-        public int EventId { get; set; }
-        public int SeatId { get; set; }
-        public string UserId { get; set; }
+        public int Id { get; set; }
+
+        public GetUserDTO User { get; set; }    
+        public IList<ReserveSeatsDTO> Seats { get; set; }
+
     }
 }

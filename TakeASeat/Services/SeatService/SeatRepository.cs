@@ -11,9 +11,7 @@ namespace TakeASeat.Services.SeatService
 {
     public class SeatRepository : ISeatRepository
     {
-        private readonly DatabaseContext _context;
-        
-        
+        private readonly DatabaseContext _context;             
 
         public SeatRepository(DatabaseContext context, IServiceProvider serviceProvider)
         {
