@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using TakeASeat.Models;
 using TakeASeat.RequestUtils;
 using TakeASeat.Services.PaymentService;
 
@@ -9,25 +9,25 @@ namespace TakeASeat.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PaymentTransactionController : ControllerBase
+    public class OrderController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IPaymentRepository _paymentRepository;
 
-        public PaymentTransactionController(IServiceProvider serviceProvider)
+        public OrderController(IServiceProvider serviceProvider)
         {
             _mapper = serviceProvider.GetRequiredService<IMapper>();
             _paymentRepository = serviceProvider.GetRequiredService<IPaymentRepository>();
         }
 
-
         [HttpGet]
-        public async Task<IActionResult> getPaymentData([FromQuery] RequestPaymentParams requestPaymentParams)
+        public async Task<IActionResult> getBuyedItems([FromQuery] RequestPaymentParams requestPaymentParams)
         {
+            var query = await _paymentRepository.getReservedSeats(requestPaymentParams.UserId);
+            var response = _mapper.Map<IList<GetReservedSeatsDTO>>(query);
 
-            //var response = _paymentRepository.getPaymentData("e17202bb-0183-40db-8ef5-1811013e075d");
-            var response = _paymentRepository.getPaymentData(requestPaymentParams.UserId);
             return StatusCode(200, response);
         }
+
     }
 }

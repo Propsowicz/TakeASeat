@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using TakeASeat.Data;
 using TakeASeat.Data.DatabaseContext;
@@ -31,19 +32,28 @@ namespace TakeASeat.Services.SeatReservationService
             await _seatRepository.SetReservation(seats, reservation.Entity.Id);
         }
 
-        public async Task DeleteSeatReservation(IEnumerable<SeatReservation> seatReservation)
+        public async Task DeleteSeatReservation(int seatReservationId)
         {
-            foreach (var reservation in seatReservation)
-            {
-                var listOfSeats = reservation.Seats.ToList();
-                foreach (var seat in listOfSeats)
-                {
-                    seat.ReservationId = null;
-                }   
-                
-            }
+            var query = await _context.SeatReservation
+                                .Where(r => r.Id == seatReservationId)
+                                .FirstOrDefaultAsync(); 
+                        
+            await _seatRepository.RemoveReservation(seatReservationId); 
+            
+            _context.Remove(query);
             await _context.SaveChangesAsync();
-            _context.RemoveRange(seatReservation);
         }
+
+        public async Task DeleteSeatReservations(IEnumerable<SeatReservation> seatReservations)
+        {
+            
+            var listOfReservations = seatReservations.Select(r => r.Id).ToList();
+            await _seatRepository.RemoveMultipleReservation(listOfReservations);
+
+            _context.RemoveRange(seatReservations);
+            await _context.SaveChangesAsync();
+        }
+
+
     }
 }

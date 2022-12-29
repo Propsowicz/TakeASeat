@@ -24,21 +24,18 @@ namespace TakeASeat.Controllers
             _paymentRepository = serviceProvider.GetRequiredService<IPaymentRepository>();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> getBuyedItems([FromQuery] RequestPaymentParams requestPaymentParams)
-        {            
-            var query = await _paymentRepository.getSeatReservations(requestPaymentParams.UserId);
-            var response = _mapper.Map<IList<GetSeatReservationDTO>>(query);
 
+        [HttpGet]
+        public async Task<IActionResult> getPaymentData([FromQuery] RequestPaymentParams requestPaymentParams)
+        {
+
+            //var response = _paymentRepository.getPaymentData("e17202bb-0183-40db-8ef5-1811013e075d");
+            var response = _paymentRepository.getPaymentData(requestPaymentParams.UserId);
             return StatusCode(200, response);
         }
 
-        [HttpPost("delete")]
-        public async Task<IActionResult> deleteSeatReservation([FromBody] RequestPaymentDeleteParams requestPaymentDeleteParams)
-        {
-            await _paymentRepository.removeSeatReservations(requestPaymentDeleteParams.SeatReservationId);
+        
 
-            return StatusCode(204);
-        }
+        
     }
 }

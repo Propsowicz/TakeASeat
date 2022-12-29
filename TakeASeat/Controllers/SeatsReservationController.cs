@@ -49,6 +49,13 @@ namespace TakeASeat.Controllers
             return StatusCode(202);
         }
 
-        
+        [HttpPost("delete")]
+        public async Task<IActionResult> deleteSeatReservation([FromBody] RequestReservationParams seatReservation)
+        {
+
+            await _seatResRepository.DeleteSeatReservation(seatReservation.seatReservationId);
+
+            return StatusCode(204);
+        }
     }
 }

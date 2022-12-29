@@ -7,8 +7,10 @@ namespace TakeASeat.Models
     {
         public int Id { get; set; }
 
-        public GetUserDTO User { get; set; }    
-        public IList<ReserveSeatsDTO> Seats { get; set; }
+       // public IList<ReserveSeatsDTO> Seats { get; set; }
 
     }
+
+    
+
 }

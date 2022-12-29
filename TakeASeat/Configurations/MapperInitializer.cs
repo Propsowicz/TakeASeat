@@ -19,6 +19,7 @@ namespace TakeASeat.Configurations
             CreateMap<Seat, CreateSeatDTO>().ReverseMap();
             CreateMap<Seat, GetSeatDTO>().ReverseMap();
             CreateMap<Seat, ReserveSeatsDTO>().ReverseMap();
+            CreateMap<Seat, GetReservedSeatsDTO>().ReverseMap();
 
             CreateMap<EventTagEventM2M, CreateEventTagEventM2MDTO>().ReverseMap();
             CreateMap<EventTagEventM2M, GetEventTagEventM2MDTO>().ReverseMap();

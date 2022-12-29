@@ -32,4 +32,14 @@ namespace TakeASeat.Models
         public double Price { get; set; }
         
     }
+
+    public class GetReservedSeatsDTO
+    {
+        public int Id { get; set; }
+        public char Row { get; set; }
+        public int Position { get; set; }
+        public double Price { get; set; }
+        public GetSeatReservationDTO SeatReservation { get; set; }
+        public GetShowDetailsDTO Show { get; set; }
+    }
 }

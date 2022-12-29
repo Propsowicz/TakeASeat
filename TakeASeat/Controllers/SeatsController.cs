@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TakeASeat.Data;
 using TakeASeat.Models;
+using TakeASeat.RequestUtils;
 using TakeASeat.Services.Generic;
 using TakeASeat.Services.SeatReservationService;
 using TakeASeat.Services.SeatService;
@@ -57,6 +58,17 @@ namespace TakeASeat.Controllers
             return StatusCode(201);
         }
 
+        [HttpPost("remove-reservation")]
+        public async Task<IActionResult> RemoveSeatReservation([FromBody] RequestSeatParams seatParams)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            await _seatRepository.RemoveSingleReservation(seatParams.SeatId);
+
+            return StatusCode(204);
+        }
         
 
     }

@@ -36,11 +36,10 @@ namespace TakeASeat.Services.PaymentService
             var reservationsQuery = _context.SeatReservation                        
                         .Where(s => s.isReserved == true
                         && s.isSold == false)
-                        .Include(r => r.User)
                         .ToList();
 
             paymentData.Amount = mainQuery.Sum();
-            paymentData.Description = $"paymentForTicketsByUser{reservationsQuery[0].User.UserName}";
+            paymentData.Description = $"paymentForTicketsByUser";
             paymentData.Id = "";
             foreach(var reservation in reservationsQuery)
             {
@@ -50,6 +49,18 @@ namespace TakeASeat.Services.PaymentService
             return paymentData;
         }
 
+        public async Task<IList<Seat>> getReservedSeats(string userId)
+        {
+            return await _context.Seats
+                        .Where(s => s.SeatReservation.UserId == userId
+                        && s.SeatReservation.isReserved == true
+                        && s.SeatReservation.isSold == false)
+                        .Include(s => s.SeatReservation)
+                        .Include(s => s.Show)
+                            .ThenInclude(s => s.Event)
+                        .ToListAsync();
+        }
+
         public async Task<IList<SeatReservation>> getSeatReservations(string userId)
         {
             return await _context.SeatReservation
@@ -57,18 +68,20 @@ namespace TakeASeat.Services.PaymentService
                         && r.isReserved == true
                         && r.isSold == false)
                         .Include(r => r.Seats)
-                        .Include(r => r.User)
+                            .ThenInclude(s => s.Show)
+                                .ThenInclude(s => s.Event)
+                        //.Include(r => r.User)
                         .ToListAsync();
         }
 
-        public async Task removeSeatReservations(int seatReservationId)
-        {
-            var seatReservation = await _context.SeatReservation
-                        .Where(r => r.Id == seatReservationId)
-                        .Include(r => r.Seats)
-                        .ToListAsync();
+        //public async Task removeSeatReservations(int seatReservationId)
+        //{
+        //    var seatReservation = await _context.SeatReservation
+        //                .Where(r => r.Id == seatReservationId)
+        //                .Include(r => r.Seats)
+        //                .ToListAsync();
 
-            await _seatResRepository.DeleteSeatReservation(seatReservation);            
-        }
+        //    await _seatResRepository.DeleteSeatReservation(seatReservation);            
+        //}
     }
 }

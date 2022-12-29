@@ -54,6 +54,9 @@ namespace TakeASeat.Services.UserService
             var claims = new List<Claim>
             {
                 new Claim("UserName", _user.UserName),
+                new Claim("FirstName", _user.FirstName),
+                new Claim("LastName", _user.LastName),
+                new Claim("Email", _user.Email),
                 new Claim("UserId", _user.Id)
             };
 

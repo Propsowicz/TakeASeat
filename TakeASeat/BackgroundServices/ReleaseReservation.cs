@@ -9,17 +9,14 @@ namespace TakeASeat.BackgroundServices
 {
     public class ReleaseReservation : BackgroundService
     {
-        private readonly DatabaseContext _context;
-        private readonly ISeatRepository _seatRepository;
+        
         private readonly IReleaseReservationService _reservationReleaseRepository;
         public ReleaseReservation(IServiceProvider serviceProvider)
         {
-            _context = serviceProvider.CreateScope().ServiceProvider.GetRequiredService<DatabaseContext>();
-            //_seatRepository = serviceProvider.CreateScope().ServiceProvider.GetRequiredService<ISeatRepository>();
             _reservationReleaseRepository = serviceProvider.CreateScope().ServiceProvider.GetRequiredService<IReleaseReservationService>();
         }
 
-        private const int generalDelay = 2 * 10000; // 2 minutes
+        private const int generalDelay = 2 * 60000; // 2 minutes
         protected override async Task ExecuteAsync(CancellationToken stopToken)
         {
             while (!stopToken.IsCancellationRequested)

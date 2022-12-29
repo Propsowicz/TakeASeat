@@ -17,17 +17,22 @@ namespace TakeASeat.Services.BackgroundService
         }
 
         public async Task ReleaseUnpaidReservations()
-        {
+        {            
+            var dateTime = DateTime.UtcNow;
             var seatReservationQuery = await _context.SeatReservation
-                                            .Where(r => r.isReserved == true
-                                            && r.isSold == false
-                                            && r.ReservedTime.Minute + 1 < DateTime.UtcNow.Minute)      // here shoul be 5 minutes added
-                                            .Include(r => r.Seats)
+                                            .Where(r => 
+                                            r.isReserved == true
+                                            && r.isSold == false)
+                                            .Where(r => 
+                                            r.ReservedTime.Hour <= dateTime.Hour
+                                            && r.ReservedTime.Minute + 5 < dateTime.Minute 
+                                            || dateTime.Minute < r.ReservedTime.Minute - 5)                                            
                                             .ToListAsync();
 
             if (seatReservationQuery.Count > 0 )
             {
-                await _seatReservationRepository.DeleteSeatReservation(seatReservationQuery);
+                await _seatReservationRepository.DeleteSeatReservations(seatReservationQuery);
+                Console.WriteLine("Unpaid reservations has been deleted...");
             }
             
         }

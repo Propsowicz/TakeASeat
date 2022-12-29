@@ -8,7 +8,8 @@ namespace TakeASeat.Services.PaymentService
     {
 
         Task<IList<SeatReservation>> getSeatReservations(string userId);
-        Task removeSeatReservations(int seatReservationId);
+        Task<IList<Seat>> getReservedSeats(string userId);
+        //Task removeSeatReservations(int seatReservationId);
         Task<PaymentDataDTO> getPaymentData(string userId);
         //Task<IList<string>> getPaymentData(string userId);
         Task createPaymentTransaction(IEnumerable<SeatReservation> seatReservations, string userId);
