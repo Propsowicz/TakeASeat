@@ -1,3 +1,7 @@
 const url = 'https://localhost:7252'
 
-export {url}
+const typHeader = {
+    "Content-Type": "application/json"
+}
+
+export {url, typHeader}
