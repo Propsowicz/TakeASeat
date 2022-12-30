@@ -28,9 +28,8 @@ namespace TakeASeat.Controllers
         [HttpGet]
         public async Task<IActionResult> getPaymentData([FromQuery] RequestPaymentParams requestPaymentParams)
         {
-
-            //var response = _paymentRepository.getPaymentData("e17202bb-0183-40db-8ef5-1811013e075d");
-            var response = _paymentRepository.getPaymentData(requestPaymentParams.UserId);
+            var response = await _paymentRepository.getPaymentData("e17202bb-0183-40db-8ef5-1811013e075d");
+            //var response = await _paymentRepository.getPaymentData(requestPaymentParams.UserId);
             return StatusCode(200, response);
         }
 

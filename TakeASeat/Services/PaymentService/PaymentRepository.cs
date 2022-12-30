@@ -25,7 +25,6 @@ namespace TakeASeat.Services.PaymentService
 
         public async Task<PaymentDataDTO> getPaymentData(string userId)
         {
-            var paymentData = new PaymentDataDTO();
             var mainQuery = _context.Seats
                         .Where(s => s.SeatReservation.UserId == userId
                         && s.SeatReservation.isReserved == true
@@ -33,20 +32,21 @@ namespace TakeASeat.Services.PaymentService
                         .Select(s => s.Price)
                         .ToList();
 
-            var reservationsQuery = _context.SeatReservation                        
+            var reservationsQuery = _context.SeatReservation
                         .Where(s => s.isReserved == true
                         && s.isSold == false)
                         .ToList();
 
-            paymentData.Amount = mainQuery.Sum();
-            paymentData.Description = $"paymentForTicketsByUser";
-            paymentData.Id = "";
-            foreach(var reservation in reservationsQuery)
-            {
-                paymentData.Id += reservation.Id + ";";
-            }
+            var dotpay_PIN = _context.ProtectedKeys
+                        .FirstOrDefault(k => k.Key == "DOTPAY_PIN");
 
-            return paymentData;
+            var dotpay_ID = _context.ProtectedKeys
+                        .FirstOrDefault(k => k.Key == "DOTPAY_ID");
+
+            //b39582b4ac3c92451f21e25502bededa4bf9f89a1906c58edaffb5431491db93
+
+            var PaymentData = new PaymentUtils(dotpay_PIN.Value, dotpay_ID.Value, mainQuery, reservationsQuery); ;                     
+            return PaymentData.getPaymentData();
         }
 
         public async Task<IList<Seat>> getReservedSeats(string userId)
@@ -61,27 +61,6 @@ namespace TakeASeat.Services.PaymentService
                         .ToListAsync();
         }
 
-        public async Task<IList<SeatReservation>> getSeatReservations(string userId)
-        {
-            return await _context.SeatReservation
-                        .Where(r => r.UserId == userId
-                        && r.isReserved == true
-                        && r.isSold == false)
-                        .Include(r => r.Seats)
-                            .ThenInclude(s => s.Show)
-                                .ThenInclude(s => s.Event)
-                        //.Include(r => r.User)
-                        .ToListAsync();
-        }
-
-        //public async Task removeSeatReservations(int seatReservationId)
-        //{
-        //    var seatReservation = await _context.SeatReservation
-        //                .Where(r => r.Id == seatReservationId)
-        //                .Include(r => r.Seats)
-        //                .ToListAsync();
-
-        //    await _seatResRepository.DeleteSeatReservation(seatReservation);            
-        //}
+        
     }
 }

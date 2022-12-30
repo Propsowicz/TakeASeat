@@ -22,6 +22,7 @@ namespace TakeASeat.Data.DatabaseContext
         public DbSet<Ticket> Ticket { get; set; }
         public DbSet<SeatReservation> SeatReservation { get; set; }
         public DbSet<PaymentTransaction> PaymentTransaction { get; set; }
+        public DbSet<ProtectedKeys> ProtectedKeys { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

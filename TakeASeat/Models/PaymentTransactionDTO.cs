@@ -1,22 +1,30 @@
 ﻿namespace TakeASeat.Models
 {
-    public class PaymentTransactionDTO
+    public class PaymentParamsDTO
     {
+        public string amount { get; set; }
+        public string currency { get; set; } = "USD";
+        public string description { get; set; }
+        public string id { get; set; }          
+        public string paramsList { get; set; } = "amount;currency;description;id;type;url";
+        public string type { get; set; } = "0";
+        public string url { get; set; } = "https://www.example.com/thanks_page.php";
+    }
+
+    public class PaymentDataDTO : PaymentParamsDTO
+    {        
+        public string chk { get; set; } = string.Empty;
 
     }
 
-    public class PaymentDataDTO
+    public class FakePaymentParamsDTO   // can be deleted
     {
-        public double Amount { get; set; }
-        public string Currency { get; set; } = "USD";
-        public string Description { get; set; }
-        public string Id { get; set; }          // it's not Id but rather 
-        public string Ignore_last_payment_channel { get; set; } = "1";
-        public string ParamsList { get; set; } = "amount;currency;description;id;ignore_last_payment_channel;type;url;urlc";
-        public string Type { get; set; } = "0";
-        public string URL { get; set; } = "www.www.com";
-        public string URLC { get; set; } = "www.www.com";
-        public string PaymentSignature { get; set; } = "empty";
-
+        public string amount { get; set; } = "98.53";
+        public string currency { get; set; } = "PLN";
+        public string description { get; set; } = "Order123";
+        public string id { get; set; } = "123456";    
+        public string paramsList { get; set; } = "amount;currency;description;id;type;url";
+        public string type { get; set; } = "0";
+        public string url { get; set; } = "https://www.example.com/thanks_page.php";
     }
 }
