@@ -4,6 +4,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../context/UserContext';
 import {url, typHeader} from '../const/constValues'
 import OrderData from '../components/payment/OrderData'
+import OrderSummary from '../components/payment/OrderSummary';
+import { ProgressSpinner } from 'primereact/progressspinner';
+
 
 const Payment = () => {
     const {userData} = useContext(UserContext)
@@ -38,13 +41,26 @@ const Payment = () => {
     }
 
     useEffect(() => {
+        console.log(paymentData)
+        console.log(orderData)
         getOrderData()
         getPaymentData()
     },[])
 
     return (
         <div className="site-main-body">
+            
+            <p>Your order:</p>
             <OrderData data={orderData}/>
+            <br></br>
+            <p>Summary:</p>
+            {paymentData
+            ?
+                <OrderSummary data={paymentData} userName={userData.UserName} firstName={userData.FirstName} lastName={userData.LastName} email={userData.Email}/>
+            :
+                <ProgressSpinner/>
+            }
+            
         </div>
     );
 };

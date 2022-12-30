@@ -50,9 +50,17 @@ const OrderData = (props) => {
         );
     }
 
-    const actionBodyTemplate = (rowData) => {
+    const deleteButton = (rowData) => {
         return <Button type="button" className='seat-reservation-remove-button' 
         tooltip='remove from the order' name={rowData.id} onClick={removeReservationFromSeat}>X</Button>;
+    }
+
+    const seatCoords = (rowData) => {
+        return <span>{rowData.row}{rowData.position}</span>
+    }
+
+    const priceWithCurrency = (rowData) => {
+        return <span>{rowData.price}$</span>
     }
 
     console.log(props.data)
@@ -66,12 +74,10 @@ const OrderData = (props) => {
                 
                 <DataTable value={props.data} rowGroupMode="subheader" groupRowsBy="seatReservation.id"
                     sortMode="single" sortField="seatReservation.id" sortOrder={1} scrollable scrollHeight="500px"
-                    rowGroupHeaderTemplate={headerTemplate} responsiveLayout="scroll" style={{"width": '850px'}}>
-                    <Column field="row" header="ROW" style={{ maxWidth: '100px' }}></Column>
-                    <Column field="position" header="COLUMN" style={{ maxWidth: '300px' }}></Column>
-                    <Column field="price" header="PRICE"  style={{ minWidth: '260px' }}></Column>
-                    <Column body="USD" header="CURRENCY"  style={{ minWidth: '254px' }}></Column>
-                    <Column body={actionBodyTemplate} value="x"/>
+                    rowGroupHeaderTemplate={headerTemplate} responsiveLayout="scroll" style={{"width": '850px'}} className="order-table">
+                    <Column body={seatCoords} header="SEAT" style={{ maxWidth: '300px' }}></Column>                   
+                    <Column body={priceWithCurrency} header="PRICE" style={{ minWidth: '614PX' }}></Column>
+                    <Column body={deleteButton} value="x"/>
                     
                 </DataTable>
             </div>

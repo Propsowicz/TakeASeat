@@ -2,7 +2,7 @@
 
 import 'primereact/resources/primereact.min.css';
 import 'primeflex/primeflex.css';
-import '../css/HomePage.css'
+import '../css/Main.css'
 import { Button } from 'primereact/button';
 import { Link, useNavigate } from 'react-router-dom';
 

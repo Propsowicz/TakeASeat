@@ -153,6 +153,11 @@
   padding: 0rem;
 }
 
+.order-table {
+  border: 1px solid #383838;
+  
+}
+
 .seat-reservation-remove-button{
   width: 2rem;
   height: 2rem;
@@ -171,4 +176,13 @@
 
 .div-full-width {
   width: 800px;
+}
+
+.order-summary-cart {
+  margin: 0 auto 0 auto;
+  padding-top: 1rem;
+  width: 850px;
+  height: auto;
+  background: #1e1e1e;
+  border: 1px solid #383838;
 }
