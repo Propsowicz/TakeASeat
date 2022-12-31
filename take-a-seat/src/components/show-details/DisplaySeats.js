@@ -2,7 +2,7 @@
 
 import React, {useEffect, useState, useContext, useRef} from 'react';
 import { SeatRowComponent } from './SeatComponents/SeatRowComponent';
-import {url} from '../../const/constValues'
+import {url, typHeader} from '../../const/constValues'
 import { Tooltip } from 'primereact/tooltip';
 import { Button } from 'primereact/button';
 import ReservedSeats from './ReserveSeats/ReservedSeats';
@@ -54,9 +54,7 @@ const DisplaySeats = (props) => {
     const getSeats = async () => {
         const response = await fetch(`${url}/api/Seats/ShowId-${props.showId}`, {
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: typHeader,
         });
         if (response.status == 200) {
             const data = await response.json();

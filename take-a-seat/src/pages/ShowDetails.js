@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import CreateSeats from '../components/show-details/CreateSeats';
 import ShowDescription from '../components/show-details/ShowDescription';
-import {url} from '../const/constValues'
+import {url, typHeader} from '../const/constValues'
 import { Panel } from 'primereact/panel';
 import { Fieldset } from 'primereact/fieldset';
 import { ProgressSpinner } from 'primereact/progressspinner';
@@ -18,9 +18,7 @@ const ShowDetails = () => {
     const getShow = async () => {
       let response = await fetch (`${url}/api/Shows/${showId}`, {
           method: 'GET',
-          headers: {
-              'Content-Type': 'application/json'
-          }
+          headers: typHeader
       })
       if (response.status == 200){
           let data = await response.json()

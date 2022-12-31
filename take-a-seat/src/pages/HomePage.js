@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import ClosestShow from '../components/home-page/ClosestShow';
 import Landing from '../components/home-page/Landing';
-import {url} from '../const/constValues'
+import {url,typHeader} from '../const/constValues'
 import { ProgressSpinner } from 'primereact/progressspinner';
 
 
@@ -12,9 +12,7 @@ const HomePage = () => {
     const getShows = async () => {
         let response = await fetch (`${url}/api/Shows`, {
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            headers: typHeader
         })
         if (response.status == 200){
             let data = await response.json()

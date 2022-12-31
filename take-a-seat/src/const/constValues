@@ -1,7 +1,8 @@
 const url = 'https://localhost:7252'
 
 const typHeader = {
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
+    "Authorization": localStorage.getItem("JWTokens") ? `Bearer ${JSON.parse(localStorage.getItem('JWTokens')).accessToken}` : null,
 }
 
 export {url, typHeader}

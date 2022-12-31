@@ -42,7 +42,7 @@ const Payment = () => {
 
     useEffect(() => {
         console.log(paymentData)
-        console.log(orderData)
+        console.log(userData)
         getOrderData()
         getPaymentData()
     },[])

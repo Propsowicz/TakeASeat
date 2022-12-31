@@ -7,7 +7,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputNumber } from 'primereact/inputnumber';
 import { SeatRowComponent } from './SeatComponents/SeatRowComponent';
 import { Toast } from 'primereact/toast';
-import {url} from '../../const/constValues'
+import {url, typHeader} from '../../const/constValues'
 import { json, useNavigate } from 'react-router-dom';
 
 
@@ -67,12 +67,10 @@ const CreateSeats = (props) => {
                 tempSeatTable.push(seat)
             });
         });        
-        console.log(tempSeatTable)
+        console.log(typHeader)
         const response = await fetch(`${url}/api/Seats/create-multiple`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: typHeader,
             body: JSON.stringify(tempSeatTable)
         })            
         if(response.status != 201) {
