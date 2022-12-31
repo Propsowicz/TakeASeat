@@ -12,8 +12,8 @@ using TakeASeat.Data.DatabaseContext;
 namespace TakeASeat.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20221230105217_AppKeys")]
-    partial class AppKeys
+    [Migration("20221231131259_addRoles")]
+    partial class addRoles
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,6 +49,29 @@ namespace TakeASeat.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "47eeeba1-96bd-41c5-9620-a52278ec0acb",
+                            ConcurrencyStamp = "623244aa-ce6a-452e-8119-be5a50e2fc27",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        },
+                        new
+                        {
+                            Id = "39f7f814-9ee0-42d5-b09a-6cddb638287c",
+                            ConcurrencyStamp = "3c032fd7-13be-4dee-af73-956a1638f153",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        },
+                        new
+                        {
+                            Id = "32adf8c8-d930-424f-91fd-05a96a7407c1",
+                            ConcurrencyStamp = "ff07fa01-923b-4ce4-9791-3a0f90f67b5e",
+                            Name = "Organizer",
+                            NormalizedName = "ORGANIZER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -507,8 +530,16 @@ namespace TakeASeat.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<double>("TotalCost")
+                    b.Property<double>("Amount")
                         .HasColumnType("float");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -644,7 +675,7 @@ namespace TakeASeat.Migrations
                         new
                         {
                             Id = 1,
-                            Date = new DateTime(2022, 12, 21, 21, 0, 0, 0, DateTimeKind.Unspecified),
+                            Date = new DateTime(2023, 1, 21, 21, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Night Showing",
                             EventId = 1,
                             IsReadyToSell = false
@@ -652,7 +683,7 @@ namespace TakeASeat.Migrations
                         new
                         {
                             Id = 2,
-                            Date = new DateTime(2022, 12, 30, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            Date = new DateTime(2023, 1, 30, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Morning Showing",
                             EventId = 1,
                             IsReadyToSell = false
@@ -668,7 +699,7 @@ namespace TakeASeat.Migrations
                         new
                         {
                             Id = 4,
-                            Date = new DateTime(2022, 12, 21, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            Date = new DateTime(2023, 1, 21, 19, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Gonzo vs Bonzo",
                             EventId = 2,
                             IsReadyToSell = false
@@ -676,7 +707,7 @@ namespace TakeASeat.Migrations
                         new
                         {
                             Id = 5,
-                            Date = new DateTime(2022, 12, 23, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            Date = new DateTime(2023, 1, 23, 19, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "GGG vs Canelo",
                             EventId = 2,
                             IsReadyToSell = false
@@ -684,7 +715,7 @@ namespace TakeASeat.Migrations
                         new
                         {
                             Id = 6,
-                            Date = new DateTime(2022, 12, 28, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            Date = new DateTime(2023, 1, 28, 19, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "GGG vs Canelo II",
                             EventId = 2,
                             IsReadyToSell = false
@@ -692,7 +723,7 @@ namespace TakeASeat.Migrations
                         new
                         {
                             Id = 7,
-                            Date = new DateTime(2022, 12, 27, 16, 30, 0, 0, DateTimeKind.Unspecified),
+                            Date = new DateTime(2023, 1, 27, 16, 30, 0, 0, DateTimeKind.Unspecified),
                             Description = "Semifinal match I",
                             EventId = 3,
                             IsReadyToSell = false
@@ -700,7 +731,7 @@ namespace TakeASeat.Migrations
                         new
                         {
                             Id = 8,
-                            Date = new DateTime(2022, 12, 28, 16, 30, 0, 0, DateTimeKind.Unspecified),
+                            Date = new DateTime(2023, 1, 28, 16, 30, 0, 0, DateTimeKind.Unspecified),
                             Description = "Semifinal match I",
                             EventId = 3,
                             IsReadyToSell = false
@@ -716,7 +747,7 @@ namespace TakeASeat.Migrations
                         new
                         {
                             Id = 10,
-                            Date = new DateTime(2022, 12, 27, 16, 30, 0, 0, DateTimeKind.Unspecified),
+                            Date = new DateTime(2023, 1, 27, 16, 30, 0, 0, DateTimeKind.Unspecified),
                             Description = "Morning Routine",
                             EventId = 4,
                             IsReadyToSell = false
@@ -724,7 +755,7 @@ namespace TakeASeat.Migrations
                         new
                         {
                             Id = 11,
-                            Date = new DateTime(2022, 12, 28, 16, 30, 0, 0, DateTimeKind.Unspecified),
+                            Date = new DateTime(2023, 1, 28, 16, 30, 0, 0, DateTimeKind.Unspecified),
                             Description = "Morning Routine",
                             EventId = 4,
                             IsReadyToSell = false
@@ -732,7 +763,7 @@ namespace TakeASeat.Migrations
                         new
                         {
                             Id = 12,
-                            Date = new DateTime(2022, 12, 29, 16, 30, 0, 0, DateTimeKind.Unspecified),
+                            Date = new DateTime(2023, 1, 29, 16, 30, 0, 0, DateTimeKind.Unspecified),
                             Description = "Morning Routine",
                             EventId = 4,
                             IsReadyToSell = false
@@ -740,7 +771,7 @@ namespace TakeASeat.Migrations
                         new
                         {
                             Id = 13,
-                            Date = new DateTime(2022, 12, 27, 19, 30, 0, 0, DateTimeKind.Unspecified),
+                            Date = new DateTime(2023, 1, 27, 19, 30, 0, 0, DateTimeKind.Unspecified),
                             Description = "Casual Games",
                             EventId = 5,
                             IsReadyToSell = false
@@ -748,7 +779,7 @@ namespace TakeASeat.Migrations
                         new
                         {
                             Id = 14,
-                            Date = new DateTime(2022, 12, 30, 16, 30, 0, 0, DateTimeKind.Unspecified),
+                            Date = new DateTime(2023, 1, 30, 16, 30, 0, 0, DateTimeKind.Unspecified),
                             Description = "Local Final",
                             EventId = 5,
                             IsReadyToSell = false
@@ -792,12 +823,12 @@ namespace TakeASeat.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b9541160-8e5c-4fef-ab27-152145982825",
+                            ConcurrencyStamp = "dc6c6972-5a39-42a4-bf35-5a1e3f3c6c7f",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEC4uIDIGuMKfr7bFewE91XvHS0ODLiUU5RuXGJgXHmXP7duK5o7A0XouYwcRVrV4VA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKrLgRnqv/QHtEspfxvUJu6X+48/1R+FKVBmxpQcPqc02ThTKF1VpYl7nW0/vA6pdQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "bc5079cf-e449-46cc-9331-0bb93f8d151a",
+                            SecurityStamp = "9c58438c-ad7c-4a4d-8bc3-ad1306d48c0a",
                             TwoFactorEnabled = false,
                             UserName = "Flinston",
                             FirstName = "George",
@@ -807,12 +838,12 @@ namespace TakeASeat.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d8cef2a0-a8ea-41de-81ad-307a5ac2a135",
+                            ConcurrencyStamp = "2d7c1ff3-aabf-40fe-bcd8-6fb7a4a539d9",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEELFLL+dalhAcCZ8Q57x61o8R+HdFknDEK2dERKxzcnewhV52gfox2yGV4vVkEYljw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPPjQ5vo+ukajzn0YJwfep35SoYX7C+YBwtEjbRy7mOdiMSdbPiOo3yafp/svY88kw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a4cbc470-74a2-4818-8240-1b095de0938f",
+                            SecurityStamp = "eb130d1b-5668-4efb-954f-33ca069b20aa",
                             TwoFactorEnabled = false,
                             UserName = "LOG",
                             FirstName = "Logan",

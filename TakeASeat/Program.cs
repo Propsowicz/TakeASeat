@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using TakeASeat.BackgroundServices;
-using TakeASeat.Configurations;
 using TakeASeat.Data.DatabaseContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -20,6 +19,7 @@ using TakeASeat.Services.SeatService;
 using TakeASeat.Services.SeatReservationService;
 using TakeASeat.Services.BackgroundService;
 using TakeASeat.Services.PaymentService;
+using TakeASeat.Models.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,11 +72,11 @@ builder.Services.AddAuthentication();
 builder.Services.ConfigureIdentity();
 builder.Services.ConfigureJWT(builder.Configuration);
 
-
+// API versioning
+builder.Services.ConfigureApiVersioning();
 
 
 // BUILDING
-
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

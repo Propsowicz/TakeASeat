@@ -4,7 +4,6 @@ using TakeASeat.RequestUtils;
 using Microsoft.EntityFrameworkCore;
 using TakeASeat.Services.SeatReservationService;
 using TakeASeat.Models;
-//using System.Data.Entity;
 
 namespace TakeASeat.Services.PaymentService
 {
@@ -12,15 +11,16 @@ namespace TakeASeat.Services.PaymentService
     {
         private readonly DatabaseContext _context;
         private readonly ISeatResRepository _seatResRepository;
+
         public PaymentRepository(DatabaseContext context, ISeatResRepository seatResRepository)
         {
             _context= context;
             _seatResRepository= seatResRepository;
         }
-        public async Task createPaymentTransaction(IEnumerable<SeatReservation> seatReservations, string userId)
+        public async Task createPaymentTransactionRecord(PaymentTransaction paymentTranscation)
         {
-            throw new NotImplementedException();
-
+            await _context.PaymentTransaction.AddAsync(paymentTranscation);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<PaymentDataDTO> getPaymentData(string userId)
@@ -43,10 +43,8 @@ namespace TakeASeat.Services.PaymentService
             var dotpay_ID = _context.ProtectedKeys
                         .FirstOrDefault(k => k.Key == "DOTPAY_ID");
 
-            //b39582b4ac3c92451f21e25502bededa4bf9f89a1906c58edaffb5431491db93
-
-            var PaymentData = new PaymentUtils(dotpay_PIN.Value, dotpay_ID.Value, mainQuery, reservationsQuery); ;                     
-            return PaymentData.getPaymentData();
+            var paymentData = new PaymentData(dotpay_PIN.Value, dotpay_ID.Value, mainQuery, reservationsQuery);               
+            return paymentData.getPaymentData();
         }
 
         public async Task<IList<Seat>> getReservedSeats(string userId)
@@ -59,8 +57,6 @@ namespace TakeASeat.Services.PaymentService
                         .Include(s => s.Show)
                             .ThenInclude(s => s.Event)
                         .ToListAsync();
-        }
-
-        
+        }        
     }
 }

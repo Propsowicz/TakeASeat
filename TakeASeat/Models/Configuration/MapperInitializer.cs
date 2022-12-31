@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using TakeASeat.Data;
-using TakeASeat.Models;
 
-namespace TakeASeat.Configurations
+namespace TakeASeat.Models.Configuration
 {
     public class MapperInitializer : Profile
     {
@@ -38,8 +37,8 @@ namespace TakeASeat.Configurations
 
             CreateMap<SeatReservation, GetSeatReservationDTO>().ReverseMap();
 
-            CreateMap<PaymentTransaction, PaymentDataDTO>().ReverseMap();
-            CreateMap<PaymentTransaction, PaymentParamsDTO>().ReverseMap();
+            CreateMap<PaymentTransaction, CreatePaymentTranscationDTO>().ReverseMap();
+            CreateMap<PaymentTransaction, GetPaymentTranscationDTO>().ReverseMap();
         }
     }
 }

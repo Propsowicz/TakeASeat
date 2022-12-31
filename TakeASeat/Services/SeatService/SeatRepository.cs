@@ -12,11 +12,11 @@ namespace TakeASeat.Services.SeatService
 {
     public class SeatRepository : ISeatRepository
     {
-        private readonly DatabaseContext _context;             
+        private readonly DatabaseContext _context;
 
-        public SeatRepository(DatabaseContext context, IServiceProvider serviceProvider)
+        public SeatRepository(DatabaseContext context)
         {
-            _context= context;            
+            _context= context;   
         }
 
         public async Task CreateMultipleSeats(IEnumerable<Seat> seats)
@@ -24,7 +24,18 @@ namespace TakeASeat.Services.SeatService
             await _context.Seats.AddRangeAsync(seats);
             await _context.SaveChangesAsync();
             
-        }       
+        }
+        
+        public void DeleteEmptyReservation(int seatReservationId)
+        {
+            var reservation = _context.SeatReservation
+                                .Include(r => r.Seats)
+                                .FirstOrDefault(r => r.Id == seatReservationId);
+            if (reservation.Seats.Count == 0)
+            {
+                _context.SeatReservation.Remove(reservation);
+            }
+        }
 
         public async Task<IList<Seat[]>> GetSeats(int showId)
         {            
@@ -73,6 +84,8 @@ namespace TakeASeat.Services.SeatService
                     .FirstOrDefaultAsync();
             seat.ReservationId = null;
             await _context.SaveChangesAsync();
+            DeleteEmptyReservation(reservationId);
+
         }
 
         public async Task SetReservation(IEnumerable<Seat> seats, int? ReservationId)

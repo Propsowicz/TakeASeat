@@ -6,11 +6,9 @@ namespace TakeASeat.Services.PaymentService
 {
     public interface IPaymentRepository
     {
-
         Task<IList<Seat>> getReservedSeats(string userId);
         Task<PaymentDataDTO> getPaymentData(string userId);
-        Task createPaymentTransaction(IEnumerable<SeatReservation> seatReservations, string userId);
-
+        Task createPaymentTransactionRecord(PaymentTransaction paymentTranscation);
 
     }
 }

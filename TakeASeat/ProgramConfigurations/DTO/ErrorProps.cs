@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TakeASeat.Configurations
+namespace TakeASeat.ProgramConfigurations.DTO
 {
     public class ErrorProps
     {

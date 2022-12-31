@@ -19,6 +19,12 @@ namespace TakeASeat.Data.DatabaseContext.Seeds
                     Name = "User",
                     NormalizedName = "USER"
                 }
+                ,
+                new IdentityRole
+                {
+                    Name = "Organizer",
+                    NormalizedName = "ORGANIZER"
+                }
                 );
         }
     }

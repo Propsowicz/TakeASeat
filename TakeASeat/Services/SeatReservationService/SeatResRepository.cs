@@ -32,6 +32,8 @@ namespace TakeASeat.Services.SeatReservationService
             await _seatRepository.SetReservation(seats, reservation.Entity.Id);
         }
 
+        
+
         public async Task DeleteSeatReservation(int seatReservationId)
         {
             var query = await _context.SeatReservation

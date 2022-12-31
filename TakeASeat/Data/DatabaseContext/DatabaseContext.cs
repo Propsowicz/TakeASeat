@@ -33,6 +33,7 @@ namespace TakeASeat.Data.DatabaseContext
             builder.ApplyConfiguration(new EventSeed());
             builder.ApplyConfiguration(new EventTagEventM2MSeed());
             builder.ApplyConfiguration(new ShowSeed());
+            builder.ApplyConfiguration(new UserRoleSeed());
 
         }
 

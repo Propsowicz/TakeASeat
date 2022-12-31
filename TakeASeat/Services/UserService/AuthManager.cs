@@ -5,11 +5,10 @@ using TakeASeat.Models;
 using TakeASeat.RequestUtils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using TakeASeat.Configurations;
 using System.Text;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
-
+using TakeASeat.ProgramConfigurations.DTO;
 
 namespace TakeASeat.Services.UserService
 
@@ -63,7 +62,7 @@ namespace TakeASeat.Services.UserService
             var userRoles = await _userManager.GetRolesAsync(_user);
             foreach (var role in userRoles)
             {
-                claims.Add(new Claim("Role", role));
+                claims.Add(new Claim(ClaimTypes.Role, role));
             }
             return claims;
         }

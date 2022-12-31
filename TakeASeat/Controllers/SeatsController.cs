@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TakeASeat.Data;
@@ -29,7 +30,10 @@ namespace TakeASeat.Controllers
             _showRepository = serviceProvider.GetRequiredService<IShowRepository>();
             _seatResRepository = serviceProvider.GetRequiredService<ISeatResRepository>();
         }
+
+
         [HttpGet("ShowId-{showId:int}")]
+        [ApiVersion("1.0")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -41,6 +45,8 @@ namespace TakeASeat.Controllers
         }
 
         [HttpPost("create-multiple")]
+        [ApiVersion("1.0")]
+        [Authorize(Roles = "Administrator,Organizer")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -59,6 +65,11 @@ namespace TakeASeat.Controllers
         }
 
         [HttpPost("remove-reservation")]
+        [ApiVersion("1.0")]
+        [Authorize(Roles = "Administrator,Organizer,User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> RemoveSeatReservation([FromBody] RequestSeatParams seatParams)
         {
             if (!ModelState.IsValid)

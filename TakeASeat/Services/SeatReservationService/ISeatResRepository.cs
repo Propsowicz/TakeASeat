@@ -9,4 +9,5 @@ namespace TakeASeat.Services.SeatReservationService
         Task DeleteSeatReservations(IEnumerable<SeatReservation> seatReservations);
         Task DeleteSeatReservation(int seatReservationId);
     }
+
 }

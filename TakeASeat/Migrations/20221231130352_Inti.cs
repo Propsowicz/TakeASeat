@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TakeASeat.Migrations
 {
-    public partial class Init : Migration
+    public partial class Inti : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -75,6 +75,20 @@ namespace TakeASeat.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EventTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProtectedKeys",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Key = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProtectedKeys", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -189,7 +203,9 @@ namespace TakeASeat.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TotalCost = table.Column<double>(type: "float", nullable: false),
+                    Amount = table.Column<double>(type: "float", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     isAccepted = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -359,8 +375,8 @@ namespace TakeASeat.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "8e445865-a24d-4543-a6c6-9443d048cdb0", 0, "94a6a332-6e86-401d-bc9d-c01f7d39ac77", "User", null, false, "Logan", "Capuchino", false, null, null, null, "AQAAAAEAACcQAAAAECD31FSdTjWcWr4E1hprJw5TXnnERD6a/KDoxNsV2An13f3cFhS6s/9SwfoxgoSTCg==", null, false, "97cf8e98-594d-454e-81f8-df359803484c", false, "LOG" },
-                    { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "71aa6a5e-5f37-416a-9140-d7dd1e1a75a5", "User", null, false, "George", "Flinston", false, null, null, null, "AQAAAAEAACcQAAAAEOnarT8yDGdeIivM2WgbWcavOXQdBGreYTLa90ICMMOyrB1v148tOTl8aFhNxooO3A==", null, false, "8b1b3498-fcb9-4c5d-9831-f94cea889f52", false, "Flinston" }
+                    { "8e445865-a24d-4543-a6c6-9443d048cdb0", 0, "ce1b3c3a-26ba-43ec-b6b9-eb8ae9185e36", "User", null, false, "Logan", "Capuchino", false, null, null, null, "AQAAAAEAACcQAAAAEKbhmpdGgXcEIvvbZ0pc8WInSyDEPYDaQPQewLZzdXl6O3nO5E8O1VWIAGca7/cmIg==", null, false, "fe1bff55-e124-4b3c-ad5a-6aebda1aa938", false, "LOG" },
+                    { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "af447269-c477-42b2-8638-39f50097e32b", "User", null, false, "George", "Flinston", false, null, null, null, "AQAAAAEAACcQAAAAEOu/EOVcth3FSNMZMGK/wpQjCXbzMC73NHNvW2/KRwd3WujaNSkIhYcp8lJEpUD4zg==", null, false, "e00beed3-b9fc-4a70-a393-b536d91c86d6", false, "Flinston" }
                 });
 
             migrationBuilder.InsertData(
@@ -419,20 +435,20 @@ namespace TakeASeat.Migrations
                 columns: new[] { "Id", "Date", "Description", "EventId", "IsReadyToSell" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2022, 12, 21, 21, 0, 0, 0, DateTimeKind.Unspecified), "Night Showing", 1, false },
-                    { 2, new DateTime(2022, 12, 30, 9, 0, 0, 0, DateTimeKind.Unspecified), "Morning Showing", 1, false },
+                    { 1, new DateTime(2023, 1, 21, 21, 0, 0, 0, DateTimeKind.Unspecified), "Night Showing", 1, false },
+                    { 2, new DateTime(2023, 1, 30, 9, 0, 0, 0, DateTimeKind.Unspecified), "Morning Showing", 1, false },
                     { 3, new DateTime(2023, 1, 2, 9, 0, 0, 0, DateTimeKind.Unspecified), "Morning Showing", 1, false },
-                    { 4, new DateTime(2022, 12, 21, 19, 0, 0, 0, DateTimeKind.Unspecified), "Gonzo vs Bonzo", 2, false },
-                    { 5, new DateTime(2022, 12, 23, 19, 0, 0, 0, DateTimeKind.Unspecified), "GGG vs Canelo", 2, false },
-                    { 6, new DateTime(2022, 12, 28, 19, 0, 0, 0, DateTimeKind.Unspecified), "GGG vs Canelo II", 2, false },
-                    { 7, new DateTime(2022, 12, 27, 16, 30, 0, 0, DateTimeKind.Unspecified), "Semifinal match I", 3, false },
-                    { 8, new DateTime(2022, 12, 28, 16, 30, 0, 0, DateTimeKind.Unspecified), "Semifinal match I", 3, false },
+                    { 4, new DateTime(2023, 1, 21, 19, 0, 0, 0, DateTimeKind.Unspecified), "Gonzo vs Bonzo", 2, false },
+                    { 5, new DateTime(2023, 1, 23, 19, 0, 0, 0, DateTimeKind.Unspecified), "GGG vs Canelo", 2, false },
+                    { 6, new DateTime(2023, 1, 28, 19, 0, 0, 0, DateTimeKind.Unspecified), "GGG vs Canelo II", 2, false },
+                    { 7, new DateTime(2023, 1, 27, 16, 30, 0, 0, DateTimeKind.Unspecified), "Semifinal match I", 3, false },
+                    { 8, new DateTime(2023, 1, 28, 16, 30, 0, 0, DateTimeKind.Unspecified), "Semifinal match I", 3, false },
                     { 9, new DateTime(2023, 1, 5, 16, 30, 0, 0, DateTimeKind.Unspecified), "Final match", 3, false },
-                    { 10, new DateTime(2022, 12, 27, 16, 30, 0, 0, DateTimeKind.Unspecified), "Morning Routine", 4, false },
-                    { 11, new DateTime(2022, 12, 28, 16, 30, 0, 0, DateTimeKind.Unspecified), "Morning Routine", 4, false },
-                    { 12, new DateTime(2022, 12, 29, 16, 30, 0, 0, DateTimeKind.Unspecified), "Morning Routine", 4, false },
-                    { 13, new DateTime(2022, 12, 27, 19, 30, 0, 0, DateTimeKind.Unspecified), "Casual Games", 5, false },
-                    { 14, new DateTime(2022, 12, 30, 16, 30, 0, 0, DateTimeKind.Unspecified), "Local Final", 5, false }
+                    { 10, new DateTime(2023, 1, 27, 16, 30, 0, 0, DateTimeKind.Unspecified), "Morning Routine", 4, false },
+                    { 11, new DateTime(2023, 1, 28, 16, 30, 0, 0, DateTimeKind.Unspecified), "Morning Routine", 4, false },
+                    { 12, new DateTime(2023, 1, 29, 16, 30, 0, 0, DateTimeKind.Unspecified), "Morning Routine", 4, false },
+                    { 13, new DateTime(2023, 1, 27, 19, 30, 0, 0, DateTimeKind.Unspecified), "Casual Games", 5, false },
+                    { 14, new DateTime(2023, 1, 30, 16, 30, 0, 0, DateTimeKind.Unspecified), "Local Final", 5, false }
                 });
 
             migrationBuilder.CreateIndex(
@@ -547,6 +563,9 @@ namespace TakeASeat.Migrations
 
             migrationBuilder.DropTable(
                 name: "PaymentTransaction");
+
+            migrationBuilder.DropTable(
+                name: "ProtectedKeys");
 
             migrationBuilder.DropTable(
                 name: "Seats");

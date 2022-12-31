@@ -8,8 +8,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Cors.Infrastructure;
-using TakeASeat.Configurations;
 using Serilog;
+using TakeASeat.ProgramConfigurations.DTO;
+using Microsoft.AspNetCore.Mvc.Versioning;
 
 namespace TakeASeat.ProgramConfigurations
 {
@@ -28,12 +29,20 @@ namespace TakeASeat.ProgramConfigurations
                 {
                     o.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateIssuer = true,  // validate if token is from our app
-                        ValidateLifetime = true,    // exp date
-                        ValidateIssuerSigningKey = true,    // validate SECRET_KEY
+
+                        //ValidateIssuer = true,  // validate if token is from our app
+                        //ValidateLifetime = true,    // exp date
+                        //ValidateIssuerSigningKey = true,    // validate SECRET_KEY
+                        //ValidIssuer = jwtSettings.GetSection("Issuer").Value,
+                        //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))    // encoding and hashing the SECRET_KEY
+                        ValidateIssuer = true,
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
                         ValidIssuer = jwtSettings.GetSection("Issuer").Value,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))    // encoding and hashing the SECRET_KEY
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
                     };
+                    //o.Validate();
                 });
         }
 
@@ -75,6 +84,16 @@ namespace TakeASeat.ProgramConfigurations
                                                     restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information
                                             )
             );
+        }
+
+        public static void ConfigureApiVersioning(this IServiceCollection services)
+        {
+            var builder = services.AddApiVersioning(option =>
+            {
+                option.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+                option.ReportApiVersions = true;
+                option.AssumeDefaultVersionWhenUnspecified = true;
+            });
         }
 
     }

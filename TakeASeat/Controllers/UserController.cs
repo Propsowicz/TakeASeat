@@ -24,6 +24,7 @@ namespace TakeASeat.Controllers
         }
 
         [HttpPost("register")]
+        [ApiVersion("1.0")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -40,6 +41,7 @@ namespace TakeASeat.Controllers
         }
 
         [HttpPost("login")]
+        [ApiVersion("1.0")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

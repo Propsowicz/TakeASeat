@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Serilog;
-using TakeASeat.Configurations;
+using TakeASeat.ProgramConfigurations.DTO;
 
 namespace TakeASeat.ProgramConfigurations
 {

@@ -7,7 +7,9 @@ using TakeASeat.Models;
 using TakeASeat.RequestUtils;
 using TakeASeat.Services.PaymentService;
 using Microsoft.EntityFrameworkCore;
-
+using TakeASeat.Data;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace TakeASeat.Controllers
 {
@@ -23,17 +25,36 @@ namespace TakeASeat.Controllers
             _mapper = serviceProvider.GetRequiredService<IMapper>();
             _paymentRepository = serviceProvider.GetRequiredService<IPaymentRepository>();
         }
-
-
         [HttpGet]
+        [ApiVersion("1.0")]
+        [Authorize(Roles = "Administrator,Organizer,User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> getPaymentData([FromQuery] RequestPaymentParams requestPaymentParams)
         {
-            var response = await _paymentRepository.getPaymentData("e17202bb-0183-40db-8ef5-1811013e075d");
-            //var response = await _paymentRepository.getPaymentData(requestPaymentParams.UserId);
+            var response = await _paymentRepository.getPaymentData(requestPaymentParams.UserId);
             return StatusCode(200, response);
         }
 
-        
+        [HttpPost("create")]
+        [ApiVersion("1.0")]
+        [Authorize(Roles = "Administrator,Organizer,User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> createPaymentTransactionRecord([FromBody] CreatePaymentTranscationDTO paymentTranscationDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var query = _mapper.Map<PaymentTransaction>(paymentTranscationDTO);
+            await _paymentRepository.createPaymentTransactionRecord(query);           
+
+            return StatusCode(204);
+        }   
 
         
     }
