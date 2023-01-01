@@ -20,6 +20,7 @@ using TakeASeat.Services.SeatReservationService;
 using TakeASeat.Services.BackgroundService;
 using TakeASeat.Services.PaymentService;
 using TakeASeat.Models.Configuration;
+using TakeASeat.Services.EventTypesService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,6 +64,7 @@ builder.Services.AddScoped<ISeatRepository, SeatRepository>();
 builder.Services.AddScoped<ISeatResRepository, SeatResRepository>();
 builder.Services.AddScoped<IReleaseReservationService, ReleaseReservationService>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+builder.Services.AddScoped<IEventTypeRepository, EventTypeRepository>();
 
 // Backgorund service
 builder.Services.AddHostedService<ReleaseReservation>();

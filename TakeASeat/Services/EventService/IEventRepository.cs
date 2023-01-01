@@ -8,7 +8,8 @@ namespace TakeASeat.Services.EventService
     public interface IEventRepository
     {
 
-        Task<IPagedList<Event>> GetPaginatedAllWithoutPastShows(RequestParams _requestParams);
+        Task<IPagedList<Event>> GetEvents(RequestEventParams requestParams);
+        Task<int> GetEventRecordsNumber();
 
     }
 }

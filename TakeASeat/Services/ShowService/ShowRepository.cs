@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Drawing.Printing;
 //using System.Data.Entity;
 using TakeASeat.Data;
 using TakeASeat.Data.DatabaseContext;
+using TakeASeat.RequestUtils;
 using X.PagedList;
 
 namespace TakeASeat.Services.ShowService
@@ -13,8 +15,8 @@ namespace TakeASeat.Services.ShowService
         {
             _context= context;
         }
-        public async Task<IPagedList<Show>> GetClosestShows()
-        {           
+        public async Task<IPagedList<Show>> GetShows(int pageNumber, int pageSize)
+        {
             return await _context.Shows
                 .AsNoTracking()
                 .Where(s => s.Date > DateTime.Now)
@@ -26,7 +28,7 @@ namespace TakeASeat.Services.ShowService
                     .ThenInclude(e => e.EventTags)
                         .ThenInclude(t => t.EventTag)
                 .OrderBy(s => s.Date)
-                .ToPagedListAsync(1, 5); 
+                .ToPagedListAsync(pageNumber, pageSize);
         }
 
         public async Task<Show> GetShowDetails(int id)
@@ -50,6 +52,16 @@ namespace TakeASeat.Services.ShowService
             var show = await _context.Shows.Where(s => s.Id == id).FirstOrDefaultAsync();
             show.IsReadyToSell = true;
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> GetShowRecordNumber()
+        {
+            var query = await _context.Shows
+                .AsNoTracking()
+                .Where(s => s.Date > DateTime.Now)
+                .ToListAsync();
+            return query.Count();
+                
         }
     }
 }

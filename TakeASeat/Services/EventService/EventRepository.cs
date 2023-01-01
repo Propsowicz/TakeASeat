@@ -17,59 +17,42 @@ namespace TakeASeat.Services.EventService
         {
             _context = context;
         }
-
-        private List<int> getTagList(RequestParams requestParams)
+                
+        public async Task<IPagedList<Event>> GetEvents(RequestEventParams requestParams)
         {
-            return _context.EventTagEventM2M
-                .Where(src => src.EventTag.TagName
-                .Equals(requestParams.SearchString))
-                .Select(t => t.EventId).ToList();
-        }
-
-
-        public async Task<IPagedList<Event>> GetPaginatedAllWithoutPastShows(RequestParams requestParams) // without past shows not done yet!!!!!!
-        {
-            var typesList = requestParams.FilterString;
-            var tagIdList = getTagList(requestParams);
-
-            var orderBy = requestParams.Order;
-            switch (orderBy)
-            {
-                case "name":
-                case "-name":
-                    _orderBy = o => o.Name;
-                    break;
-                case "creator":
-                case "-creator":
-                    _orderBy = o => o.Creator.UserName;
-                    break;
-            }
-
             var query = _context.Events
-                .AsNoTracking()
-                .Include(et => et.EventTags)
-                    .ThenInclude(etn => etn.EventTag)
-                .Include(etyp => etyp.EventType)
-                .Include(ecr => ecr.Creator)
-                .Include(es => es.Shows)
-                .Where(search => search.Name.Contains(requestParams.SearchString)
-                || tagIdList.Contains(search.Id))
-                .Where(search => typesList.Contains(search.EventType.Name));
-
-            if (Convert.ToString(requestParams.Order[0]) != "-")
+                            .AsNoTracking();
+                            
+            if (requestParams.EventTypes.Count != 0)
             {
-                return await query
-                    .OrderBy(_orderBy)
-                    .ToPagedListAsync(requestParams.PageNumber, requestParams.PageSize);
-            }
+                query = query
+                        .Where(e => requestParams.EventTypes.Contains(e.EventType.Name))
+                        .Where(e => e.Name.Contains(requestParams.SearchString));
+            }           
             else
             {
-                return await query
-                    .OrderByDescending(_orderBy)
-                    .ToPagedListAsync(requestParams.PageNumber, requestParams.PageSize);
+                query = query
+                         .Where(e => e.Name.Contains(requestParams.SearchString));
             }
+
+            switch (requestParams.OrderBy)
+            {
+                case "name":
+                    query = query
+                            .OrderBy(e => e.Name);
+                    break;
+                case "-name":
+                    query = query
+                            .OrderByDescending(e => e.Name);
+                    break;
+            }
+
+            return await query.ToPagedListAsync(requestParams.PageNumber, requestParams.PageSize);
         }
 
-
+        public async Task<int> GetEventRecordsNumber()
+        {
+            return await _context.Events.CountAsync();
+        }
     }
 }

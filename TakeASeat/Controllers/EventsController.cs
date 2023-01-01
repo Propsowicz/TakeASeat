@@ -38,11 +38,22 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetAllWtihDetails([FromQuery] RequestParams r_params)
+        public async Task<IActionResult> GetEvents([FromQuery] RequestEventParams requestParams)
         {
-            var query = await _eventRepo.GetPaginatedAllWithoutPastShows(r_params);
-            var response = _mapper.Map<List<GetEventDetailsDTO>>(query);
+            var query = await _eventRepo.GetEvents(requestParams);
+            var response = _mapper.Map<List<GetEventDTO>>(query);
 
+            return StatusCode(200, response);
+        }
+
+        [HttpGet("records-number")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetEventRecordsNumber()
+        {
+            var response = await _eventRepo.GetEventRecordsNumber();
+            
             return StatusCode(200, response);
         }
 
@@ -58,12 +69,6 @@ namespace TakeASeat.Controllers
             return StatusCode(200, response);
         }
 
-        [HttpGet("eloszka")]
-        public async Task<IActionResult> GetSomeTest([FromQuery] RequestParams r_params)
-        {
-
-            //var response = await _ev.GetAll();
-            return Ok(await _eventRepo.GetPaginatedAllWithoutPastShows(r_params));
-        }
+        
     }
 }
