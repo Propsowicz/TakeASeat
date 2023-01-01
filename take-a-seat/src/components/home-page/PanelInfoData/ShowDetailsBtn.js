@@ -15,7 +15,7 @@ const ShowDetailsBtn = (props) => {
             <div className="col-12"><p className="panel-text-descr" /></div>
             <div className="col-12"><p className="panel-text" />
                 
-                <Button label="Check" className="p-button-rounded" onClick={goToShowDetails}/>
+                <Button label="Details" className="p-button-rounded" onClick={goToShowDetails}/>
                 
             </div>
         </div>

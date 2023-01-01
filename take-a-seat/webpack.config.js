@@ -38,6 +38,7 @@ module.exports = function (env) {
              *  https://webpack.js.org/concepts/loaders/
              */
             loaders: [
+                
                 /**
                  * eslint-loader
                  * 在构建之前，自动进行 eslint 检查

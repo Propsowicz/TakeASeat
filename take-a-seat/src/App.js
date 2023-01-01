@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import 'primereact/resources/themes/arya-green/theme.css';
+import 'primereact/resources/themes/lara-dark-purple/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeflex/primeflex.css';
 
@@ -14,6 +14,7 @@ import ShowDetails from './pages/ShowDetails';
 import Login from './pages/UserService/Login';
 import { UserContextProvider } from './context/UserContext';
 import Payment from './pages/Payment';
+import Shows from './pages/Shows'
 
 
 function App() {
@@ -25,6 +26,10 @@ function App() {
                     <Routes>    
                         <Route path="/" element={<HomePage />}/>
                         <Route path="/:slug/:showId/" element={<ShowDetails />}/>
+
+                        <Route path="/shows/" element={<Shows />}/>
+
+
 
                         <Route path="/login/" element={<Login />}/>
                         <Route path="/payment/" element={<Payment />}/>
