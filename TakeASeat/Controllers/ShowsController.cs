@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TakeASeat.Models;
@@ -30,13 +31,11 @@ namespace TakeASeat.Controllers
         {
             int PageNumber = 1;
             int PageSize = 5;
-            var query = await _showRepository.GetShows(PageNumber, PageSize);
-
-            var response = _mapper.Map<IList<GetClosestShows>>(query);
+            var response = await _showRepository.GetShows(PageNumber, PageSize);
 
             return StatusCode(200, response);
         }
-
+                
         [HttpGet]
         [ApiVersion("1.0")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -44,9 +43,7 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetShows([FromQuery] RequestShowParams requestParams)                  // USED
         {            
-            var query = await _showRepository.GetShows(requestParams.PageNumber, requestParams.PageSize);
-
-            var response = _mapper.Map<IList<GetClosestShows>>(query);
+            var response = await _showRepository.GetShows(requestParams.PageNumber, requestParams.PageSize);
 
             return StatusCode(200, response);
         }
@@ -61,6 +58,19 @@ namespace TakeASeat.Controllers
             var query = await _showRepository.GetShowRecordNumber();
 
             return StatusCode(200, query);
+        }
+
+        [HttpGet("eventId-{eventId:int}")]
+        [ApiVersion("1.0")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetShowsByEvent(int eventId)                  // USED
+        {
+            var response = await _showRepository.GetShowsByEvent(eventId);
+            //var response = _mapper.Map<List<GetShowDTO>>(query);
+
+            return StatusCode(200, response);
         }
 
         [HttpGet("{id:int}")]

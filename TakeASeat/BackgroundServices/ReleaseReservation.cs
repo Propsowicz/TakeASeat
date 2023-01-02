@@ -30,6 +30,7 @@ namespace TakeASeat.BackgroundServices
         {
             Console.WriteLine("Cleaning up unpaid reservations..");
             //await _reservationReleaseRepository.ReleaseUnpaidReservations();
+            // above code need to be uncommnet in production -> comment only for debugging
         }
 
     }
