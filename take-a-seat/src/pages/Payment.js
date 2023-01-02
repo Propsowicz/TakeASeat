@@ -49,8 +49,25 @@ const Payment = () => {
 
     return (
         <div className="site-main-body">
-            
-            <p>Your order:</p>
+            {
+                orderData[0]
+                ?
+                <div>
+                    <p>Your order:</p>
+                    <OrderData data={orderData}/>
+                    <br></br>
+                    <p>Summary:</p>
+                    {paymentData
+                    ?
+                        <OrderSummary data={paymentData} userName={userData.UserName} firstName={userData.FirstName} lastName={userData.LastName} email={userData.Email}/>
+                    :
+                        <ProgressSpinner/>
+                    }
+                </div>
+                :
+                <p>You don't have any orders..</p>
+            }
+            {/* <p>Your order:</p>
             <OrderData data={orderData}/>
             <br></br>
             <p>Summary:</p>
@@ -59,7 +76,7 @@ const Payment = () => {
                 <OrderSummary data={paymentData} userName={userData.UserName} firstName={userData.FirstName} lastName={userData.LastName} email={userData.Email}/>
             :
                 <ProgressSpinner/>
-            }
+            } */}
             
         </div>
     );

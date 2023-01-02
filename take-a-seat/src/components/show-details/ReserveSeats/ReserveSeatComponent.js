@@ -21,13 +21,8 @@ const ReserveSeatComponent = (props) => {
             "row": e.target.innerText[0],
             "position": e.target.innerText.slice(1),
             "price": rowData[0].price,            
-        }
-        console.log(typeof(reservedTempSeatData))  
-        console.log(reservedTempSeatData)  
-
+        }      
         setReservedSeatsList(reservedSeatsList => [...reservedSeatsList, reservedTempSeatData])
-        console.log(reservedSeatsList)  
-
     }
     
 

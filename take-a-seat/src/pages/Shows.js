@@ -17,6 +17,24 @@ const Shows = () => {
         setfirst(e.first)
     }
 
+    const PaginatorTemplate = {
+        layout: 'PrevPageLink PageLinks NextPageLink RowsPerPageDropdown CurrentPageReport',
+        'PrevPageLink': (options) => {
+            return (
+                <button type="button" className={options.className} onClick={options.onClick} disabled={options.disabled}>
+                    <span className="p-3">Previous</span>
+                </button>
+            )
+        },
+        'NextPageLink': (options) => {
+            return (
+                <button type="button" className={options.className} onClick={options.onClick} disabled={options.disabled}>
+                    <span className="p-3">Next</span>
+                </button>
+            )
+        },
+    }
+
     const getShows = async () => {
         const response = await fetch(`${url}/api/Shows?PageNumber=${pageNumber}&PageSize=${pageSize}`, {
             method: "GET",
@@ -46,24 +64,7 @@ const Shows = () => {
         }
     }
 
-    const PaginatorTemplate = {
-        layout: 'PrevPageLink PageLinks NextPageLink RowsPerPageDropdown CurrentPageReport',
-        'PrevPageLink': (options) => {
-            return (
-                <button type="button" className={options.className} onClick={options.onClick} disabled={options.disabled}>
-                    <span className="p-3">Previous</span>
-                </button>
-            )
-        },
-        'NextPageLink': (options) => {
-            return (
-                <button type="button" className={options.className} onClick={options.onClick} disabled={options.disabled}>
-                    <span className="p-3">Next</span>
-                </button>
-            )
-        },
-    }
-
+    
     useEffect(() => {
         getShowRecordsNumber()
         getShows()
@@ -72,8 +73,8 @@ const Shows = () => {
     return (
         <div className="site-main-body">
             {shows.map((show, index) => (
-                <ClosestShow key={index} event={show.event.name} eventId={show.event.id} showDescr={show.description} showId={show.id} date={show.date} type={show.event.eventType.name}
-                place={show.event.place} tags={show.event.eventTags} eventSlug={show.event.eventSlug}/>
+                <ClosestShow key={index} event={show.eventName} eventId={show.eventId} showDescr={show.description} showId={show.id} date={show.date} type={show.eventType}
+                place={show.eventPlace} tags={show.eventTags} eventSlug={show.eventSlug} seatsLeft={show.seatsLeft}/>
             ))}
             <Paginator template={PaginatorTemplate} first={first} rows={pageSize} totalRecords={showRecordsNumber} onPageChange={onPageChange}></Paginator>
 

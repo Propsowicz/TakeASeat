@@ -15,6 +15,7 @@ import Login from './pages/UserService/Login';
 import { UserContextProvider } from './context/UserContext';
 import Payment from './pages/Payment';
 import Shows from './pages/Shows'
+import Events from './pages/Events'
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
                         <Route path="/:slug/:showId/" element={<ShowDetails />}/>
 
                         <Route path="/shows/" element={<Shows />}/>
+                        <Route path="/events/" element={<Events />}/>
 
 
 

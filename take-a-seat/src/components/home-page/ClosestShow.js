@@ -12,10 +12,11 @@ const ClosestShow = (props) => {
   return (
     <div className='show-panel' >
         <Panel header={props.event} id={props.key}>
-            <PanelMainInfo showDescr={props.showDescr} date={props.date} place={props.place} eventId={props.eventId} showId={props.showId} eventSlug={props.eventSlug}/>           
+            <PanelMainInfo showDescr={props.showDescr} date={props.date} place={props.place} eventId={props.eventId} showId={props.showId} eventSlug={props.eventSlug}
+                            seatsLeft={props.seatsLeft}/>           
             <Divider type='dashed'/>
             {eventTags.map((tag, index) => (
-                <Chip label={tag.eventTag.tagName} className='generic-chip'/>
+                <Chip label={tag} className='generic-chip'/>
             ) )}
         </Panel>
 

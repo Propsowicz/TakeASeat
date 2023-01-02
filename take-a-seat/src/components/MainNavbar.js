@@ -21,6 +21,10 @@ export const MainNavbar = () => {
     const goToPayment = () => {
         navigate('/payment/')
     }
+
+    const goToEvents = () => {
+        navigate('/events/')
+    }
   return (
     <div className="card site-header">
         <div className="flex flex-row flex-wrap card-container yellow-container">
@@ -28,7 +32,7 @@ export const MainNavbar = () => {
                 <Button label="Home Page" className="p-button-text" onClick={goToHomePage}/>
             </div>
             <div className="flex align-items-center justify-content-center">
-                <Button label="All Events" className="p-button-text" />
+                <Button label="All Events" className="p-button-text" onClick={goToEvents}/>
             </div>
             <div className="flex align-items-center justify-content-center">
                 <Button label="Payment" className="p-button-text" onClick={goToPayment}/>

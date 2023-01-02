@@ -105,9 +105,7 @@ const DisplaySeats = (props) => {
         console.log(result)
         let response = await fetch(`${url}/api/SeatsReservation/create`,{
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: typHeader,
             body: JSON.stringify(result)
         })
         if (response.status !== 202){

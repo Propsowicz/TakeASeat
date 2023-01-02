@@ -12,6 +12,12 @@
   min-height: 50rem;
 }
 
+.site-main-body-events {    
+  margin: 3rem auto 0 auto;    
+  width: 70%;
+  min-height: 30rem;
+}
+
 .site-main-body-login {    
   margin: 3rem auto 0 auto;    
   width: 70%;
@@ -185,4 +191,19 @@
   height: auto;
   background: #1e1e1e;
   border: 1px solid #383838;
+}
+
+.show-by-event-container {
+  padding: 1rem;
+  text-decoration: none;
+}
+
+.show-by-event-container:hover {
+  border-radius: 5px;
+  background-color: #0b213f;
+}
+
+.event-params-bar {
+  padding-top: 1.5rem;
+  margin: 0 auto 0 auto;
 }

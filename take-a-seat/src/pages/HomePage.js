@@ -39,8 +39,8 @@ const HomePage = () => {
             
             <Landing />
             {shows.map((show, index) => (
-                <ClosestShow key={index} event={show.event.name} eventId={show.event.id} showDescr={show.description} showId={show.id} date={show.date} type={show.event.eventType.name}
-                place={show.event.place} tags={show.event.eventTags} eventSlug={show.event.eventSlug}/>
+                <ClosestShow key={index} event={show.eventName} eventId={show.eventId} showDescr={show.description} showId={show.id} date={show.date} type={show.eventType}
+                place={show.eventPlace} tags={show.eventTags} eventSlug={show.eventSlug} seatsLeft={show.seatsLeft}/>
             ))}
             <div className='flex flex-row-reverse'>
                 <Button label="Check All Shows" onClick={goToShows}/>
