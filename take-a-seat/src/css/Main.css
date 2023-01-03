@@ -18,6 +18,12 @@
   min-height: 30rem;
 }
 
+.site-main-body-payment {    
+  margin: 3rem auto 0 auto;    
+  width: 70%;
+  min-height: 30rem;
+}
+
 .site-main-body-login {    
   margin: 3rem auto 0 auto;    
   width: 70%;
@@ -27,6 +33,21 @@
 .show-panel {
   margin: 1rem 0 1rem 0;
   
+}
+
+.footer {
+  margin-top: 2rem;
+  width: 100%;
+  min-height: 10rem;
+  background-color: black;
+  color: #C4B5FD;
+  padding: 1rem 3rem;
+  text-align: center;
+}
+
+.footer-container {
+  width: 70%;
+  margin: 0 auto;
 }
 
 .panel-text {
@@ -42,6 +63,16 @@
 
 .generic-chip {
   margin: 0 0.5rem 0 0rem;
+}
+
+.generic-chip:hover {
+  cursor: pointer;
+  background-color: #C4B5FD;
+  color: black;
+}
+
+.footer-chip {
+  margin: 0.3rem;
 }
 
 .landing-img {
@@ -74,15 +105,21 @@
   width: 2.1rem;
   padding: 0;
   border-radius: 2px;
-  color:black
+  color: black;
 }
 
 .seat-component:hover {
   cursor: pointer;
+  background-color: rgba(162, 162, 162, 0.866);
+}
+
+.custom-gap-2 {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
 }
 
 .seat-component-reserved {
-  color: red;
+  color: black;
   background: rgb(64, 64, 64);
 }
 
@@ -96,9 +133,10 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 4rem;
-  background-color: rgba(41, 40, 40, 0.477);
+  min-height: 4rem;
+  background-color: #071426;
   border-radius: 5px;
+  border: 1px solid #0b213f;
   margin: 0.2rem 0 0.2rem 0;
 }
 
@@ -206,4 +244,21 @@
 .event-params-bar {
   padding-top: 1.5rem;
   margin: 0 auto 0 auto;
+}
+
+.ul-item {
+  padding-bottom: 2rem;
+}
+
+.ul-item:last-of-type {
+  padding-bottom: 1rem;
+}
+
+.ul-item a {
+  text-decoration: none;
+}
+
+.row-price-text {
+  padding-left: 1em;
+  color: #C4B5FD;
 }

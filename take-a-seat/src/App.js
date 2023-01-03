@@ -16,6 +16,7 @@ import { UserContextProvider } from './context/UserContext';
 import Payment from './pages/Payment';
 import Shows from './pages/Shows'
 import Events from './pages/Events'
+import ShowsByTag from './pages/ShowsByTag';
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
 
                         <Route path="/shows/" element={<Shows />}/>
                         <Route path="/events/" element={<Events />}/>
+                        <Route path="/tags/:tagName/" element={<ShowsByTag />}/>
 
 
 

@@ -3,16 +3,15 @@
 import React, { useEffect, useState } from 'react';
 
 const ReservedSeats = (props) => {
-    const [reservedSeatsList, setReservedSeatsList] = useState(props.list);
     
     return (
         <div>
+            <span>Reserved seats: </span>
             {props.list.map(seat => (
-                <button type="button" className={'seat-component text-500 '}>
+                <button type="button" className={'seat-component font-medium custom-gap-2'}>
                     {seat.row + seat.position}
                 </button>
             ))}
-
         </div>
     );
 };

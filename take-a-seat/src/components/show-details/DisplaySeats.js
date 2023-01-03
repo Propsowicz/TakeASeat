@@ -51,6 +51,10 @@ const DisplaySeats = (props) => {
         return totalPrice
     }
 
+    const getRowPrice = (row) => {
+        return row[0].price
+    }
+
     const getSeats = async () => {
         const response = await fetch(`${url}/api/Seats/ShowId-${props.showId}`, {
             method: 'GET',
@@ -59,6 +63,7 @@ const DisplaySeats = (props) => {
         if (response.status == 200) {
             const data = await response.json();
             setSeats(data);
+            console.log(data);
         } else {
             console.log(response.status);
             console.log(response.statusText);
@@ -124,40 +129,34 @@ const DisplaySeats = (props) => {
     return (
         <div>          
             <Toast ref={toast} position="top-center"/>
-
-            {seats.map((row) => (
-                <div className="card">
+            {seats.map((row) => (                
                     <div className="card-container overflow-hidden">
-                        <div className="flex gap-2 seat-rows">                           
-                            {row.map((seat) => (
-                                <div>
-                                    <button type="button" className={`text-500 seat-component bg-${seat.seatColor}`}
-                                    name={seat.price} onClick={reserveSeats} title={seat.id}> 
-                                        {seat.row + seat.position}
-                                    </button>   
-                                    {/* <Tooltip target=".seat-component" autoHide={true}>
-                                        <div className='seat-tooltip'>
-                                            <p>Price: {seat.price}$</p>              
-                               
-                                            </div>
-                                    </Tooltip> */}                                    
-                                </div>                
-                            ))}
+                        <div className="grid card-container overflow-hidden">                              
+                            <div className='seat-rows grid'>
+                                <span className='col-2 md:col-2 lg:col-2 row-price-text'>{getRowPrice(row)}$</span>
+                                <div className='col-10 md:col-10 lg:col-10 flex gap-2'>
+                                    {row.map((seat) => (                                    
+                                        <button type="button" className={`font-medium seat-component bg-${seat.seatColor}`}
+                                        name={seat.price} onClick={reserveSeats} title={seat.id}> 
+                                            {seat.row + seat.position}
+                                        </button>                                   
+                                    ))}
+                                </div>                                
+                            </div>                            
                         </div>                                     
                     </div>
-                </div>
+                
             ))}
-            <div className="flex gap-2 seat-rows">
-                <span>Reserved seats:</span>
-                {/* {reservedSeatsList.map((seat) => (
-                    //<ReservedSeats row={seat.row} position={seat.position}/>
-                    // <button type="button" className={'seat-component text-500'} key={seat.inx}>
-                    //     {seat.row + seat.position}
-                    // </button>
-                ))} */}
-                <ReservedSeats list={reservedSeatsList}/>
-                <span>{getPrice()}$</span>
-                <Button label="Make an order" onClick={showConfirmToast}/>
+            <div className="grid seat-rows">
+                <div className='col-12 md:col-12 lg:col-8'>
+                    <ReservedSeats list={reservedSeatsList}/>                    
+                </div>
+                <div className='col-12 md:col-12 lg:col-2'>
+                    <span>Total cost: {getPrice()}$</span>
+                </div>
+                <div className='col-12 md:col-12 lg:col-2'>
+                    <Button label="Make an order" onClick={showConfirmToast}/>
+                </div>                
             </div>
 
         </div>

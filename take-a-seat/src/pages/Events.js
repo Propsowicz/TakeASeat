@@ -14,7 +14,7 @@ import { Dropdown } from 'primereact/dropdown';
 
 
 const Events = () => {    
-    const [searchString, setSearchString] = useState(null)
+    const [searchString, setSearchString] = useState("")
     const [sortOrder, setSortOrder] = useState(null)
     const [eventTypesParams, setEventTypesParams] = useState([])
     const [eventTypesList, setEventTypesList] = useState([])
@@ -91,7 +91,7 @@ const Events = () => {
 
     const getEvents = async () => {
         let urlEndPoint = `${url}/api/Events?PageNumber=${pageNumber}&PageSize=${pageSize}`
-        if (searchString !== null){
+        if (searchString.length > 0){
             urlEndPoint += `&SearchString=${searchString}`            
         }
         if (sortOrder !== null) {
