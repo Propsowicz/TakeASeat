@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.Tracing;
 using System.Drawing.Printing;
+using System.Linq;
 //using System.Data.Entity;
 using TakeASeat.Data;
 using TakeASeat.Data.DatabaseContext;
@@ -108,5 +110,35 @@ namespace TakeASeat.Services.ShowService
                     .ToPagedListAsync(1, 5);
         }
 
+        public async Task<IPagedList<GetShowsDTO>> GetShowsByEventTag(RequestTagsParams requestParams)
+        {   
+            var eventTagName = requestParams.EventTagName;
+
+            var tagsList = await _context.EventTagEventM2M
+                .Where(t => t.EventTag.TagName == eventTagName)
+                .Select(t => t.EventId)
+                .ToListAsync();
+
+            return await _context.Shows
+            .AsNoTracking()
+            .Where(s => tagsList.Contains(s.Event.Id))
+            .Select(s => 
+                new GetShowsDTO
+                {
+                    Id = s.Id,
+                    IsReadyToSell = s.IsReadyToSell,
+                    Date = s.Date,
+                    Description = s.Description,
+                    EventName = s.Event.Name,
+                    EventId = s.EventId,
+                    EventPlace = s.Event.Place,
+                    EventSlug = s.Event.EventSlug,
+                    EventType = s.Event.EventType.Name,
+                    EventTags = s.Event.EventTags.Select(t => t.EventTag.TagName).ToList(),
+                    SeatsLeft = s.Seats.Where(s => s.ReservationId == null).Count()
+                })
+            .ToPagedListAsync(requestParams.PageNumber, requestParams.PageSize);
+
+        }
     }
 }
