@@ -28,6 +28,14 @@
   margin: 3rem auto 0 auto;    
   width: 70%;
   min-height: 30rem;
+  text-align: center;
+}
+
+.site-main-body-register {
+  margin: 3rem auto 0 auto;    
+  width: 70%;
+  min-height: 30rem;
+  text-align: center;
 }
 
 .show-panel {
@@ -98,6 +106,10 @@
 
 .bg-orange {
   background: orange;
+}
+
+.bg-grey {
+  background: grey;
 }
 
 .seat-component {
@@ -199,7 +211,6 @@
 
 .order-table {
   border: 1px solid #383838;
-  
 }
 
 .seat-reservation-remove-button{
@@ -212,6 +223,7 @@
   border: 1px solid red;
   border-radius: 15px;
   padding: 0;
+  
 }
 
 .margin-lr {
@@ -225,9 +237,9 @@
 .order-summary-cart {
   margin: 0 auto 0 auto;
   padding-top: 1rem;
-  width: 850px;
+  min-width: 850px;
   height: auto;
-  background: #1e1e1e;
+  background: #071426;
   border: 1px solid #383838;
 }
 

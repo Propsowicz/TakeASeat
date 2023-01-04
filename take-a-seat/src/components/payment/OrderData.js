@@ -42,10 +42,10 @@ const OrderData = (props) => {
 
     const headerTemplate = (props) => {
         return (                                 
-                <div className="grid div-full-width">                    
+                <div className="grid div-full-width">   
+                    <Button type="button" className='seat-reservation-remove-button col-1' tooltip='remove order' name={props.seatReservation.id} onClick={deleteReservation}>X</Button>                 
                     <div className="col-7 align-items-center justify-content-center font-bold text-green-500 border-round ">{props.show.event.name} : {props.show.description}</div>
-                    <div className="col-4 align-items-center justify-content-center font-bold text-green-500 border-round ">{dateSerializer(props.show.date)}</div>
-                    <Button type="button" className='seat-reservation-remove-button col-1' tooltip='remove from the order' name={props.seatReservation.id} onClick={deleteReservation}>X</Button>
+                    <div className="col-4 align-items-center justify-content-center font-bold text-green-500 border-round ">{dateSerializer(props.show.date)}</div>                    
                 </div>                    
         );
     }
@@ -70,13 +70,13 @@ const OrderData = (props) => {
 
     return (
         <div>
-            <div className="card">
+            <div className="order-summary-cart">
                 
                 <DataTable value={props.data} rowGroupMode="subheader" groupRowsBy="seatReservation.id"
                     sortMode="single" sortField="seatReservation.id" sortOrder={1} scrollable scrollHeight="500px"
-                    rowGroupHeaderTemplate={headerTemplate} responsiveLayout="scroll" style={{"width": '850px'}} className="order-table">
+                    rowGroupHeaderTemplate={headerTemplate} responsiveLayout="scroll" style={{"min-width": '850px'}} className="order-table">
                     <Column body={seatCoords} header="SEAT" style={{ maxWidth: '300px' }}></Column>                   
-                    <Column body={priceWithCurrency} header="PRICE" style={{ minWidth: '614PX' }}></Column>
+                    <Column body={priceWithCurrency} header="PRICE" style={{ minWidth: '614px' }}></Column>
                     <Column body={deleteButton} value="x"/>
                     
                 </DataTable>

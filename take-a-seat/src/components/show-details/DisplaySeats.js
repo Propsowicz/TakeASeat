@@ -120,10 +120,15 @@ const DisplaySeats = (props) => {
         }        
     }
 
+    function isSeatReserved(seat){
+        if (seat.reservationId === 0){ return false }
+        return true
+    }
 
     useEffect(() => {
         getSeats()
         getPrice()
+        console.log(userData)
     }, [])
 
     return (
@@ -135,29 +140,47 @@ const DisplaySeats = (props) => {
                             <div className='seat-rows grid'>
                                 <span className='col-2 md:col-2 lg:col-2 row-price-text'>{getRowPrice(row)}$</span>
                                 <div className='col-10 md:col-10 lg:col-10 flex gap-2'>
-                                    {row.map((seat) => (                                    
-                                        <button type="button" className={`font-medium seat-component bg-${seat.seatColor}`}
-                                        name={seat.price} onClick={reserveSeats} title={seat.id}> 
-                                            {seat.row + seat.position}
-                                        </button>                                   
-                                    ))}
+                                    {row.map((seat) => (   
+                                        <div>
+                                        {
+                                            isSeatReserved(seat)
+                                            ?
+                                                <button type="button" className={`font-medium seat-component bg-grey`}
+                                                name={seat.price} onClick={reserveSeats} title={seat.id} disabled={true}>  
+                                                    {seat.row + seat.position}
+                                                </button>  
+                                            :
+                                                <button type="button" className={`font-medium seat-component bg-${seat.seatColor}`}
+                                                name={seat.price} onClick={reserveSeats} title={seat.id}> 
+                                                    {seat.row + seat.position}
+                                                </button>  
+                                        }
+                                        </div>                                                                         
+                                    ))}                                    
                                 </div>                                
                             </div>                            
                         </div>                                     
                     </div>
                 
             ))}
-            <div className="grid seat-rows">
-                <div className='col-12 md:col-12 lg:col-8'>
-                    <ReservedSeats list={reservedSeatsList}/>                    
+            {
+                userData.UserName
+                ?
+                <div className="grid seat-rows">
+                    <div className='col-12 md:col-12 lg:col-8'>
+                        <ReservedSeats list={reservedSeatsList}/>                    
+                    </div>
+                    <div className='col-12 md:col-12 lg:col-2'>
+                        <span>Total cost: {getPrice()}$</span>
+                    </div>
+                    <div className='col-12 md:col-12 lg:col-2'>
+                        <Button label="Make an order" onClick={showConfirmToast}/>
+                    </div>                
                 </div>
-                <div className='col-12 md:col-12 lg:col-2'>
-                    <span>Total cost: {getPrice()}$</span>
-                </div>
-                <div className='col-12 md:col-12 lg:col-2'>
-                    <Button label="Make an order" onClick={showConfirmToast}/>
-                </div>                
-            </div>
+                :
+                <p></p>
+            }
+            
 
         </div>
         

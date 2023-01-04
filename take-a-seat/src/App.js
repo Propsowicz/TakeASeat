@@ -17,6 +17,7 @@ import Payment from './pages/Payment';
 import Shows from './pages/Shows'
 import Events from './pages/Events'
 import ShowsByTag from './pages/ShowsByTag';
+import Register from './pages/UserService/Register';
 
 
 function App() {
@@ -36,6 +37,9 @@ function App() {
 
 
                         <Route path="/login/" element={<Login />}/>
+                        <Route path="/register/" element={<Register />}/>
+
+
                         <Route path="/payment/" element={<Payment />}/>
                     </Routes>
                     <MainFooter />

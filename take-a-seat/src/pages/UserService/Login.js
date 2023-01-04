@@ -7,12 +7,13 @@ import { InputText } from 'primereact/inputtext';
 import {UserContext} from '../../context/UserContext'
 import { Message } from 'primereact/message';
 import { Messages } from 'primereact/messages';
+import {Link} from 'react-router-dom'
 
 
 const Login = () => {
     const {login} = useContext(UserContext)
-    const {msg401} = useContext(UserContext)
-    const {msg500} = useContext(UserContext)
+    const {WrongUsernameOrPassword} = useContext(UserContext)
+    const {StatusCode500} = useContext(UserContext)
 
     return (
         <div className="site-main-body-login">
@@ -21,8 +22,12 @@ const Login = () => {
                 <Password placeholder='password'  feedback={false} toggleMask={true} name='password' className='col-12 l-log-comp' inputClassName='login-component'/>
                 <Button label='Login' className='col-12 login-component'/>                            
             </form>
-            <Messages ref={msg401} />
-            <Messages ref={msg500} />   
+            <Messages ref={WrongUsernameOrPassword} />
+            <Messages ref={StatusCode500} />
+            <div>
+                <p>Don't have an account yet? <Link to={'/register/'}>Sign Up.</Link></p>
+            </div>   
+            
         </div>
     );
 };
