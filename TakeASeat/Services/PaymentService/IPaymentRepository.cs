@@ -8,6 +8,7 @@ namespace TakeASeat.Services.PaymentService
     {
         Task<IList<Seat>> getReservedSeats(string userId);
         Task<PaymentDataDTO> getPaymentData(string userId);
+        Task<GetTotalCostByUser> getTotalCost(string userId);
         Task createPaymentTransactionRecord(PaymentTransaction paymentTranscation);
 
     }

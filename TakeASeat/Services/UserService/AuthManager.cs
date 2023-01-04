@@ -82,10 +82,11 @@ namespace TakeASeat.Services.UserService
 
         public async Task<string> CreateRefreshJWToken(LoginUserDTO userDTO)
         {
-            _user = _mapper.Map<User>(userDTO);
-            await _userManager.RemoveAuthenticationTokenAsync(_user, loginProvider, "RefreshToken");
-            var newRefreshToken = await _userManager.GenerateUserTokenAsync(_user, loginProvider, "RefreshToken");
-            //var result = await _userManager.SetAuthenticationTokenAsync(_user, loginProvider, "RefreshToken", newRefreshToken);
+            _user = await _userManager.FindByNameAsync(userDTO.UserName);
+            await _userManager.RemoveAuthenticationTokenAsync(_user, loginProvider, "RefreshToken");            
+            var newRefreshToken = await _userManager.GenerateUserTokenAsync(_user, loginProvider, "RefreshToken");            
+            await _userManager.SetAuthenticationTokenAsync(_user, loginProvider, "RefreshToken", newRefreshToken);
+           
             return newRefreshToken;
         }
 
@@ -96,21 +97,22 @@ namespace TakeASeat.Services.UserService
         }
 
         public async Task<JWTokenRequest> VerifyRefreshToken(JWTokenRequest request)
-        {
+        {            
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
             var tokenContent = jwtSecurityTokenHandler.ReadJwtToken(request.AccessJWToken);
             var username = tokenContent.Claims.ToList().FirstOrDefault(t => t.Type == "UserName")?.Value;
             var _user = await _userManager.FindByNameAsync(username);
-            _mapper.Map(_userDTO, _user);
+            var userDTO = _mapper.Map<LoginUserDTO>(_user);
 
             var isTokenValid = await _userManager.VerifyUserTokenAsync(_user, loginProvider, "RefreshToken", request.RefreshJWToken);
             if (isTokenValid)
             {
-                return new JWTokenRequest { AccessJWToken = await CreateAccessJWToken(_userDTO), RefreshJWToken = await CreateRefreshJWToken(_userDTO) };
+                return new JWTokenRequest { AccessJWToken = await CreateAccessJWToken(userDTO), RefreshJWToken = await CreateRefreshJWToken(userDTO) };
             }
             await _userManager.UpdateSecurityStampAsync(_user);
 
             return null;
         }
+        
     }
 }

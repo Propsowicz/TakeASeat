@@ -57,6 +57,17 @@ namespace TakeASeat.Services.PaymentService
                         .Include(s => s.Show)
                             .ThenInclude(s => s.Event)
                         .ToListAsync();
-        }        
+        }
+
+        public async Task<GetTotalCostByUser> getTotalCost(string userId)
+        {
+            var query = await _context.Seats
+                            .AsNoTracking()
+                            .Where(s => s.SeatReservation.UserId == userId)
+                            .Select(s => s.Price)
+                            .ToListAsync();
+                            
+            return new GetTotalCostByUser { TotalCost = Math.Round(query.Sum(), 2) };
+        }
     }
 }

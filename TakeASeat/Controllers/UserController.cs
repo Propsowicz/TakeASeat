@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using TakeASeat.Data;
 using TakeASeat.Models;
+using TakeASeat.RequestUtils;
 using TakeASeat.Services.UserService;
 
 namespace TakeASeat.Controllers
@@ -37,7 +40,26 @@ namespace TakeASeat.Controllers
             var user = _mapper.Map<User>(userDTO);
             var response = await _userManager.CreateAsync(user, userDTO.Password);
 
-            return StatusCode(201);
+            if (response.Succeeded) { return StatusCode(201); }
+            else { return StatusCode(400, response); }            
+        }
+
+        [HttpPost("refresh")]
+        [ApiVersion("1.0")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> RefreshToken([FromBody] JWTokenRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var response = await _authManager.VerifyRefreshToken(request);
+
+            if (response ==null) { return StatusCode(400); }
+            else { return StatusCode(200, response); }
+
         }
 
         [HttpPost("login")]
@@ -51,7 +73,7 @@ namespace TakeASeat.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest();
-            }
+            }            
 
             if (!await _authManager.ValidateUser(userDTO))
             {

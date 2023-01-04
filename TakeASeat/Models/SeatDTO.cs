@@ -18,9 +18,15 @@ namespace TakeASeat.Models
         public string SeatColor { get; set; }
 
     }
-    public class GetSeatDTO : CreateSeatDTO
+    public class GetSeatDTO
     {
-        public int Id { get; set; }        
+        public int Id { get; set; }
+        public int ShowId { get; set; }
+        public char Row { get; set; }
+        public int Position { get; set; }
+        public double Price { get; set; }
+        public string SeatColor { get; set; }
+        public int ReservationId { get; set; }
     }
 
     public class ReserveSeatsDTO

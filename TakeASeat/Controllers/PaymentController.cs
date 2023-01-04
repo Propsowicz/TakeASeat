@@ -37,6 +37,18 @@ namespace TakeASeat.Controllers
             return StatusCode(200, response);
         }
 
+        [HttpGet("total-user-cost")]
+        [ApiVersion("1.0")]
+        [Authorize(Roles = "Administrator,Organizer,User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> getTotalCostByUser([FromQuery] RequestPaymentParams requestPaymentParams)
+        {
+            var response = await _paymentRepository.getTotalCost(requestPaymentParams.UserId);
+            return StatusCode(200, response);
+        }
+
         [HttpPost("create")]
         [ApiVersion("1.0")]
         [Authorize(Roles = "Administrator,Organizer,User")]

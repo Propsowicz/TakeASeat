@@ -28,13 +28,7 @@ namespace TakeASeat.ProgramConfigurations
                 .AddJwtBearer(o =>
                 {
                     o.TokenValidationParameters = new TokenValidationParameters
-                    {
-
-                        //ValidateIssuer = true,  // validate if token is from our app
-                        //ValidateLifetime = true,    // exp date
-                        //ValidateIssuerSigningKey = true,    // validate SECRET_KEY
-                        //ValidIssuer = jwtSettings.GetSection("Issuer").Value,
-                        //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))    // encoding and hashing the SECRET_KEY
+                    {                       
                         ValidateIssuer = true,
                         ValidateAudience = false,
                         ValidateLifetime = true,
@@ -42,7 +36,6 @@ namespace TakeASeat.ProgramConfigurations
                         ValidIssuer = jwtSettings.GetSection("Issuer").Value,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
                     };
-                    //o.Validate();
                 });
         }
 
@@ -58,7 +51,8 @@ namespace TakeASeat.ProgramConfigurations
 
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), services);
             builder.AddTokenProvider("TakeASeat", typeof(DataProtectorTokenProvider<User>));
-            builder.AddEntityFrameworkStores<DatabaseContext>().AddDefaultTokenProviders();
+            builder.AddEntityFrameworkStores<DatabaseContext>();
+            builder.AddDefaultTokenProviders();
         }
 
         public static void ConfigureCORS(this IServiceCollection services, string corsPolicy)

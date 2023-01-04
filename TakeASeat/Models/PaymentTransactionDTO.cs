@@ -33,4 +33,9 @@
         public int Id { get; set; }
         public GetUserDTO User { get; set; }
     }
+
+    public class GetTotalCostByUser
+    {
+        public double TotalCost { get; set; }
+    }
 }

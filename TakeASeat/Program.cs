@@ -79,7 +79,6 @@ builder.Services.ConfigureJWT(builder.Configuration);
 // API versioning
 builder.Services.ConfigureApiVersioning();
 
-
 // BUILDING
 var app = builder.Build();
 
