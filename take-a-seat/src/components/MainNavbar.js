@@ -8,6 +8,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Badge } from 'primereact/badge';
 import {UserContext} from '../context/UserContext'
 import {url, typHeader} from '../const/constValues'
+import { Dropdown } from 'primereact/dropdown';
+
 
 import React, {useState, useContext, useEffect} from 'react'
 
@@ -16,6 +18,25 @@ export const MainNavbar = () => {
     const {userData} = useContext(UserContext)
     const {logout} = useContext(UserContext)
     const navigate = useNavigate()
+
+    const organizerPanel = [
+        {label: 'Event', code: 'event',
+        items: [
+            {label: 'Create', value: '/create/event'},
+            {label: 'Modify', value: '/created/events'},
+        ]
+        },
+        {label: 'Show', code: 'show',
+        items: [
+            {label: 'Create', value: '/create/show'},
+            {label: 'Modify', value: '/created/shows'},
+        ]
+        }
+    ]
+
+    const goToOrganizerPanelOption = (e) => {
+        navigate(e.value)
+    }
 
     const getTotalCostByUser = async () => {
         if (userData.UserId){
@@ -28,6 +49,14 @@ export const MainNavbar = () => {
                 setCostSummary(data.totalCost)
             }
         }        
+    }
+
+    const checkUserRole = () => {
+        let userRole = userData["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+        if (userRole === "Organizer" || userRole === "Administrator") {
+            return true;
+        }
+        return false;
     }
 
     const getCostSummary = (costSummary) => {
@@ -51,7 +80,7 @@ export const MainNavbar = () => {
     }
 
     useEffect(() => {
-        getTotalCostByUser()
+        getTotalCostByUser()        
     }, [])
 
   return (
@@ -68,8 +97,19 @@ export const MainNavbar = () => {
 
             {
                 userData.UserId
-                ? 
-                <div className='flex justify-content-end'>                
+                ?                 
+                <div className='flex justify-content-end'>         
+                    {
+                        checkUserRole()
+                        ?
+                        <div className="flex align-items-center justify-content-center">
+                            <Dropdown value={'hi'} options={organizerPanel} optionLabel="label" optionGroupLabel="label" optionGroupChildren="items"
+                            width={'100px'} placeholder="Organizer Panel" onChange={goToOrganizerPanelOption}/>
+                        </div>
+                        :
+                        <div></div>
+                    }
+
                     <div className="flex align-items-center justify-content-center">
                         <Button label="Payment" className="p-button-text" onClick={goToPayment}>
                             <Badge value={getCostSummary(costSummary)} severity="danger"/>

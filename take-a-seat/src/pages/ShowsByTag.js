@@ -35,9 +35,9 @@ const ShowsByTag = () => {
             )
         },
     }
-
+    
     const getShowsByEventTag = async () => {
-        const response = await fetch(`${url}/api/Tags?PageNumber=${pageNumber}&PageSize=${pageSize}&EventTagName=${eventTagName}`, {
+        const response = await fetch(`${url}/api/Shows/by-tags?PageNumber=${pageNumber}&PageSize=${pageSize}&EventTagName=${eventTagName}`, {
             method: 'GET',
             headers: typHeader,
         });

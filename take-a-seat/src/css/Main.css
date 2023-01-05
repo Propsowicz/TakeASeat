@@ -24,6 +24,12 @@
   min-height: 30rem;
 }
 
+.site-main-body-create {
+  margin: 3rem auto 0 auto;    
+  width: 70%;
+  min-height: 30rem;
+}
+
 .site-main-body-login {    
   margin: 3rem auto 0 auto;    
   width: 70%;
@@ -273,4 +279,22 @@
 .row-price-text {
   padding-left: 1em;
   color: #C4B5FD;
+}
+
+.create-event-container {
+  margin: 0 auto 0 auto;
+  width: 50%;
+}
+
+.create-event-component {
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+}
+
+.create-event-component-number {
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.0rem;
+  height: 2.6rem;
 }
