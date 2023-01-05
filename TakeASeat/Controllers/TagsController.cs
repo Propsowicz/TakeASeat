@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TakeASeat.Data;
 using TakeASeat.Models;
 using TakeASeat.RequestUtils;
 using TakeASeat.Services.EventTagRepository;
@@ -21,20 +22,10 @@ namespace TakeASeat.Controllers
             _eventTagRepository= eventTagRepository;
             _mapper= mapper;
         }
-
-
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> getShowsByEventTags([FromQuery] RequestTagsParams requestParams)
-        {
-            var response = await _showRepository.GetShowsByEventTag(requestParams);
-
-            return StatusCode(200, response);
-        }
+               
 
         [HttpGet("tags-list")]
+        [ApiVersion("1.0")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -44,6 +35,22 @@ namespace TakeASeat.Controllers
             var response = _mapper.Map<IList<GetEventTagDTO>>(query);
 
             return StatusCode(200, response);
+        }
+
+        [HttpPost("add-multiple")]  //maybe del?
+        [ApiVersion("1.0")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> AddEventTags([FromBody] List<GetEventTagDTO> eventTagsDTO, int eventId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            await _eventTagRepository.AddEventTag(eventTagsDTO, eventId);
+
+            return StatusCode(200);
         }
 
     }

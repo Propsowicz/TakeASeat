@@ -46,6 +46,19 @@ namespace TakeASeat.Controllers
             return StatusCode(200, response);
         }
 
+        [HttpGet("by-user")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetEventsByUser([FromQuery] RequestEventParams requestParams, string userName)
+        {
+            var query = await _eventRepo.GetEventsByUser(requestParams, userName);
+            var response = _mapper.Map<List<GetEventDTO>>(query);
+
+            return StatusCode(200, response);
+        }
+
+
         [HttpGet("records-number")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -57,18 +70,7 @@ namespace TakeASeat.Controllers
             return StatusCode(200, response);
         }
 
-        [HttpGet("{id:int}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetSingleEvent(int id)
-        {
-            var event_ = await _unitOfWork.Events.Get(ev => ev.Id == id, includes: new List<string> { "EventTags", "EventType", "Creator", "Shows" }); 
-            var response = _mapper.Map<GetEventDetailsDTO>(event_);
-
-            return StatusCode(200, response);
-        }
-
         
+
     }
 }

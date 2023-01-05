@@ -9,8 +9,9 @@ namespace TakeASeat.Models
         [MinLength(2, ErrorMessage = "Tag name is too short. Minimum length is 2 characters.")]
         public string TagName { get; set; }
     }
-    public class GetEventTagDTO : CreateEventTagDTO
+    public class GetEventTagDTO 
     {
-        public int Id { get; set; }
+        public int Id { get; set; }        
+        public string TagName { get; set; }
     }
 }
