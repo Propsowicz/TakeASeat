@@ -79,6 +79,10 @@ export const MainNavbar = () => {
         navigate('/events/')
     }
 
+    const goToOrganizatorPanel = () => {
+        navigate('/organizator/main')
+    }
+
     useEffect(() => {
         getTotalCostByUser()        
     }, [])
@@ -103,6 +107,7 @@ export const MainNavbar = () => {
                         checkUserRole()
                         ?
                         <div className="flex align-items-center justify-content-center">
+                            <Button label="Organizator Panel" className="p-button-text" onClick={goToOrganizatorPanel}/>
                             <Dropdown value={'hi'} options={organizerPanel} optionLabel="label" optionGroupLabel="label" optionGroupChildren="items"
                             width={'100px'} placeholder="Organizer Panel" onChange={goToOrganizerPanelOption}/>
                         </div>

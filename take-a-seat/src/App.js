@@ -18,12 +18,11 @@ import Shows from './pages/Shows'
 import Events from './pages/Events'
 import ShowsByTag from './pages/ShowsByTag';
 import Register from './pages/UserService/Register';
-import CreateEvent from './pages/OrganizatorPages/CreateEvent';
 import CreateShow from './pages/OrganizatorPages/CreateShow';
-import CreatedEvents from './pages/OrganizatorPages/CreatedEvents';
 import CreatedShows from './pages/OrganizatorPages/CreatedShows';
-import EditEvent from './pages/OrganizatorPages/EditEvent';
+import EditEventData from './pages/OrganizatorPages/EditEventData';
 import EditShow from './pages/OrganizatorPages/EditShow';
+import OrganizatorPanel from './pages/OrganizatorPages/OrganizatorPanel';
 
 
 function App() {
@@ -40,11 +39,12 @@ function App() {
                         <Route path="/events/" element={<Events />}/>
                         <Route path="/tags/:tagName/" element={<ShowsByTag />}/>
 
-                        <Route path="/create/event" element={<CreateEvent />} />
+                        <Route path="/organizator/main" element={<OrganizatorPanel />} />
+                        <Route path="/edit/:eventId" element={<EditEventData />} />
+
+                        
                         <Route path="/create/show" element={<CreateShow />} />
-                        <Route path="/created/events" element={<CreatedEvents />} />
                         <Route path="/created/shows" element={<CreatedShows />} />
-                        <Route path="/edit/:eventId" element={<EditEvent />} />
                         <Route path="/edit/:showId" element={<EditShow />} />
 
                         <Route path="/login/" element={<Login />}/>

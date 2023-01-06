@@ -16,7 +16,7 @@ const ShowDetails = () => {
     const [showDetails, setShowDetails] = useState([])
     
     const getShow = async () => {
-      let response = await fetch (`${url}/api/Shows/${showId}`, {
+      let response = await fetch (`${url}/api/Show/${showId}`, {
           method: 'GET',
           headers: typHeader
       })

@@ -18,6 +18,12 @@
   min-height: 30rem;
 }
 
+.site-main-body-created-events {
+  margin: 4rem auto 0 auto;    
+  width: 70%;
+  min-height: 30rem;
+}
+
 .site-main-body-payment {    
   margin: 3rem auto 0 auto;    
   width: 70%;
@@ -25,9 +31,15 @@
 }
 
 .site-main-body-create {
+  margin: 0rem auto 0 auto;    
+  width: 80%;
+  min-height: 20rem;
+}
+
+.site-main-body-edit {
   margin: 3rem auto 0 auto;    
-  width: 70%;
-  min-height: 30rem;
+  width: 80%;
+  min-height: 20rem;
 }
 
 .site-main-body-login {    
@@ -283,7 +295,7 @@
 
 .create-event-container {
   margin: 0 auto 0 auto;
-  width: 50%;
+  width: 100%;
 }
 
 .create-event-component {
@@ -297,4 +309,40 @@
   margin: 0.5rem 0;
   padding: 0.0rem;
   height: 2.6rem;
+}
+
+.event-creation-panel {
+  margin-top: 1rem;
+}
+
+.listed-shows {
+  margin-left: 0.1rem;
+}
+
+.link-button {
+  text-decoration: none;
+}
+
+.link-button:hover {
+  border-radius: 5px;
+  background-color: #0b213f;
+}
+
+.organizator-panel-delete-btn {
+  border-radius: 1rem;
+  border: none;
+  background-color: red;
+  width: 2rem;
+  height: 2rem;
+  justify-self: center;
+  align-self: center;
+}
+
+.organizator-panel-delete-btn:hover {
+  cursor: pointer;
+  background-color: #383838;
+}
+
+.calendar-component {
+  height: 100%;
 }
