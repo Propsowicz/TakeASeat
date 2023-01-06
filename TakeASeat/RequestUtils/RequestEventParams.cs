@@ -23,4 +23,9 @@
         public List<string> EventTypes { get; set; } = new List<string>();
         public string OrderBy { get; set; } = "name";
     }
+
+    public class RequestEventDeleteParams
+    {
+        public int EventId { get; set; }
+    }
 }

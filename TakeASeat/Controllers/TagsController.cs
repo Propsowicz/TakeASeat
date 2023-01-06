@@ -48,7 +48,7 @@ namespace TakeASeat.Controllers
             {
                 return BadRequest();
             }
-            await _eventTagRepository.AddEventTag(eventTagsDTO, eventId);
+            await _eventTagRepository.AddEventTags(eventTagsDTO, eventId);
 
             return StatusCode(200);
         }

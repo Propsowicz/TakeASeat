@@ -59,7 +59,7 @@ namespace TakeASeat.Services.EventService
         public async Task<IPagedList<Event>> GetEventsByUser(RequestEventParams requestParams, string userName)
         {
             var query = _context.Events
-                            .AsNoTracking()
+                            .AsNoTracking()                            
                             .Where(e => e.Creator.UserName == userName);
 
             if (requestParams.EventTypes.Count != 0)
@@ -87,7 +87,7 @@ namespace TakeASeat.Services.EventService
                     break;
             }
 
-            return await query.ToPagedListAsync(requestParams.PageNumber, requestParams.PageSize);
+            return await query.Include(e => e.Shows).ToPagedListAsync(requestParams.PageNumber, requestParams.PageSize);
         }
 
 
@@ -107,13 +107,63 @@ namespace TakeASeat.Services.EventService
 
             return eventObj;
         }
+
+
         public async Task CreateEventWithTags(CreateEventDTO eventDTO, List<GetEventTagDTO> eventTagsDTO)
         {
             var createdEvent = await CreateEvent(eventDTO);
-            var response = await _eventTagRepository.AddEventTag(eventTagsDTO, createdEvent.Id);
+            await _eventTagRepository.AddEventTags(eventTagsDTO, createdEvent.Id);
             
         }
 
+        public async Task<Event> GetEvent(int id)
+        {
+            return await _context.Events
+                            .AsNoTracking()
+                            .Include(e => e.EventType)
+                            .Include(e => e.EventTags)
+                                .ThenInclude(t => t.EventTag)
+                            .SingleOrDefaultAsync(e => e.Id == id);
+        }
 
+        public async Task EditEventWithTags(EditEventDTO eventDTO, List<GetEventTagDTO> eventTagsDTO)
+        {
+            var editedEvent = await EditEvent(eventDTO);
+            await _eventTagRepository.RemoveEventTags(eventDTO.Id);
+            await _eventTagRepository.AddEventTags(eventTagsDTO, editedEvent.Id);
+
+        }
+
+        public async Task<Event> EditEvent(EditEventDTO eventDTO)
+        {
+            var eventObj = await _context.Events.FirstOrDefaultAsync(e => e.Id == eventDTO.Id);
+            if (eventObj == null)
+            {
+                throw new NullReferenceException();
+            }
+            
+            // fields that can be changed:
+            eventObj.Name= eventDTO.Name;
+            eventObj.EventSlug = eventDTO.Name.ToLower().Replace(" ", "-");
+            eventObj.Description= eventDTO.Description;
+            eventObj.Duration= eventDTO.Duration;
+            eventObj.EventTypeId = eventDTO.EventTypeId;
+            eventObj.Place = eventDTO.Place;
+            eventObj.ImageUrl= eventDTO.ImageUrl;
+
+            //await _context.SaveChangesAsync();
+            return eventObj;
+        }
+
+        public async Task DeleteEvent(int eventId)
+        {   
+            var query = await _context.Events.FirstOrDefaultAsync(e => e.Id==eventId);
+            if (query == null)
+            {
+                throw new NullReferenceException();
+            }
+            _context.Events.Remove(query);
+            await _context.SaveChangesAsync();
+        }
     }
 }

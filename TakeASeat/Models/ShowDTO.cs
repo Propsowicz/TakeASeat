@@ -7,10 +7,13 @@
         public string Description { get; set; }
     }
 
-    public class GetShowDTO : CreateShowDTO
+    public class GetShowDTO 
     {
         public int Id { get; set; }   
         public bool IsReadyToSell { get; set; }
+        public int EventId { get; set; }
+        public DateTime Date { get; set; }
+        public string Description { get; set; }
     }
 
     public class GetShowDetailsDTO : CreateShowDTO 

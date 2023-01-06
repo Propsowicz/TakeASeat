@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Tracing;
 using System.Drawing.Printing;
 using System.Linq;
@@ -14,26 +15,13 @@ namespace TakeASeat.Services.ShowService
     public class ShowRepository : IShowRepository
     {
         private readonly DatabaseContext _context;
-        public ShowRepository(DatabaseContext context)
+        private readonly IMapper _mapper;
+        public ShowRepository(DatabaseContext context, IMapper mapper)
         {
             _context= context;
+            _mapper= mapper;
         }
-        //public async Task<IPagedList<Show>> GetShows(int pageNumber, int pageSize)
-        //{
-        //    return await _context.Shows
-        //        .AsNoTracking()
-        //        .Where(s => s.Date > DateTime.Now)
-        //        .Include(sh => sh.Event)
-        //            .ThenInclude(e => e.EventType)
-        //         .Include(sh => sh.Event)
-        //            .ThenInclude(e => e.Creator)
-        //        .Include(sh => sh.Event)
-        //            .ThenInclude(e => e.EventTags)
-        //                .ThenInclude(t => t.EventTag)
-        //        .OrderBy(s => s.Date)
-        //        .ToPagedListAsync(pageNumber, pageSize);
-        //}
-
+        
         public async Task<Show> GetShowDetails(int id)
         {
             return await _context.Shows
@@ -139,6 +127,13 @@ namespace TakeASeat.Services.ShowService
                 })
             .ToPagedListAsync(requestParams.PageNumber, requestParams.PageSize);
 
+        }
+
+        public async Task CreateShow(CreateShowDTO showDTO)
+        {
+            var show = _mapper.Map<Show>(showDTO);
+            await _context.Shows.AddAsync(show);
+            await _context.SaveChangesAsync();
         }
     }
 }

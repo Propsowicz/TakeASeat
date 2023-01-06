@@ -53,7 +53,7 @@ namespace TakeASeat.Controllers
         public async Task<IActionResult> GetEventsByUser([FromQuery] RequestEventParams requestParams, string userName)
         {
             var query = await _eventRepo.GetEventsByUser(requestParams, userName);
-            var response = _mapper.Map<List<GetEventDTO>>(query);
+            var response = _mapper.Map<List<GetEventWithListOfShowsDTO>>(query);
 
             return StatusCode(200, response);
         }

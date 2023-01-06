@@ -13,7 +13,7 @@ namespace TakeASeat.Services.EventTagRepository
             _context= context;
         }
              
-        public async Task<int> AddEventTag(List<GetEventTagDTO> eventTagsDTO, int eventId)
+        public async Task AddEventTags(List<GetEventTagDTO> eventTagsDTO, int eventId)
         {
             List<EventTagEventM2M> tagsToAdd = new List<EventTagEventM2M>();
             foreach(var tag in eventTagsDTO)
@@ -26,9 +26,8 @@ namespace TakeASeat.Services.EventTagRepository
             }
 
             await _context.EventTagEventM2M.AddRangeAsync(tagsToAdd);
-            var responseStatus = await _context.SaveChangesAsync();
-
-            return responseStatus;
+            await _context.SaveChangesAsync();
+                        
         }
 
         public async Task<IList<EventTag>> getEventTags()
@@ -36,6 +35,13 @@ namespace TakeASeat.Services.EventTagRepository
             return await _context.EventTags
                         .AsNoTracking()
                         .ToListAsync();
+        }
+
+        public async Task RemoveEventTags(int EventId)
+        {
+            var query = await _context.EventTagEventM2M.Where(t => t.EventId== EventId).ToListAsync();
+            _context.RemoveRange(query);
+            //await _context.SaveChangesAsync();
         }
     }
 }

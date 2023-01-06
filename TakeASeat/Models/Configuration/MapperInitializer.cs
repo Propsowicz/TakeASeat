@@ -9,6 +9,8 @@ namespace TakeASeat.Models.Configuration
         {
             CreateMap<Event, CreateEventDTO>().ReverseMap();
             CreateMap<Event, GetEventDTO>().ReverseMap();
+            CreateMap<Event, EditEventDTO>().ReverseMap();
+            CreateMap<Event, GetEventWithListOfShowsDTO>().ReverseMap();
             CreateMap<Event, GetEventDetailsDTO>().ReverseMap();
             CreateMap<Event, GetEventDetailsToShowDTO>().ReverseMap();
 
