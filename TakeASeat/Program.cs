@@ -67,6 +67,7 @@ builder.Services.AddScoped<IReleaseReservationService, ReleaseReservationService
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IEventTypeRepository, EventTypeRepository>();
 builder.Services.AddScoped<IEventTagRepository, EventTagRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // Backgorund service
 builder.Services.AddHostedService<ReleaseReservation>();

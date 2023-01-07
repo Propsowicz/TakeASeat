@@ -9,6 +9,7 @@ using TakeASeat.Data.DatabaseContext;
 using TakeASeat.Models;
 using TakeASeat.RequestUtils;
 using X.PagedList;
+using TakeASeat.ProgramConfigurations.DTO;
 
 namespace TakeASeat.Services.ShowService
 {
@@ -134,6 +135,22 @@ namespace TakeASeat.Services.ShowService
             var show = _mapper.Map<Show>(showDTO);
             await _context.Shows.AddAsync(show);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteShow(int showId)
+        {
+            var query = await  _context.Shows.FirstOrDefaultAsync(s => s.Id == showId);
+            if (query == null)
+            {
+                throw new NullReferenceException();
+            }
+            if (query.IsReadyToSell != true)
+            {
+                _context.Shows.Remove(query);   
+                await _context.SaveChangesAsync();
+
+            }else { throw new ElementIsUsageException("Can't delete show which is ready to sell."); }
+            
         }
     }
 }

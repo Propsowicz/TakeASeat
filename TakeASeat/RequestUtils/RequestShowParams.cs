@@ -20,4 +20,9 @@
             } 
         }        
     }
+
+    public class DeleteShowParams
+    {
+        public int ShowId { get; set; }
+    }
 }

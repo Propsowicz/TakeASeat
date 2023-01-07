@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using TakeASeat.Models;
 using TakeASeat.Services.ShowService;
 using Microsoft.AspNetCore.Authorization;
-
+using TakeASeat.RequestUtils;
 
 namespace TakeASeat.Controllers
 {
@@ -40,7 +40,7 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateShow(CreateShowDTO showDTO)
+        public async Task<IActionResult> CreateShow([FromBody] CreateShowDTO showDTO)
         {
             if (!ModelState.IsValid)
             {
@@ -49,6 +49,20 @@ namespace TakeASeat.Controllers
             await _showRepository.CreateShow(showDTO);
 
             return StatusCode(201);
+        }
+
+        [HttpPost("delete")]
+        [ApiVersion("1.0")]
+        [Authorize(Roles = "Administrator,Organizer")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteShow([FromBody] DeleteShowParams requestParams)
+        {
+
+            await _showRepository.DeleteShow(requestParams.ShowId);
+
+            return StatusCode(200);
         }
     }
 }

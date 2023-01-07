@@ -16,5 +16,6 @@ namespace TakeASeat.Services.ShowService
         Task<IPagedList<GetShowsDTO>> GetShowsByEventTag(RequestTagsParams requestParams);
 
         Task CreateShow(CreateShowDTO showDTO);
+        Task DeleteShow(int showId);
     }
 }

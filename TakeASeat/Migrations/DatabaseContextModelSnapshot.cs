@@ -31,6 +31,10 @@ namespace TakeASeat.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -48,28 +52,7 @@ namespace TakeASeat.Migrations
 
                     b.ToTable("AspNetRoles", (string)null);
 
-                    b.HasData(
-                        new
-                        {
-                            Id = "47eeeba1-96bd-41c5-9620-a52278ec0acb",
-                            ConcurrencyStamp = "623244aa-ce6a-452e-8119-be5a50e2fc27",
-                            Name = "Administrator",
-                            NormalizedName = "ADMINISTRATOR"
-                        },
-                        new
-                        {
-                            Id = "39f7f814-9ee0-42d5-b09a-6cddb638287c",
-                            ConcurrencyStamp = "3c032fd7-13be-4dee-af73-956a1638f153",
-                            Name = "User",
-                            NormalizedName = "USER"
-                        },
-                        new
-                        {
-                            Id = "32adf8c8-d930-424f-91fd-05a96a7407c1",
-                            ConcurrencyStamp = "ff07fa01-923b-4ce4-9791-3a0f90f67b5e",
-                            Name = "Organizer",
-                            NormalizedName = "ORGANIZER"
-                        });
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityRole");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -223,11 +206,17 @@ namespace TakeASeat.Migrations
                     b.Property<string>("RoleId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUserRole<string>");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -802,6 +791,36 @@ namespace TakeASeat.Migrations
                     b.ToTable("Ticket");
                 });
 
+            modelBuilder.Entity("TakeASeat.Data.Role", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
+
+                    b.HasDiscriminator().HasValue("Role");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "5b7cc33d-c661-4e54-b6be-5c90d44a6ee8",
+                            ConcurrencyStamp = "16e19c48-b283-4065-8d8a-181b9b5e0234",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        },
+                        new
+                        {
+                            Id = "1792a977-16e0-4bcf-a7c3-1fc45b49ec50",
+                            ConcurrencyStamp = "a5669d6a-f8b5-4f63-aa5f-3590ecc4f493",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        },
+                        new
+                        {
+                            Id = "61bc565d-93bf-4bac-b279-5e77473c945b",
+                            ConcurrencyStamp = "2397eaee-d2f2-462e-90d8-04d0412f991a",
+                            Name = "Organizer",
+                            NormalizedName = "ORGANIZER"
+                        });
+                });
+
             modelBuilder.Entity("TakeASeat.Data.User", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
@@ -821,12 +840,12 @@ namespace TakeASeat.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "dc6c6972-5a39-42a4-bf35-5a1e3f3c6c7f",
+                            ConcurrencyStamp = "30b45da4-af66-44b2-a946-282abc15a44a",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEKrLgRnqv/QHtEspfxvUJu6X+48/1R+FKVBmxpQcPqc02ThTKF1VpYl7nW0/vA6pdQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMv3HqzONSzgWBrwGSNE/GYinVEn0AzfrXZErYuX4GfkVcpZkTZp4Qk/uWvTW5Wt1w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "9c58438c-ad7c-4a4d-8bc3-ad1306d48c0a",
+                            SecurityStamp = "dd0c830c-4235-4dea-9c6a-8f2bb4475f1f",
                             TwoFactorEnabled = false,
                             UserName = "Flinston",
                             FirstName = "George",
@@ -836,17 +855,24 @@ namespace TakeASeat.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2d7c1ff3-aabf-40fe-bcd8-6fb7a4a539d9",
+                            ConcurrencyStamp = "ca4548b9-298d-4e5d-9500-9b6591189ce1",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEPPjQ5vo+ukajzn0YJwfep35SoYX7C+YBwtEjbRy7mOdiMSdbPiOo3yafp/svY88kw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELv2ivat+vMo7O5du6EjwwQuiwvA8Rl8HqxA+IUf5BiXuyxckTm2hwWV8xPq0vvW2Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "eb130d1b-5668-4efb-954f-33ca069b20aa",
+                            SecurityStamp = "42fb1a1a-4d5f-4568-abcd-3d3f0738dec6",
                             TwoFactorEnabled = false,
                             UserName = "LOG",
                             FirstName = "Logan",
                             LastName = "Capuchino"
                         });
+                });
+
+            modelBuilder.Entity("TakeASeat.Data.UserRole", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserRole<string>");
+
+                    b.HasDiscriminator().HasValue("UserRole");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -997,6 +1023,25 @@ namespace TakeASeat.Migrations
                     b.Navigation("SeatReservation");
                 });
 
+            modelBuilder.Entity("TakeASeat.Data.UserRole", b =>
+                {
+                    b.HasOne("TakeASeat.Data.Role", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TakeASeat.Data.User", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("TakeASeat.Data.Event", b =>
                 {
                     b.Navigation("EventTags");
@@ -1012,6 +1057,16 @@ namespace TakeASeat.Migrations
             modelBuilder.Entity("TakeASeat.Data.Show", b =>
                 {
                     b.Navigation("Seats");
+                });
+
+            modelBuilder.Entity("TakeASeat.Data.Role", b =>
+                {
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("TakeASeat.Data.User", b =>
+                {
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

@@ -51,8 +51,10 @@ namespace TakeASeat.ProgramConfigurations
 
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), services);
             builder.AddTokenProvider("TakeASeat", typeof(DataProtectorTokenProvider<User>));
+            builder.AddRoles<IdentityRole>();
             builder.AddEntityFrameworkStores<DatabaseContext>();
             builder.AddDefaultTokenProviders();
+            
         }
 
         public static void ConfigureCORS(this IServiceCollection services, string corsPolicy)

@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace TakeASeat.Data.DatabaseContext.Seeds
 {
-    public class UserRoleSeed : IEntityTypeConfiguration<IdentityRole>
+    public class UserRoleSeed : IEntityTypeConfiguration<Role>
     {
-        public void Configure(EntityTypeBuilder<IdentityRole> builder)
+        public void Configure(EntityTypeBuilder<Role> builder)
         {
             builder.HasData(
                 new IdentityRole

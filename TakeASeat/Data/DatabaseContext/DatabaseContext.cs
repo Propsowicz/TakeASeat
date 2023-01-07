@@ -19,6 +19,8 @@ namespace TakeASeat.Data.DatabaseContext
         public DbSet<EventType> EventTypes { get; set; }
         public DbSet<EventTagEventM2M> EventTagEventM2M { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Role> Roles { get; set; }
         public DbSet<Ticket> Ticket { get; set; }
         public DbSet<SeatReservation> SeatReservation { get; set; }
         public DbSet<PaymentTransaction> PaymentTransaction { get; set; }
@@ -27,6 +29,22 @@ namespace TakeASeat.Data.DatabaseContext
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            builder.Entity<User>(b =>
+            {
+                b.HasMany(e => e.UserRoles)
+                .WithOne(e => e.User)
+                .HasForeignKey(u => u.UserId)
+                .IsRequired();
+            });
+
+            builder.Entity<Role>(b =>
+            {
+                b.HasMany(e => e.UserRoles)
+                .WithOne(e => e.Role)
+                .HasForeignKey(u => u.RoleId)
+                .IsRequired();
+            });
+
             builder.ApplyConfiguration(new UserSeed());
             builder.ApplyConfiguration(new EventTypeSeed());
             builder.ApplyConfiguration(new EventTagSeed());

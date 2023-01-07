@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using TakeASeat.Data;
 using TakeASeat.Data.DatabaseContext;
 using TakeASeat.Models;
+using TakeASeat.ProgramConfigurations.DTO;
 using TakeASeat.RequestUtils;
 using TakeASeat.Services.EventTagRepository;
 using X.PagedList;
@@ -156,14 +157,29 @@ namespace TakeASeat.Services.EventService
         }
 
         public async Task DeleteEvent(int eventId)
-        {   
-            var query = await _context.Events.FirstOrDefaultAsync(e => e.Id==eventId);
-            if (query == null)
+        {
+            var queryValidation = await _context.Shows
+                                    .AsNoTracking()
+                                    .Where(s => s.EventId == eventId)
+                                    .Where(s => s.IsReadyToSell == true)
+                                    .ToListAsync();
+
+            if (!EventValidation.IsAnyShowReadyToSell(queryValidation.Count()))
             {
-                throw new NullReferenceException();
+                var query = await _context.Events.FirstOrDefaultAsync(e => e.Id == eventId);
+                if (query == null)
+                {
+                    throw new NullReferenceException();
+                }
+
+                _context.Events.Remove(query);
+                await _context.SaveChangesAsync();
             }
-            _context.Events.Remove(query);
-            await _context.SaveChangesAsync();
+            else
+            {
+                throw new ElementIsUsageException("Can't delete event with shows which are ready to sell.");
+            }              
         }
+        
     }
 }
