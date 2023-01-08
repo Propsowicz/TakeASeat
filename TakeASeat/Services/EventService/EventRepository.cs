@@ -119,12 +119,16 @@ namespace TakeASeat.Services.EventService
 
         public async Task<Event> GetEvent(int id)
         {
-            return await _context.Events
+            var query = await _context.Events
                             .AsNoTracking()
                             .Include(e => e.EventType)
                             .Include(e => e.EventTags)
                                 .ThenInclude(t => t.EventTag)
                             .SingleOrDefaultAsync(e => e.Id == id);
+
+            ArgumentNullException.ThrowIfNull(query);
+
+            return query;
         }
 
         public async Task EditEventWithTags(EditEventDTO eventDTO, List<GetEventTagDTO> eventTagsDTO)

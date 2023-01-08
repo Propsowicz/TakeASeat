@@ -25,7 +25,7 @@ namespace TakeASeat.Services.ShowService
         
         public async Task<Show> GetShowDetails(int id)
         {
-            return await _context.Shows
+            var query = await _context.Shows
                 .AsNoTracking()
                 .Where(s => s.Id == id)
                 .Include(sh => sh.Event)
@@ -36,6 +36,10 @@ namespace TakeASeat.Services.ShowService
                     .ThenInclude(e => e.EventTags)
                         .ThenInclude(t => t.EventTag)
                 .FirstOrDefaultAsync();
+
+            ArgumentNullException.ThrowIfNull(query);
+
+            return query;
                 
         }
 
@@ -52,37 +56,44 @@ namespace TakeASeat.Services.ShowService
                 .AsNoTracking()
                 .Where(s => s.Date > DateTime.Now)
                 .ToListAsync();
+
+            ArgumentNullException.ThrowIfNull(query);
+
             return query.Count();
                 
         }
 
         public async Task<IPagedList<GetShowsDTO>> GetShows(int pageNumber, int pageSize)
         {
-            return await _context.Shows
+            var query = await _context.Shows
                 .AsNoTracking()
-                .Where(s => s.Date > DateTime.Now)                
+                .Where(s => s.Date > DateTime.Now)
                 .OrderBy(s => s.Date)
-                .Select(s => 
+                .Select(s =>
                 new GetShowsDTO
                 {
                     Id = s.Id,
-                    IsReadyToSell= s.IsReadyToSell,
-                    Date= s.Date,
-                    Description= s.Description,
-                    EventName = s.Event.Name,   
+                    IsReadyToSell = s.IsReadyToSell,
+                    Date = s.Date,
+                    Description = s.Description,
+                    EventName = s.Event.Name,
                     EventId = s.EventId,
                     EventPlace = s.Event.Place,
                     EventSlug = s.Event.EventSlug,
-                    EventType = s.Event.EventType.Name,                    
+                    EventType = s.Event.EventType.Name,
                     EventTags = s.Event.EventTags.Select(t => t.EventTag.TagName).ToList(),
-                    SeatsLeft = s.Seats.Where(s => s.ReservationId == null).Count()                    
+                    SeatsLeft = s.Seats.Where(s => s.ReservationId == null).Count()
                 })
                 .ToPagedListAsync(pageNumber, pageSize);
+
+            ArgumentNullException.ThrowIfNull(query);
+
+            return query;
         }
 
         public async Task<IPagedList<GetShowsByEventDTO>> GetShowsByEvent(int eventId)
         {
-            return await _context.Shows
+            var query = await _context.Shows
                     .AsNoTracking()
                     .Where(s => s.EventId == eventId
                     && s.Date > DateTime.UtcNow)
@@ -97,6 +108,10 @@ namespace TakeASeat.Services.ShowService
                     })
                     .OrderBy(s => s.Date)                    
                     .ToPagedListAsync(1, 5);
+
+            ArgumentNullException.ThrowIfNull(query);
+
+            return query;
         }
 
         public async Task<IPagedList<GetShowsDTO>> GetShowsByEventTag(RequestTagsParams requestParams)
@@ -108,7 +123,7 @@ namespace TakeASeat.Services.ShowService
                 .Select(t => t.EventId)
                 .ToListAsync();
 
-            return await _context.Shows
+            var query = await _context.Shows
             .AsNoTracking()
             .Where(s => tagsList.Contains(s.Event.Id))
             .Select(s => 
@@ -127,6 +142,10 @@ namespace TakeASeat.Services.ShowService
                     SeatsLeft = s.Seats.Where(s => s.ReservationId == null).Count()
                 })
             .ToPagedListAsync(requestParams.PageNumber, requestParams.PageSize);
+
+            ArgumentNullException.ThrowIfNull(query);
+
+            return query;
 
         }
 

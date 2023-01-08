@@ -40,8 +40,9 @@ namespace TakeASeat.Services.SeatReservationService
                                 .Where(r => r.Id == seatReservationId)
                                 .FirstOrDefaultAsync(); 
                         
-            await _seatRepository.RemoveReservation(seatReservationId); 
-            
+            await _seatRepository.RemoveReservation(seatReservationId);
+
+            ArgumentNullException.ThrowIfNull(query);
             _context.Remove(query);
             await _context.SaveChangesAsync();
         }

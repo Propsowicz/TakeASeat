@@ -18,12 +18,14 @@ namespace TakeASeat.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
         private readonly IAuthManager _authManager;
+        private readonly IUserRepository _userRepository;
 
-        public UserController(UserManager<User> userManager, IMapper mapper, IAuthManager authManager)
+        public UserController(UserManager<User> userManager, IMapper mapper, IAuthManager authManager, IUserRepository userRepository)
         {
             _userManager = userManager;
             _mapper = mapper;
             _authManager = authManager;
+            _userRepository = userRepository;
         }
 
         [HttpPost("register")]
@@ -40,7 +42,11 @@ namespace TakeASeat.Controllers
             var user = _mapper.Map<User>(userDTO);
             var response = await _userManager.CreateAsync(user, userDTO.Password);
 
-            if (response.Succeeded) { return StatusCode(201); }
+            if (response.Succeeded) 
+            {
+                await _userRepository.AddToRoleNamedUser(user);
+                return StatusCode(201); 
+            }
             else { return StatusCode(400, response); }            
         }
 

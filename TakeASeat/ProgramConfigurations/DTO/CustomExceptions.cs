@@ -6,5 +6,15 @@
         {
 
         }
+                
+    }
+
+    public class CantAccessDataException : Exception
+    {
+        public CantAccessDataException(string Message) : base(Message)
+        {
+
+        }
+
     }
 }

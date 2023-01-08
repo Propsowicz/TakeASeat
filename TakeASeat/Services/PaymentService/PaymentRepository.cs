@@ -4,6 +4,7 @@ using TakeASeat.RequestUtils;
 using Microsoft.EntityFrameworkCore;
 using TakeASeat.Services.SeatReservationService;
 using TakeASeat.Models;
+using TakeASeat.ProgramConfigurations.DTO;
 
 namespace TakeASeat.Services.PaymentService
 {
@@ -25,6 +26,7 @@ namespace TakeASeat.Services.PaymentService
 
         public async Task<PaymentDataDTO> getPaymentData(string userId)
         {
+
             var mainQuery = _context.Seats
                         .Where(s => s.SeatReservation.UserId == userId
                         && s.SeatReservation.isReserved == true
@@ -43,8 +45,15 @@ namespace TakeASeat.Services.PaymentService
             var dotpay_ID = _context.ProtectedKeys
                         .FirstOrDefault(k => k.Key == "DOTPAY_ID");
 
-            var paymentData = new PaymentData(dotpay_PIN.Value, dotpay_ID.Value, mainQuery, reservationsQuery);               
-            return paymentData.getPaymentData();
+            if (dotpay_PIN != null && dotpay_ID != null) 
+            {
+                var paymentData = new PaymentData(dotpay_PIN.Value, dotpay_ID.Value, mainQuery, reservationsQuery);
+                return paymentData.getPaymentData();
+            }
+            else
+            {
+                throw new CantAccessDataException("Can't access Payment Server Keys.");
+            }            
         }
 
         public async Task<IList<Seat>> getReservedSeats(string userId)

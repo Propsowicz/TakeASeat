@@ -7,6 +7,7 @@ using TakeASeat.Data.DatabaseContext;
 using TakeASeat.Services.SeatReservationService;
 using X.PagedList;
 using Microsoft.Data.SqlClient;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace TakeASeat.Services.SeatService
 {
@@ -31,10 +32,14 @@ namespace TakeASeat.Services.SeatService
             var reservation = _context.SeatReservation
                                 .Include(r => r.Seats)
                                 .FirstOrDefault(r => r.Id == seatReservationId);
+
+            ArgumentNullException.ThrowIfNull(reservation);
+
             if (reservation.Seats.Count == 0)
             {
                 _context.SeatReservation.Remove(reservation);
             }
+
         }
 
         public async Task<IList<Seat[]>> GetSeats(int showId)
@@ -82,6 +87,8 @@ namespace TakeASeat.Services.SeatService
             var seat = await _context.Seats
                     .Where(s => s.Id== reservationId)
                     .FirstOrDefaultAsync();
+
+            ArgumentNullException.ThrowIfNull(seat);
             seat.ReservationId = null;
             await _context.SaveChangesAsync();
             DeleteEmptyReservation(reservationId);
@@ -89,7 +96,8 @@ namespace TakeASeat.Services.SeatService
         }
 
         public async Task SetReservation(IEnumerable<Seat> seats, int? ReservationId)
-        {            
+        {       
+            // need to be rawSQL
             foreach (var seat in seats)
             {
                 var _ = await _context.Seats.FindAsync(seat.Id);
