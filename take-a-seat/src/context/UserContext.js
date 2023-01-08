@@ -105,10 +105,10 @@ export const UserContextProvider = ({children}) => {
                 "email": email
             })
         })
-        let status = await response.json()
-
+        
         if (response.status === 400){
-            status.forEach(c => {
+            let status = await response.json()
+            status.errors.forEach(c => {
                 let error = c.code.replace(/([A-Z])/g, ' $1').trim()
                 UserRegisterServerValidationErrors.current.show([
                     { severity: 'error', detail: error , life:5000 }
@@ -122,6 +122,9 @@ export const UserContextProvider = ({children}) => {
             UserAccountSuccessfullyCreated.current.show([
                 { severity: 'success', detail: "Account Has Been Successfully Created." , life:3000 }
             ])
+            setTimeout(function() {
+                navigator("/")
+              }, 3500);
         }     
     }
 

@@ -9,7 +9,7 @@ import { Accordion, AccordionTab } from 'primereact/accordion';
 import AccordionComponent from '../../components/events/AccordionComponent';
 import { Button } from 'primereact/button';
 import { Panel } from 'primereact/panel';
-import CreateEvent from './CreateEvent';
+import CreateEvent from '../../components/organizator-components/CreateEvent';
 import { Divider } from 'primereact/divider';
 import {dateSerializer, dateUTCSerializer} from '../../utils/dateSerializer'
 import { InputText } from 'primereact/inputtext';
@@ -66,13 +66,20 @@ const OrganizatorPanel = () => {
             window.location.reload()
         }        
     }
-    //
-
-    const goToEvent = (e) => {
-        console.log(e)
+    
+    const deleteShow = async (e) => {
+        let eventId = e.target.name
+        const response = await fetch(`${url}/api/Show/delete`, {
+                method: "POST",
+                headers: typHeader,
+                body: JSON.stringify({
+                    "showId": eventId
+                })
+            })        
+        if (response.status === 200){
+            window.location.reload()
+        }
     }
-
-
 
     useEffect(() => {
         getEvents()
@@ -114,7 +121,7 @@ const OrganizatorPanel = () => {
                                 <span className='col-12 md:col-12 lg:col-4'>{show.description}</span>
                                 <span className='col-12 md:col-12 lg:col-4'>{dateSerializer(show.date)}</span>                                                
                             </Link>
-                            <button className='col-1 organizator-panel-delete-btn'>x</button>
+                            <button onClick={deleteShow} name={show.id} className='col-1 organizator-panel-delete-btn'>x</button>
                         </div>
                     ))}
                     <Divider type='dashed'/> 
@@ -130,9 +137,7 @@ const OrganizatorPanel = () => {
                     <Divider type='dashed'/> 
                 </div>
             ))}
-        </Panel>
-        OrganizatorPanel
-        
+        </Panel>        
     </div>
   )
 }

@@ -9,7 +9,7 @@ import { InputNumber } from 'primereact/inputnumber';
 import { Dropdown } from 'primereact/dropdown';
 import { MultiSelect } from 'primereact/multiselect';
 import { Toast } from 'primereact/toast';
-import ToastYesButton from '../../components/organizator-components/ToastYesButton';
+import ToastYesButton from './ToastYesButton';
 
 
 const CreateEvent = () => {

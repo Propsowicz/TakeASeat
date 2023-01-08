@@ -346,3 +346,16 @@
 .calendar-component {
   height: 100%;
 }
+
+.admin-panel-user-div {
+  justify-content: center;
+  align-items: center;
+}
+
+.admin-panel-user-div:hover {
+  background-color: #383838;
+}
+
+.save-btn {
+  height: 2.4rem;
+}

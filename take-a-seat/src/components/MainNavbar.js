@@ -51,9 +51,17 @@ export const MainNavbar = () => {
         }        
     }
 
-    const checkUserRole = () => {
+    const checkIfUserIsOrganizer = () => {
         let userRole = userData["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
         if (userRole === "Organizer" || userRole === "Administrator") {
+            return true;
+        }
+        return false;
+    }
+
+    const checkIfUserIsAdmin = () => {
+        let userRole = userData["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+        if (userRole === "Administrator") {
             return true;
         }
         return false;
@@ -83,6 +91,10 @@ export const MainNavbar = () => {
         navigate('/organizator/main')
     }
 
+    const goToAdministratorPanel = () => {
+        navigate('/admin/')
+    }
+
     useEffect(() => {
         getTotalCostByUser()        
     }, [])
@@ -104,12 +116,19 @@ export const MainNavbar = () => {
                 ?                 
                 <div className='flex justify-content-end'>         
                     {
-                        checkUserRole()
+                        checkIfUserIsOrganizer
                         ?
                         <div className="flex align-items-center justify-content-center">
-                            <Button label="Organizator Panel" className="p-button-text" onClick={goToOrganizatorPanel}/>
-                            <Dropdown value={'hi'} options={organizerPanel} optionLabel="label" optionGroupLabel="label" optionGroupChildren="items"
-                            width={'100px'} placeholder="Organizer Panel" onChange={goToOrganizerPanelOption}/>
+                            <Button label="Organizator Panel" className="p-button-text" onClick={goToOrganizatorPanel}/>                            
+                        </div>
+                        :
+                        <div></div>
+                    }
+                    {
+                        checkIfUserIsOrganizer
+                        ?
+                        <div className="flex align-items-center justify-content-center">
+                            <Button label="Administrator Panel" className="p-button-text" onClick={goToAdministratorPanel}/>                            
                         </div>
                         :
                         <div></div>

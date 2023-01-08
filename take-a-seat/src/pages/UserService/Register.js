@@ -14,6 +14,7 @@ const Register = () => {
     const {FillAllFields} = useContext(UserContext)
     const {EmailFormNotValid} = useContext(UserContext)
     const {UserRegisterServerValidationErrors} = useContext(UserContext)
+    const {UserAccountSuccessfullyCreated} = useContext(UserContext)
     
     return (
         <div className="site-main-body-register">
@@ -27,6 +28,7 @@ const Register = () => {
                 <Button label='Sign Up' className='col-12 login-component' type='submit'/>
 
             </form>
+            <Messages ref={UserAccountSuccessfullyCreated}/>
             <Messages ref={StatusCode500} />
             <Messages ref={FillAllFields} />
             <Messages ref={NotTheSamePasswords} />

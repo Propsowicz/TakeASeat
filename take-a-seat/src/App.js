@@ -18,11 +18,9 @@ import Shows from './pages/Shows'
 import Events from './pages/Events'
 import ShowsByTag from './pages/ShowsByTag';
 import Register from './pages/UserService/Register';
-import CreateShow from './pages/OrganizatorPages/CreateShow';
-import CreatedShows from './pages/OrganizatorPages/CreatedShows';
 import EditEventData from './pages/OrganizatorPages/EditEventData';
-import EditShow from './pages/OrganizatorPages/EditShow';
 import OrganizatorPanel from './pages/OrganizatorPages/OrganizatorPanel';
+import AdminPanel from './pages/AdminPages/AdminPanel';
 
 
 function App() {
@@ -42,10 +40,7 @@ function App() {
                         <Route path="/organizator/main" element={<OrganizatorPanel />} />
                         <Route path="/edit/:eventId" element={<EditEventData />} />
 
-                        
-                        <Route path="/create/show" element={<CreateShow />} />
-                        <Route path="/created/shows" element={<CreatedShows />} />
-                        <Route path="/edit/:showId" element={<EditShow />} />
+                        <Route path="/admin/" element={<AdminPanel />} />                      
 
                         <Route path="/login/" element={<Login />}/>
                         <Route path="/register/" element={<Register />}/>
