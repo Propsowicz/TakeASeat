@@ -19,19 +19,15 @@ namespace TakeASeat.Controllers
     [ApiController]
     public class EventsController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly DatabaseContext _context;
-        private readonly IEventRepository _eventRepo;
+        private readonly IEventRepository _eventRepository;
 
-        public EventsController(IUnitOfWork unitOfWork, 
-            IMapper mapper, DatabaseContext context, IEventRepository eventRepo
+        public EventsController( 
+            IMapper mapper, IEventRepository eventRepository
             )
         {
-            _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _context = context;
-            _eventRepo = eventRepo;   
+            _eventRepository = eventRepository;   
         }
 
         [HttpGet]
@@ -40,7 +36,7 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetEvents([FromQuery] RequestEventParams requestParams)
         {
-            var query = await _eventRepo.GetEvents(requestParams);
+            var query = await _eventRepository.GetEvents(requestParams);
             var response = _mapper.Map<List<GetEventDTO>>(query);
 
             return StatusCode(200, response);
@@ -52,7 +48,12 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetEventsByUser([FromQuery] RequestEventParams requestParams, string userName)
         {
-            var query = await _eventRepo.GetEventsByUser(requestParams, userName);
+            if (userName == "" || userName == null)
+            {
+                return StatusCode(404);
+            }
+
+            var query = await _eventRepository.GetEventsByUser(requestParams, userName);
             var response = _mapper.Map<List<GetEventWithListOfShowsDTO>>(query);
 
             return StatusCode(200, response);
@@ -65,12 +66,9 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetEventRecordsNumber()
         {
-            var response = await _eventRepo.GetEventRecordsNumber();
+            var response = await _eventRepository.GetEventRecordsNumber();
             
             return StatusCode(200, response);
-        }
-
-        
-
+        }              
     }
 }

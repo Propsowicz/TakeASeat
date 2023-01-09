@@ -16,29 +16,27 @@ namespace TakeASeat.Controllers
     public class EventController : ControllerBase
     {
 
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly DatabaseContext _context;
-        private readonly IEventRepository _eventRepo;
+        private readonly IEventRepository _eventRepository;
 
-        public EventController(IUnitOfWork unitOfWork,
-            IMapper mapper, DatabaseContext context, IEventRepository eventRepo
-            )
+        public EventController(IMapper mapper, IEventRepository eventRepository)
         {
-            _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _context = context;
-            _eventRepo = eventRepo;
+            _eventRepository = eventRepository;
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{eventId:int}")]
         [ApiVersion("1.0")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetSingleEvent(int id)
+        public async Task<IActionResult> GetEvent(int eventId)
         {
-            var query = await _eventRepo.GetEvent(id);
+            if (eventId < 1) 
+            {
+                return StatusCode(400);
+            }
+            var query = await _eventRepository.GetEvent(eventId);
             var response = _mapper.Map<GetEventDetailsDTO>(query);
 
             return StatusCode(200, response);
@@ -54,10 +52,10 @@ namespace TakeASeat.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return StatusCode(400);
             }
 
-            await _eventRepo.CreateEventWithTags(eventData.eventDTO, eventData.eventTagsDTO);
+            await _eventRepository.CreateEventWithTags(eventData.eventDTO, eventData.eventTagsDTO);
 
             return StatusCode(201);
         }
@@ -70,12 +68,12 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> EditEvent([FromBody] EditEventWithTagsDTO eventData)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || eventData.eventDTO.Id < 1)
             {
-                return BadRequest();
+                return StatusCode(400);
             }
 
-            await _eventRepo.EditEventWithTags(eventData.eventDTO, eventData.eventTagsDTO);
+            await _eventRepository.EditEventWithTags(eventData.eventDTO, eventData.eventTagsDTO);
 
             return StatusCode(200);
         }
@@ -88,7 +86,11 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteEvent([FromBody] RequestEventDeleteParams requestParams)
         {
-            await _eventRepo.DeleteEvent(requestParams.EventId);            
+            if (!ModelState.IsValid || requestParams.EventId < 1)
+            {
+                return StatusCode(400);
+            }
+            await _eventRepository.DeleteEvent(requestParams.EventId);            
 
             return StatusCode(200);
         }

@@ -58,7 +58,7 @@ namespace TakeASeat.Services.EventService
             return await query.ToPagedListAsync(requestParams.PageNumber, requestParams.PageSize);
         }
         public async Task<IPagedList<Event>> GetEventsByUser(RequestEventParams requestParams, string userName)
-        {
+        {            
             var query = _context.Events
                             .AsNoTracking()                            
                             .Where(e => e.Creator.UserName == userName);

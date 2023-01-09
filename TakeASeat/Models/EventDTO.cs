@@ -69,9 +69,7 @@ namespace TakeASeat.Models
         public int EventTypeId { get; set; }        
         
     }
-
-
-    public class EditEventWithTagsDTO
+        public class EditEventWithTagsDTO
     {
         public EditEventDTO eventDTO { get; set; }
         public List<GetEventTagDTO> eventTagsDTO { get; set; }
@@ -81,7 +79,6 @@ namespace TakeASeat.Models
     public class GetEventWithListOfShowsDTO : GetEventDTO
     {
         public IList<GetShowDTO> Shows { get; set; }
-
     }
 
     public class GetEventDetailsDTO 
