@@ -15,10 +15,10 @@ namespace TakeASeat.Controllers
         public readonly IMapper _mapper;
         public readonly IShowRepository _showRepository;
 
-        public ShowController(IServiceProvider serviceProvider)
+        public ShowController(IMapper mapper, IShowRepository showRepository)
         {
-            _mapper = serviceProvider.GetRequiredService<IMapper>();
-            _showRepository = serviceProvider.GetRequiredService<IShowRepository>();
+            _mapper = mapper;
+            _showRepository = showRepository;
         }
 
         [HttpGet("{id:int}")]
@@ -26,8 +26,12 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetSingleShow(int id)                      // USED
+        public async Task<IActionResult> GetShow(int id)                      
         {
+            if (id < 1)
+            {
+                return StatusCode(400);
+            }
             var query = await _showRepository.GetShowDetails(id);
 
             var response = _mapper.Map<GetClosestShows>(query);
@@ -59,7 +63,10 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteShow([FromBody] DeleteShowParams requestParams)
         {
-
+            if (requestParams.ShowId < 1)
+            {
+                return StatusCode(400);
+            }
             await _showRepository.DeleteShow(requestParams.ShowId);
 
             return StatusCode(200);

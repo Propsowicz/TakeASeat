@@ -54,9 +54,13 @@ namespace TakeASeat.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return StatusCode(400);
             }
             var showId = seatsDTO.FirstOrDefault().ShowId;
+            if (showId == null)
+            {
+                return StatusCode(400);
+            }
             await _showRepository.SetShowReadyToSell(showId);
 
             var seats = _mapper.Map<IEnumerable<Seat>>(seatsDTO);

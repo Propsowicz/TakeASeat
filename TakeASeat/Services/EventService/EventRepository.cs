@@ -100,12 +100,16 @@ namespace TakeASeat.Services.EventService
         public async Task<Event> CreateEvent(CreateEventDTO eventDTO)
         {
             var eventName = eventDTO.Name;
+            if (eventDTO.CreatorId == null || eventDTO.Description == null ||
+                eventDTO.Name == null || eventDTO.Place == null ) 
+            {
+                return null;
+            }
             var eventObj = _mapper.Map<Event>(eventDTO);
             eventObj.EventSlug = eventName.ToLower().Replace(" ", "-");
-
             _context.Events.Add(eventObj);
-            await _context.SaveChangesAsync();
 
+            await _context.SaveChangesAsync();            
             return eventObj;
         }
 
@@ -141,12 +145,15 @@ namespace TakeASeat.Services.EventService
 
         public async Task<Event> EditEvent(EditEventDTO eventDTO)
         {
-            var eventObj = await _context.Events.FirstOrDefaultAsync(e => e.Id == eventDTO.Id);
-            if (eventObj == null)
+            if (eventDTO.Id == null || eventDTO.Description == null ||
+                eventDTO.Name == null || eventDTO.Place == null)
             {
-                throw new NullReferenceException();
+                return null;
             }
-            
+
+            var eventObj = await _context.Events.FirstOrDefaultAsync(e => e.Id == eventDTO.Id);
+            ArgumentNullException.ThrowIfNull(eventObj);
+
             // fields that can be changed:
             eventObj.Name= eventDTO.Name;
             eventObj.EventSlug = eventDTO.Name.ToLower().Replace(" ", "-");

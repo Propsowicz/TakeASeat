@@ -10,6 +10,7 @@ using TakeASeat.Models;
 using TakeASeat.RequestUtils;
 using X.PagedList;
 using TakeASeat.ProgramConfigurations.DTO;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace TakeASeat.Services.ShowService
 {
@@ -25,6 +26,10 @@ namespace TakeASeat.Services.ShowService
         
         public async Task<Show> GetShowDetails(int id)
         {
+            if (id < 1)
+            {
+                return null;
+            }
             var query = await _context.Shows
                 .AsNoTracking()
                 .Where(s => s.Id == id)
@@ -46,6 +51,8 @@ namespace TakeASeat.Services.ShowService
         public async Task SetShowReadyToSell(int id)
         {
             var show = await _context.Shows.Where(s => s.Id == id).FirstOrDefaultAsync();
+            ArgumentNullException.ThrowIfNull(show);
+            
             show.IsReadyToSell = true;
             await _context.SaveChangesAsync();
         }

@@ -16,10 +16,10 @@ namespace TakeASeat.Controllers
         public readonly IMapper _mapper;
         public readonly IShowRepository _showRepository;
 
-        public ShowsController(IServiceProvider serviceProvider)
+        public ShowsController(IMapper mapper, IShowRepository showRepository)
         {
-            _mapper = serviceProvider.GetRequiredService<IMapper>();
-            _showRepository = serviceProvider.GetRequiredService<IShowRepository>();
+            _mapper = mapper;
+            _showRepository = showRepository;
         }
 
         [HttpGet("home-page")]
@@ -27,7 +27,7 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetShowsHomePage()                  // USED
+        public async Task<IActionResult> GetShowsToHomePage()                  
         {
             int PageNumber = 1;
             int PageSize = 5;
@@ -41,7 +41,7 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetShows([FromQuery] RequestShowParams requestParams)                  // USED
+        public async Task<IActionResult> GetShows([FromQuery] RequestShowParams requestParams)                  
         {            
             var response = await _showRepository.GetShows(requestParams.PageNumber, requestParams.PageSize);
 
@@ -65,7 +65,7 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetShowRecordNumber()                  // USED
+        public async Task<IActionResult> GetShowsRecordNumber()                  
         {
             var query = await _showRepository.GetShowRecordNumber();
 
@@ -77,10 +77,13 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetShowsByEvent(int eventId)                  // USED
+        public async Task<IActionResult> GetShowsByEvent(int eventId)                  
         {
+            if (eventId < 1)
+            {
+                return StatusCode(400);
+            }
             var response = await _showRepository.GetShowsByEvent(eventId);
-            //var response = _mapper.Map<List<GetShowDTO>>(query);
 
             return StatusCode(200, response);
         }
