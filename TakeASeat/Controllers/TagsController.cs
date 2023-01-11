@@ -44,7 +44,7 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> AddEventTags([FromBody] List<GetEventTagDTO> eventTagsDTO, int eventId)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || eventId < 1)
             {
                 return BadRequest();
             }

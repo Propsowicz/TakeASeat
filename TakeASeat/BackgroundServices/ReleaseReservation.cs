@@ -16,7 +16,7 @@ namespace TakeASeat.BackgroundServices
             _reservationReleaseRepository = serviceProvider.CreateScope().ServiceProvider.GetRequiredService<IReleaseReservationService>();
         }
 
-        private const int generalDelay = 2 * 60000; // 2 minutes
+        private const int generalDelay = 2 * 60000; // 2 minutes 
         protected override async Task ExecuteAsync(CancellationToken stopToken)
         {
             while (!stopToken.IsCancellationRequested)
@@ -29,7 +29,8 @@ namespace TakeASeat.BackgroundServices
         public async Task UnpaidReservationCleaner()
         {
             Console.WriteLine("Cleaning up unpaid reservations..");
-            //await _reservationReleaseRepository.ReleaseUnpaidReservations();
+            var result = await _reservationReleaseRepository.ReleaseUnpaidReservations();
+            Console.WriteLine(result);
             // above code need to be uncommnet in production -> comment only for debugging
         }
 

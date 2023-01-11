@@ -28,7 +28,7 @@ namespace TakeASeat_Tests.Data
         public async void CleanDB()
         {
             var context = await GetDatabaseContext();
-            context.Database.EnsureDeletedAsync();
+            await context.Database.EnsureDeletedAsync();
         }
     }
 }

@@ -145,7 +145,7 @@ namespace TakeASeat.Services.EventService
 
         public async Task<Event> EditEvent(EditEventDTO eventDTO)
         {
-            if (eventDTO.Id == null || eventDTO.Description == null ||
+            if (eventDTO.Id < 1 || eventDTO.Description == null ||
                 eventDTO.Name == null || eventDTO.Place == null)
             {
                 return null;

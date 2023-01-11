@@ -42,7 +42,7 @@ namespace TakeASeat.Services.ShowService
                         .ThenInclude(t => t.EventTag)
                 .FirstOrDefaultAsync();
 
-            ArgumentNullException.ThrowIfNull(query);
+            //ArgumentNullException.ThrowIfNull(query);
 
             return query;
                 
@@ -100,6 +100,10 @@ namespace TakeASeat.Services.ShowService
 
         public async Task<IPagedList<GetShowsByEventDTO>> GetShowsByEvent(int eventId)
         {
+            if (eventId < 1)
+            {
+                return null;
+            }
             var query = await _context.Shows
                     .AsNoTracking()
                     .Where(s => s.EventId == eventId
@@ -158,7 +162,11 @@ namespace TakeASeat.Services.ShowService
 
         public async Task CreateShow(CreateShowDTO showDTO)
         {
-            var show = _mapper.Map<Show>(showDTO);
+            if (showDTO.EventId < 1 || showDTO.Date == null || showDTO.Description == null)
+            {
+                return;
+            }
+            var show = _mapper.Map<Show>(showDTO);            
             await _context.Shows.AddAsync(show);
             await _context.SaveChangesAsync();
         }

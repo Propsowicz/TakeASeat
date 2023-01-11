@@ -2,7 +2,7 @@
 {
     public interface IReleaseReservationService
     {
-        Task ReleaseUnpaidReservations();
+        Task<string> ReleaseUnpaidReservations();
 
     }
 }

@@ -10,30 +10,30 @@ namespace TakeASeat.Services.BackgroundService
     {
         private readonly DatabaseContext _context;
         private readonly ISeatResRepository _seatReservationRepository;
-        public ReleaseReservationService(DatabaseContext context, IServiceProvider serviceProvider)
+        public ReleaseReservationService(DatabaseContext context, ISeatResRepository seatReservationRepository)
         {
             _context = context;
-            _seatReservationRepository = serviceProvider.GetRequiredService<ISeatResRepository>();
+            _seatReservationRepository = seatReservationRepository;
         }
-
-        public async Task ReleaseUnpaidReservations()
+        
+        public async Task<string> ReleaseUnpaidReservations()
         {            
-            var dateTime = DateTime.UtcNow;
+            var dateTime = DateTime.UtcNow.AddMinutes(-5);
+           ;
             var seatReservationQuery = await _context.SeatReservation
-                                            .Where(r => 
+                                            .Where(r =>
                                             r.isReserved == true
                                             && r.isSold == false)
-                                            .Where(r => 
-                                            r.ReservedTime.Hour <= dateTime.Hour
-                                            && r.ReservedTime.Minute + 5 < dateTime.Minute 
-                                            || dateTime.Minute < r.ReservedTime.Minute - 5)                                            
+                                            .Where(r =>
+                                            r.ReservedTime < dateTime)
                                             .ToListAsync();
 
             if (seatReservationQuery.Count > 0 )
             {
                 await _seatReservationRepository.DeleteSeatReservations(seatReservationQuery);
-                Console.WriteLine("Unpaid reservations has been deleted...");
+                return "Unpaid reservations has been deleted...";
             }
+            return "No unpaid reservations has been found...";
             
         }
 

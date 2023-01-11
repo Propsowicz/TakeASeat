@@ -16,19 +16,15 @@ namespace TakeASeat.Controllers
     [ApiController]
     public class SeatsController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ISeatRepository _seatRepository;
         private readonly IShowRepository _showRepository;
-        private readonly ISeatResRepository _seatResRepository;
 
-        public SeatsController(IServiceProvider serviceProvider)
+        public SeatsController(IMapper mapper, ISeatRepository seatRepository, IShowRepository showRepository)
         {
-            _unitOfWork = serviceProvider.GetRequiredService<IUnitOfWork>();
-            _mapper = serviceProvider.GetRequiredService<IMapper>();
-            _seatRepository = serviceProvider.GetRequiredService<ISeatRepository>();
-            _showRepository = serviceProvider.GetRequiredService<IShowRepository>();
-            _seatResRepository = serviceProvider.GetRequiredService<ISeatResRepository>();
+            _mapper = mapper;
+            _seatRepository = seatRepository;
+            _showRepository = showRepository;
         }
 
 
@@ -39,6 +35,10 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetSeats(int showId)                               // USED
         {
+            if (showId < 1)
+            {
+                return StatusCode(400);
+            }
             var seats = await _seatRepository.GetSeats(showId);
             var response = _mapper.Map<IEnumerable<GetSeatDTO[]>>(seats);
             return StatusCode(200, response);
@@ -50,14 +50,14 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateMultipleSeats([FromBody] IEnumerable<CreateSeatDTO> seatsDTO)    // USED
+        public async Task<IActionResult> CreateMultipleSeats([FromBody] IEnumerable<CreateSeatDTO> seatsDTO)    
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || seatsDTO.Count() < 1)
             {
                 return StatusCode(400);
             }
             var showId = seatsDTO.FirstOrDefault().ShowId;
-            if (showId == null)
+            if (showId < 1)
             {
                 return StatusCode(400);
             }
@@ -76,9 +76,9 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> RemoveSeatReservation([FromBody] RequestSeatParams seatParams)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || seatParams.SeatId < 1)
             {
-                return BadRequest();
+                return StatusCode(400);
             }
             await _seatRepository.RemoveSingleReservation(seatParams.SeatId);
 

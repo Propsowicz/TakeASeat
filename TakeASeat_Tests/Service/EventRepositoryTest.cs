@@ -17,7 +17,7 @@ using TakeASeat_Tests.Data;
 
 namespace TakeASeat_Tests.Service
 {
-    public class EventRepositoryTest
+    public class EventRepositoryTest 
     {
                 
         private readonly IEventTagRepository _eventTagRepository;
@@ -30,7 +30,7 @@ namespace TakeASeat_Tests.Service
             _mapper = A.Fake<IMapper>();
             _DbMock = new DatabaseContextMock();
         }
-
+        
         [Fact]
         public async void EventRepository_GetEventRecordsNumber_ReturnInt()
         {
@@ -226,7 +226,7 @@ namespace TakeASeat_Tests.Service
             // arrange
             var context = await _DbMock.GetDatabaseContext();           
             EventRepository repository = new EventRepository(context, _mapper, _eventTagRepository);
-            int eventId = 6;
+            int eventId = 5;
             int oldEventsNumber = context.Events.ToList().Count();
 
             // act

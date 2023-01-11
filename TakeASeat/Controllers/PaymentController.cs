@@ -31,7 +31,7 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> getPaymentData([FromQuery] RequestPaymentParams requestPaymentParams)
+        public async Task<IActionResult> GetPaymentData([FromQuery] RequestPaymentParams requestPaymentParams)
         {
             var response = await _paymentRepository.getPaymentData(requestPaymentParams.UserId);
             return StatusCode(200, response);
@@ -43,7 +43,7 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> getTotalCostByUser([FromQuery] RequestPaymentParams requestPaymentParams)
+        public async Task<IActionResult> GetTotalCostByUser([FromQuery] RequestPaymentParams requestPaymentParams)
         {
             var response = await _paymentRepository.getTotalCost(requestPaymentParams.UserId);
             return StatusCode(200, response);
@@ -55,7 +55,7 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> createPaymentTransactionRecord([FromBody] CreatePaymentTranscationDTO paymentTranscationDTO)
+        public async Task<IActionResult> CreatePaymentTransactionRecord([FromBody] CreatePaymentTranscationDTO paymentTranscationDTO)
         {
             if (!ModelState.IsValid)
             {

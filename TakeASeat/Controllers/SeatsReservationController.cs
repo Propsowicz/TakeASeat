@@ -20,17 +20,12 @@ namespace TakeASeat.Controllers
     public class SeatsReservationController : ControllerBase
     {
         private readonly IMapper _mapper;        
-        private readonly ISeatResRepository _seatResRepository;
-        private readonly IReleaseReservationService _releaseResRepository;
-        private readonly DatabaseContext _context;
+        private readonly ISeatResRepository _seatResRepository;        
 
-        public SeatsReservationController(IServiceProvider serviceProvider)
+        public SeatsReservationController(IMapper mapper, ISeatResRepository seatResRepository)
         {
-            _mapper = serviceProvider.GetRequiredService<IMapper>();
-            _seatResRepository = serviceProvider.GetRequiredService<ISeatResRepository>();
-            _releaseResRepository = serviceProvider.GetRequiredService<IReleaseReservationService>();
-            _context = serviceProvider.GetRequiredService<DatabaseContext>();
-            
+            _mapper = mapper;
+            _seatResRepository = seatResRepository;           
         }
         
 
@@ -44,7 +39,7 @@ namespace TakeASeat.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return StatusCode(400);
             }
             var seats = _mapper.Map<IList<Seat>>(rParams.Seats);
             await _seatResRepository.CreateSeatReservation(rParams.UserId, seats);
@@ -57,11 +52,11 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> deleteSeatReservation([FromBody] RequestReservationParams seatReservation)
+        public async Task<IActionResult> DeleteSeatReservation([FromBody] RequestReservationParams seatReservation)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || seatReservation.seatReservationId < 1)
             {
-                return BadRequest();
+                return StatusCode(400);
             }
 
             await _seatResRepository.DeleteSeatReservation(seatReservation.seatReservationId);
