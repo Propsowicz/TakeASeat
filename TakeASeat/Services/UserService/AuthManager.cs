@@ -21,7 +21,6 @@ namespace TakeASeat.Services.UserService
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
         private User _user;
-        private LoginUserDTO _userDTO;
 
         public AuthManager(UserManager<User> userManager, IConfiguration configuration, IMapper mapper)
         {

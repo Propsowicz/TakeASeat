@@ -8,6 +8,7 @@ using TakeASeat.Services.SeatReservationService;
 using X.PagedList;
 using Microsoft.Data.SqlClient;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Microsoft.IdentityModel.Tokens;
 
 namespace TakeASeat.Services.SeatService
 {
@@ -22,28 +23,31 @@ namespace TakeASeat.Services.SeatService
 
         public async Task CreateMultipleSeats(IEnumerable<Seat> seats)
         {
+            if (seats.IsNullOrEmpty())
+            {
+                return;
+            }
             await _context.Seats.AddRangeAsync(seats);
             await _context.SaveChangesAsync();
             
         }
-        
-        public void DeleteEmptyReservation(int seatReservationId)
-        {
-            var reservation = _context.SeatReservation
-                                .Include(r => r.Seats)
-                                .FirstOrDefault(r => r.Id == seatReservationId);
 
-            ArgumentNullException.ThrowIfNull(reservation);
+        //public void DeleteEmptyReservation(int seatReservationId)
+        //{
+        //    var reservation = _context.SeatReservation
+        //                        .Include(r => r.Seats)
+        //                        .FirstOrDefault(r => r.Id == seatReservationId);
 
-            if (reservation.Seats.Count == 0)
-            {
-                _context.SeatReservation.Remove(reservation);
-            }
+        //    ArgumentNullException.ThrowIfNull(reservation);
 
-        }
+        //    if (reservation.Seats.Count == 0)
+        //    {
+        //        _context.SeatReservation.Remove(reservation);
+        //    }
+        //}
 
         public async Task<IList<Seat[]>> GetSeats(int showId)
-        {            
+        {           
             return await _context.Seats
                     .Where(s => s.ShowId == showId)
                     .GroupBy(s => s.Row)
@@ -51,59 +55,59 @@ namespace TakeASeat.Services.SeatService
                     .ToListAsync();
         }
 
-        public async Task RemoveMultipleReservation(List<int> reservationIds)
-        {
-            string WhereConditions = string.Empty;            
-            for (var i = 0; i < reservationIds.Count; i++)
-            {                
-                if (i == reservationIds.Count - 1)
-                {
-                    WhereConditions += $"ReservationId = {reservationIds[i]}";
-                }
-                else
-                {
-                    WhereConditions += $"ReservationId = {reservationIds[i]} OR ";
-                }
-            }
-            
-            await _context.Database.BeginTransactionAsync();
-            await _context.Database.ExecuteSqlRawAsync(
-                $"UPDATE Seats SET ReservationId = NULL WHERE {WhereConditions}"
-                );
-            await _context.Database.CommitTransactionAsync();
-        }
+        //public async Task RemoveMultipleReservation(List<int> reservationIds)
+        //{
+        //    string WhereConditions = string.Empty;            
+        //    for (var i = 0; i < reservationIds.Count; i++)
+        //    {                
+        //        if (i == reservationIds.Count - 1)
+        //        {
+        //            WhereConditions += $"ReservationId = {reservationIds[i]}";
+        //        }
+        //        else
+        //        {
+        //            WhereConditions += $"ReservationId = {reservationIds[i]} OR ";
+        //        }
+        //    }
 
-        public async Task RemoveReservation(int reservationId)
-        {
-            await _context.Database.BeginTransactionAsync();
-            await _context.Database.ExecuteSqlInterpolatedAsync(
-                $"UPDATE Seats SET ReservationId = NULL WHERE ReservationId = {reservationId}"
-                );
-            await _context.Database.CommitTransactionAsync();
-        }
+        //    await _context.Database.BeginTransactionAsync();
+        //    await _context.Database.ExecuteSqlRawAsync(
+        //        $"UPDATE Seats SET ReservationId = NULL WHERE {WhereConditions}"
+        //        );
+        //    await _context.Database.CommitTransactionAsync();
+        //}
 
-        public async Task RemoveSingleReservation(int reservationId)
-        {
-            var seat = await _context.Seats
-                    .Where(s => s.Id== reservationId)
-                    .FirstOrDefaultAsync();
+        //public async Task RemoveReservation(int reservationId)
+        //{
+        //    await _context.Database.BeginTransactionAsync();
+        //    await _context.Database.ExecuteSqlInterpolatedAsync(
+        //        $"UPDATE Seats SET ReservationId = NULL WHERE ReservationId = {reservationId}"
+        //        );
+        //    await _context.Database.CommitTransactionAsync();
+        //}
 
-            ArgumentNullException.ThrowIfNull(seat);
-            seat.ReservationId = null;
-            await _context.SaveChangesAsync();
-            DeleteEmptyReservation(reservationId);
+        //public async Task RemoveSingleReservation(int reservationId)
+        //{
+        //    var seat = await _context.Seats
+        //            .Where(s => s.Id== reservationId)
+        //            .FirstOrDefaultAsync();
 
-        }
+        //    ArgumentNullException.ThrowIfNull(seat);
+        //    seat.ReservationId = null;
+        //    await _context.SaveChangesAsync();
+        //    DeleteEmptyReservation(reservationId);
 
-        public async Task SetReservation(IEnumerable<Seat> seats, int? ReservationId)
-        {       
-            // need to be rawSQL
-            foreach (var seat in seats)
-            {
-                var _ = await _context.Seats.FindAsync(seat.Id);
-                _.ReservationId = ReservationId;                
-            }
-            await _context.SaveChangesAsync();
-        }
+        //}
+
+        //public async Task SetReservation(IEnumerable<Seat> seats, int? ReservationId)
+        //{       
+        //    // need to be rawSQL
+        //    foreach (var seat in seats)
+        //    {
+        //        var _ = await _context.Seats.FindAsync(seat.Id);
+        //        _.ReservationId = ReservationId;                
+        //    }
+        //    await _context.SaveChangesAsync();
+        //}
     }
 }

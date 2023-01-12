@@ -37,7 +37,7 @@ namespace TakeASeat.Services.UserService
 
             foreach(var userRole in userDTO.UserRoles) 
             {
-                tempUserRoles.Add( new UserRole { RoleId = userRole.Id, UserId = userDTO.Id });
+                tempUserRoles.Add( new UserRole { RoleId = userRole.Id, UserId = userDTO.UserId });
             }
 
             ArgumentNullException.ThrowIfNull(tempUserRoles);
@@ -45,8 +45,8 @@ namespace TakeASeat.Services.UserService
             await RemoveRoles(userDTO);
             await _context.UserRoles.AddRangeAsync(tempUserRoles);
             await _context.SaveChangesAsync();
-        }              
-
+        }
+               
         public async Task<IList<IdentityRole>> GetRoles()
         {
             return await _roleManager.Roles.ToListAsync();
@@ -81,7 +81,7 @@ namespace TakeASeat.Services.UserService
 
         public async Task RemoveRoles(EditUserRolesDTO userDTO)
         {
-            var query = _context.UserRoles.Where(r => r.UserId == userDTO.Id);
+            var query = _context.UserRoles.Where(r => r.UserId == userDTO.UserId);
             _context.UserRoles.RemoveRange(query);
         }
     }

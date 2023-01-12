@@ -33,7 +33,7 @@
 
     public class EditUserRolesDTO
     {
-        public string Id { get; set; }
+        public string UserId { get; set; }
         public IEnumerable<GetRoleDTO> UserRoles { get; set; }
 
     }

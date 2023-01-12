@@ -85,10 +85,11 @@ namespace TakeASeat_Tests.Service
             var context = await _DbMock.GetDatabaseContext();
             EventTagRepository repository = new EventTagRepository(context);
             int eventId = 1;
+            int oldTagsNumber = context.EventTagEventM2M.Where(t => t.EventId == eventId).Count();
 
             // act 
             var response = repository.RemoveEventTags(eventId);
-            context.SaveChanges();                                          // need to save here (didtn create unitOfWork)
+            context.SaveChanges();                                          // need to save here (didnt create unitOfWork)
 
             // assert
             int newTagsNumber = context.EventTagEventM2M.Where(t => t.EventId == eventId).Count();

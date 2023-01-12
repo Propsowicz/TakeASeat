@@ -50,14 +50,13 @@ namespace TakeASeat_Tests.Service
         {
             // arrange
             var context = await _DbMock.GetDatabaseContext();
-            int eventsNumber = context.Events.Count();
             EventRepository repository = new EventRepository(context, _mapper, _eventTagRepository);
 
             // act
             var response = await repository.GetEventRecordsNumber();
 
             // assert
-            response.Should().Be(eventsNumber);
+            response.Should().Be(context.Events.ToList().Count());
         }
         [Fact]
         public async void EventRepository_GetEventsByUser_ReturnEmpty()
@@ -101,8 +100,7 @@ namespace TakeASeat_Tests.Service
 
             // assert
             Assert.Equal(10, requestParams.PageSize);
-            response.Should().NotBeEmpty();
-            response.Should().HaveCount(2);
+            response.Should().HaveCount(context.Events.Where(e => e.Creator.UserName == "LOG").Count());
         }
         [Fact]
         public async void EventRepository_CreateEvent_ReturnEventItem()

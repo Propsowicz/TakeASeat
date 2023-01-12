@@ -19,12 +19,14 @@ namespace TakeASeat.Controllers
         private readonly IMapper _mapper;
         private readonly ISeatRepository _seatRepository;
         private readonly IShowRepository _showRepository;
+        private readonly ISeatResRepository _seatReservationRepository;
 
-        public SeatsController(IMapper mapper, ISeatRepository seatRepository, IShowRepository showRepository)
+        public SeatsController(IMapper mapper, ISeatRepository seatRepository, IShowRepository showRepository, ISeatResRepository seatReservationRepository)
         {
             _mapper = mapper;
             _seatRepository = seatRepository;
             _showRepository = showRepository;
+            _seatReservationRepository = seatReservationRepository;
         }
 
 
@@ -80,7 +82,7 @@ namespace TakeASeat.Controllers
             {
                 return StatusCode(400);
             }
-            await _seatRepository.RemoveSingleReservation(seatParams.SeatId);
+            await _seatReservationRepository.RemoveSingleSeatFromOrder(seatParams.SeatId);
 
             return StatusCode(204);
         }

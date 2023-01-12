@@ -21,7 +21,10 @@ namespace TakeASeat_Tests.Data
 
             var contextMock = new DatabaseContext(options);
             contextMock.Database.EnsureCreated();
-            
+            await contextMock.ProtectedKeys.AddAsync(new ProtectedKeys() { Key = "DOTPAY_PIN", Value = "123QWE456ASD" });
+            await contextMock.ProtectedKeys.AddAsync(new ProtectedKeys() { Key = "DOTPAY_ID", Value = "123456789" });
+            await contextMock.SaveChangesAsync();
+
             return contextMock;
         }
 

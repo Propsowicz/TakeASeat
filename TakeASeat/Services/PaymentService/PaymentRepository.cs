@@ -11,12 +11,10 @@ namespace TakeASeat.Services.PaymentService
     public class PaymentRepository : IPaymentRepository
     {
         private readonly DatabaseContext _context;
-        private readonly ISeatResRepository _seatResRepository;
 
-        public PaymentRepository(DatabaseContext context, ISeatResRepository seatResRepository)
+        public PaymentRepository(DatabaseContext context)
         {
             _context= context;
-            _seatResRepository= seatResRepository;
         }
         public async Task createPaymentTransactionRecord(PaymentTransaction paymentTranscation)
         {
@@ -26,7 +24,6 @@ namespace TakeASeat.Services.PaymentService
 
         public async Task<PaymentDataDTO> getPaymentData(string userId)
         {
-
             var mainQuery = _context.Seats
                         .Where(s => s.SeatReservation.UserId == userId
                         && s.SeatReservation.isReserved == true
@@ -34,16 +31,18 @@ namespace TakeASeat.Services.PaymentService
                         .Select(s => s.Price)
                         .ToList();
 
+            ArgumentNullException.ThrowIfNull(mainQuery);
+
             var reservationsQuery = _context.SeatReservation
                         .Where(s => s.isReserved == true
                         && s.isSold == false)
                         .ToList();
+            
+            var dotpay_PIN = await _context.ProtectedKeys
+                        .FirstOrDefaultAsync(k => k.Key == "DOTPAY_PIN");
 
-            var dotpay_PIN = _context.ProtectedKeys
-                        .FirstOrDefault(k => k.Key == "DOTPAY_PIN");
-
-            var dotpay_ID = _context.ProtectedKeys
-                        .FirstOrDefault(k => k.Key == "DOTPAY_ID");
+            var dotpay_ID = await _context.ProtectedKeys
+                        .FirstOrDefaultAsync(k => k.Key == "DOTPAY_ID");
 
             if (dotpay_PIN != null && dotpay_ID != null) 
             {
@@ -53,7 +52,7 @@ namespace TakeASeat.Services.PaymentService
             else
             {
                 throw new CantAccessDataException("Can't access Payment Server Keys.");
-            }            
+            }
         }
 
         public async Task<IList<Seat>> getReservedSeats(string userId)

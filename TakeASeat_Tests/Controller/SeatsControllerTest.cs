@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using TakeASeat.Controllers;
 using TakeASeat.Models;
 using TakeASeat.RequestUtils;
+using TakeASeat.Services.SeatReservationService;
 using TakeASeat.Services.SeatService;
 using TakeASeat.Services.ShowService;
 
@@ -21,18 +22,21 @@ namespace TakeASeat_Tests.Controller
         private readonly IMapper _mapper;
         private readonly ISeatRepository _seatRepository;
         private readonly IShowRepository _showRepository;
+        private readonly ISeatResRepository _seatReservationRepository;
+
         public SeatsControllerTest()
         {
             _mapper = A.Fake<IMapper>();
             _seatRepository= A.Fake<ISeatRepository>();
             _showRepository= A.Fake<IShowRepository>();
+            _seatReservationRepository = A.Fake<ISeatResRepository>();
         }
 
         [Fact]
         public void SeatsController_GetSeats_Return400()
         {
             // arrange
-            SeatsController controller = new SeatsController(_mapper, _seatRepository, _showRepository);
+            SeatsController controller = new SeatsController(_mapper, _seatRepository, _showRepository, _seatReservationRepository);
             int showId = 0;
 
             // act
@@ -49,7 +53,7 @@ namespace TakeASeat_Tests.Controller
         public void SeatsController_GetSeats_Return200()
         {
             // arrange
-            SeatsController controller = new SeatsController(_mapper, _seatRepository, _showRepository);
+            SeatsController controller = new SeatsController(_mapper, _seatRepository, _showRepository, _seatReservationRepository);
             int showId = 1;
 
             // act
@@ -66,7 +70,7 @@ namespace TakeASeat_Tests.Controller
         public void SeatsController_CreateMultipleSeats_Return400()
         {
             // arrange
-            SeatsController controller = new SeatsController(_mapper, _seatRepository, _showRepository);
+            SeatsController controller = new SeatsController(_mapper, _seatRepository, _showRepository, _seatReservationRepository);
             IEnumerable<CreateSeatDTO> seatsDTO = A.Fake<IEnumerable<CreateSeatDTO>>();
 
             // act
@@ -83,7 +87,7 @@ namespace TakeASeat_Tests.Controller
         public void SeatsController_CreateMultipleSeats_Return201()
         {
             // arrange
-            SeatsController controller = new SeatsController(_mapper, _seatRepository, _showRepository);
+            SeatsController controller = new SeatsController(_mapper, _seatRepository, _showRepository, _seatReservationRepository);
             IEnumerable<CreateSeatDTO> seatsDTO = new List<CreateSeatDTO>()
             {
                 new CreateSeatDTO
@@ -117,7 +121,7 @@ namespace TakeASeat_Tests.Controller
         public void SeatsController_RemoveSeatReservation_Return400()
         {
             // arrange
-            SeatsController controller = new SeatsController(_mapper, _seatRepository, _showRepository);
+            SeatsController controller = new SeatsController(_mapper, _seatRepository, _showRepository, _seatReservationRepository);
             RequestSeatParams requestParams = new RequestSeatParams() { SeatId = 0 };
 
             // act
@@ -134,7 +138,7 @@ namespace TakeASeat_Tests.Controller
         public void SeatsController_RemoveSeatReservation_Return204()
         {
             // arrange
-            SeatsController controller = new SeatsController(_mapper, _seatRepository, _showRepository);
+            SeatsController controller = new SeatsController(_mapper, _seatRepository, _showRepository, _seatReservationRepository);
             RequestSeatParams requestParams = new RequestSeatParams() { SeatId = 1 };
 
             // act

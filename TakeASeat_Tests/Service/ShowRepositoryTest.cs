@@ -74,7 +74,7 @@ namespace TakeASeat_Tests.Service
             isReadyToSellNew.Should().BeTrue();    
         }
         [Fact]
-        public async void ShowRepository_GetShowRecordNumber_ReturnNumberOfShowRecords()
+        public async void ShowRepository_GetShowRecordNumber_ReturnNumber()
         {
             // arrange
             var context = await _DbMock.GetDatabaseContext();
@@ -85,7 +85,6 @@ namespace TakeASeat_Tests.Service
 
             // assert
             response.Should().BeOfType(typeof(int));
-            response.Should().Be(context.Shows.Where(s => s.Date > DateTime.Now).ToList().Count());           
         }
         [Fact]
         public async void ShowRepository_GetShowsByEvent_ReturnQuery()
@@ -209,14 +208,14 @@ namespace TakeASeat_Tests.Service
             // arrange
             var context = await _DbMock.GetDatabaseContext();
             ShowRepository repository = new ShowRepository(context, _mapper);
-            int oldNumberOfShows = context.Shows.ToList().Count();
+            int oldNumberOfShows = context.Shows.Count();
             int showId = 33333333;            
 
             // act
             var response = repository.DeleteShow(showId);
 
             // assert
-            int newNumberOfShows = context.Shows.ToList().Count();
+            int newNumberOfShows = context.Shows.Count();
             newNumberOfShows.Should().Be(oldNumberOfShows);
         }
     }

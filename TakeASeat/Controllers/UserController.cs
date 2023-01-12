@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System.Data;
 using TakeASeat.Data;
 using TakeASeat.Models;
@@ -35,19 +36,15 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> RegisterUser([FromBody] RegisterUserDTO userDTO)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || userDTO.UserName.IsNullOrEmpty() || userDTO.Password.IsNullOrEmpty())
             {
-                return BadRequest();
+                return StatusCode(400);
             }
             var user = _mapper.Map<User>(userDTO);
             var response = await _userManager.CreateAsync(user, userDTO.Password);
-
-            if (response.Succeeded) 
-            {
-                await _userRepository.AddToRoleNamedUser(user);
-                return StatusCode(201); 
-            }
-            else { return StatusCode(400, response); }            
+                        
+            await _userRepository.AddToRoleNamedUser(user);
+            return StatusCode(201);             
         }
 
         [HttpPost("refresh")]
