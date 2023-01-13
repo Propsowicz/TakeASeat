@@ -18,26 +18,7 @@ export const MainNavbar = () => {
     const {userData} = useContext(UserContext)
     const {logout} = useContext(UserContext)
     const navigate = useNavigate()
-
-    const organizerPanel = [
-        {label: 'Event', code: 'event',
-        items: [
-            {label: 'Create', value: '/create/event'},
-            {label: 'Modify', value: '/created/events'},
-        ]
-        },
-        {label: 'Show', code: 'show',
-        items: [
-            {label: 'Create', value: '/create/show'},
-            {label: 'Modify', value: '/created/shows'},
-        ]
-        }
-    ]
-
-    const goToOrganizerPanelOption = (e) => {
-        navigate(e.value)
-    }
-
+   
     const getTotalCostByUser = async () => {
         if (userData.UserId){
             const response = await fetch(`${url}/api/Payment/total-user-cost?UserId=${userData.UserId}`, {
@@ -53,7 +34,9 @@ export const MainNavbar = () => {
 
     const checkIfUserIsOrganizer = () => {
         let userRole = userData["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
-        if (userRole === "Organizer" || userRole === "Administrator") {
+        console.log(userData)
+        console.log(userRole)
+        if (userRole.includes("Administrator") || userRole.includes("Organizer")) {
             return true;
         }
         return false;
@@ -61,7 +44,7 @@ export const MainNavbar = () => {
 
     const checkIfUserIsAdmin = () => {
         let userRole = userData["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
-        if (userRole === "Administrator") {
+        if (userRole.includes("Administrator")) {
             return true;
         }
         return false;
@@ -96,6 +79,7 @@ export const MainNavbar = () => {
     }
 
     useEffect(() => {
+        
         getTotalCostByUser()        
     }, [])
 
@@ -116,7 +100,7 @@ export const MainNavbar = () => {
                 ?                 
                 <div className='flex justify-content-end'>         
                     {
-                        checkIfUserIsOrganizer
+                        checkIfUserIsOrganizer()
                         ?
                         <div className="flex align-items-center justify-content-center">
                             <Button label="Organizator Panel" className="p-button-text" onClick={goToOrganizatorPanel}/>                            
@@ -125,7 +109,7 @@ export const MainNavbar = () => {
                         <div></div>
                     }
                     {
-                        checkIfUserIsOrganizer
+                        checkIfUserIsAdmin()
                         ?
                         <div className="flex align-items-center justify-content-center">
                             <Button label="Administrator Panel" className="p-button-text" onClick={goToAdministratorPanel}/>                            

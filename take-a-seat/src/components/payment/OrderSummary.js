@@ -40,6 +40,7 @@ const OrderSummary = (props) => {
                     <input type="hidden" name="id" value={props.data.id} />
                     <input type="hidden" name="description" value={props.data.description} />
                     <input type="hidden" name="url" value={props.data.url} />
+                    <input type="hidden" name="urlc" value={props.data.urlc} />
                     <input type="hidden" name="chk" value={props.data.chk} />
                     <Button label="Go to Payment" />
                 </form>

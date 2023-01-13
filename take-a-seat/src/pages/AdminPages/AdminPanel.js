@@ -122,13 +122,14 @@ const AdminPanel = () => {
     const postEditUserRoles = async (e) => {
         e.preventDefault()
         let data = {
-            "id": e.target.userId.value,
+            "userId": e.target.userId.value,
             "userRoles": []
         }
         if (e.target.User.title === "1"){ data.userRoles.push({"id": e.target.User.value, "name": e.target.User.name})}
         if (e.target.Organizer.title === "1"){ data.userRoles.push({"id": e.target.Organizer.value, "name": e.target.Organizer.name})}
         if (e.target.Administrator.title === "1"){ data.userRoles.push({"id": e.target.Administrator.value, "name": e.target.Administrator.name})}
         console.log(data)
+        console.log(JSON.stringify(data))
         const response = await fetch(`${url}/api/Administrator/edit-roles`, {
             method: 'POST',
             headers: typHeader,

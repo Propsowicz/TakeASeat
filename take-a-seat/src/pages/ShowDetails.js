@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import CreateSeats from '../components/show-details/CreateSeats';
 import ShowDescription from '../components/show-details/ShowDescription';
 import {url, typHeader} from '../const/constValues'
@@ -7,11 +7,13 @@ import { Panel } from 'primereact/panel';
 import { Fieldset } from 'primereact/fieldset';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import DisplaySeats from '../components/show-details/DisplaySeats';
+import {UserContext} from '../context/UserContext'
 
 
 const ShowDetails = () => {    
     const showId = window.location.href.split('/')[5]
     const eventSlug = window.location.href.split('/')[4]
+    const {userData} = useContext(UserContext)
 
     const [showDetails, setShowDetails] = useState([])
     
@@ -29,6 +31,15 @@ const ShowDetails = () => {
           console.log(response.statusText) 
       }               
   }
+    const checkIfUserIsOrganizer = () => {
+      let userRole = userData["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+      console.log(userData)
+      console.log(userRole)
+      if (userRole.includes("Administrator") || userRole.includes("Organizer")) {
+          return true;
+      }
+      return false;
+    }
 
     useEffect (() => {
         getShow()
@@ -49,13 +60,29 @@ const ShowDetails = () => {
         }
            
         <Fieldset className='scene-comp'>
-          <p className='scene-comp-descr'>EVENT SCENE</p>
+          {
+            showDetails.isReadyToSell
+            ? 
+              <p className='scene-comp-descr'>EVENT SCENE</p>
+            :
+              <p className='scene-comp-descr'>TICKETS AVAIBLE SOON!</p>
+          }
+          
         </Fieldset> 
         {showDetails.isReadyToSell
-          ?
+          ?          
           <DisplaySeats eventId={showDetails.event.id} eventSlug={eventSlug} showId={showId}/>
-          :
-          <CreateSeats showId={showId}/>
+          :          
+          <div>
+              {
+                checkIfUserIsOrganizer()
+                ?
+                  <CreateSeats showId={showId}/>
+                :
+                  <div></div>
+              }
+          </div>
+          
         }        
       </div>
       );

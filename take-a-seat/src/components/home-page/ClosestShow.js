@@ -27,7 +27,7 @@ const ClosestShow = (props) => {
     <div className='show-panel' >
         <Panel header={props.event} id={props.key}>
             <PanelMainInfo showDescr={props.showDescr} date={props.date} place={props.place} eventId={props.eventId} showId={props.showId} eventSlug={props.eventSlug}
-                            seatsLeft={props.seatsLeft}/>           
+                            seatsLeft={props.seatsLeft} isReadyToSell={props.isReadyToSell}/>           
             <Divider type='dashed'/>
             {eventTags.map((tag, index) => (
                 <Chip label={tag} className='generic-chip' onClick={goToTagPage}/>
