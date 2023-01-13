@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TakeASeat.Models;
 using TakeASeat.RequestUtils;
-using TakeASeat.Services.Generic;
 using TakeASeat.Services.ShowService;
 
 namespace TakeASeat.Controllers

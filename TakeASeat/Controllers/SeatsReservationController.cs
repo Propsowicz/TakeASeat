@@ -7,7 +7,6 @@ using TakeASeat.Data;
 using TakeASeat.Data.DatabaseContext;
 using TakeASeat.RequestUtils;
 using TakeASeat.Services.BackgroundService;
-using TakeASeat.Services.Generic;
 using TakeASeat.Services.SeatReservationService;
 using TakeASeat.Services.SeatService;
 using TakeASeat.Services.ShowService;

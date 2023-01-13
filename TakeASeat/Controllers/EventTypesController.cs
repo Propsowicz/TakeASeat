@@ -18,7 +18,6 @@ namespace TakeASeat.Controllers
             _eventTypeRepository= eventTypeRepository;
         }
 
-
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -30,8 +30,8 @@ namespace TakeASeat.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -58,7 +58,7 @@ namespace TakeASeat.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TagName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    TagName = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -71,7 +71,7 @@ namespace TakeASeat.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -84,8 +84,8 @@ namespace TakeASeat.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Key = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Key = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -206,8 +206,8 @@ namespace TakeASeat.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Amount = table.Column<double>(type: "float", nullable: false),
-                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     isAccepted = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -251,12 +251,12 @@ namespace TakeASeat.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     Duration = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Place = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EventSlug = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
+                    Place = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    EventSlug = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     EventTypeId = table.Column<int>(type: "int", nullable: false),
                     CreatorId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
@@ -328,7 +328,7 @@ namespace TakeASeat.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     IsReadyToSell = table.Column<bool>(type: "bit", nullable: false),
                     EventId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -349,10 +349,10 @@ namespace TakeASeat.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Row = table.Column<string>(type: "nvarchar(1)", nullable: false),
+                    Row = table.Column<string>(type: "nvarchar(1)", maxLength: 1, nullable: false),
                     Position = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
-                    SeatColor = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SeatColor = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     ReservationId = table.Column<int>(type: "int", nullable: true),
                     ShowId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -377,9 +377,9 @@ namespace TakeASeat.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Discriminator", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1792a977-16e0-4bcf-a7c3-1fc45b49ec50", "a5669d6a-f8b5-4f63-aa5f-3590ecc4f493", "Role", "User", "USER" },
-                    { "5b7cc33d-c661-4e54-b6be-5c90d44a6ee8", "16e19c48-b283-4065-8d8a-181b9b5e0234", "Role", "Administrator", "ADMINISTRATOR" },
-                    { "61bc565d-93bf-4bac-b279-5e77473c945b", "2397eaee-d2f2-462e-90d8-04d0412f991a", "Role", "Organizer", "ORGANIZER" }
+                    { "3dc61429-9a15-4978-bee4-9a71c31e1aa1", "5b490e5d-1a19-49bf-9cd6-a100a94f30f3", "Role", "User", "USER" },
+                    { "5204b19a-a476-4e79-97ae-43c40bb31862", "cf5cddec-697a-4c17-8c8d-163bad8fba75", "Role", "Administrator", "ADMINISTRATOR" },
+                    { "b4d2f9b6-9558-4c67-9aff-bd5254c33af6", "2f3f3b3f-4f34-439f-bd82-030c6fea2d07", "Role", "Organizer", "ORGANIZER" }
                 });
 
             migrationBuilder.InsertData(
@@ -387,8 +387,8 @@ namespace TakeASeat.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "8e445865-a24d-4543-a6c6-9443d048cdb0", 0, "ca4548b9-298d-4e5d-9500-9b6591189ce1", "User", null, false, "Logan", "Capuchino", false, null, null, null, "AQAAAAEAACcQAAAAELv2ivat+vMo7O5du6EjwwQuiwvA8Rl8HqxA+IUf5BiXuyxckTm2hwWV8xPq0vvW2Q==", null, false, "42fb1a1a-4d5f-4568-abcd-3d3f0738dec6", false, "LOG" },
-                    { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "30b45da4-af66-44b2-a946-282abc15a44a", "User", null, false, "George", "Flinston", false, null, null, null, "AQAAAAEAACcQAAAAEMv3HqzONSzgWBrwGSNE/GYinVEn0AzfrXZErYuX4GfkVcpZkTZp4Qk/uWvTW5Wt1w==", null, false, "dd0c830c-4235-4dea-9c6a-8f2bb4475f1f", false, "Flinston" }
+                    { "8e445865-a24d-4543-a6c6-9443d048cdb0", 0, "6242df8b-3e9b-4960-a89d-1e929ed9bf41", "User", null, false, "Logan", "Capuchino", false, null, null, null, "AQAAAAEAACcQAAAAEPbJsSaDFw8nRIQ35HA1AjTPzDk71VVG9KmKj1neyI3SS1qT+ipEUK3+vLYxAIxjmQ==", null, false, "c98a1e24-9414-4940-b5bc-9baa02982d7d", false, "LOG" },
+                    { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "25417735-793d-47f9-95ca-120f8c863082", "User", null, false, "George", "Flinston", false, null, null, null, "AQAAAAEAACcQAAAAECDDuK5hYFTp7ezBaQXz6xkaagJTwpBoIzo63s6BwnzzfXj5ZbKYl6Dchc7ZjPhPxg==", null, false, "7370f88c-0018-42b3-8af9-e47549f6560e", false, "Flinston" }
                 });
 
             migrationBuilder.InsertData(

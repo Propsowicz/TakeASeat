@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentAssertions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,29 +12,54 @@ namespace TakeASeat_Tests.Models
 {
     public class EventDTOTest
     {       
+        // these tests check dto models validators and integrity between create and edit model validators
+
         [Fact]
-        public void EventDTO_CreateEventDTO_ReturnNameIsTooShort()
+        public void EventDTO_CreateEventDTOAndEditEventDTO_ReturnNameIsTooShort()
         {
             // arrange
-            var eventDTO = new CreateEventDTO()
+            var createEventDTO = new CreateEventDTO()
             {
                 Name = "012345678",                
             };
+            var editEventDTO = new EditEventDTO()
+            {
+                Name = "012345678",
+            };
 
             // act
-            var result = DTOValidation.ValidateObject(eventDTO).Any(
+            var resultCreate = DTOValidation.CheckForErrors(createEventDTO).Any(
+                v => v.MemberNames.Contains("Name")
+                && v.ErrorMessage.Contains("Name is too short.")
+                );
+            var resultEdit = DTOValidation.CheckForErrors(editEventDTO).Any(
                 v => v.MemberNames.Contains("Name")
                 && v.ErrorMessage.Contains("Name is too short.")
                 );
 
             // assert
-            Assert.True(result);
+            resultCreate.Should().BeTrue();
+            resultEdit.Should().BeTrue();
         }
         [Fact]
-        public void EventDTO_CreateEventDTO_ReturnNameIsTooLong()
+        public void EventDTO_CreateEventDTOAndEditEventDTO_ReturnNameIsTooLong()
         {
             // arrange
-            var eventDTO = new CreateEventDTO()
+            var createEventDTO = new CreateEventDTO()
+            {
+                Name = "0123456789" +
+                        "0123456789" +
+                        "0123456789" +
+                        "0123456789" +
+                        "0123456789" +
+                        "0123456789" +
+                        "0123456789" +
+                        "0123456789" +
+                        "0123456789" +
+                        "0123456789" +
+                        "0",
+            };
+            var editEventDTO = new EditEventDTO()
             {
                 Name = "0123456789" +
                         "0123456789" +
@@ -49,19 +75,24 @@ namespace TakeASeat_Tests.Models
             };
 
             // act
-            var result = DTOValidation.ValidateObject(eventDTO).Any(
+            var resultCreate = DTOValidation.CheckForErrors(createEventDTO).Any(
+                v => v.MemberNames.Contains("Name")
+                && v.ErrorMessage.Contains("Name is too long.")
+                );
+            var resultEdit = DTOValidation.CheckForErrors(editEventDTO).Any(
                 v => v.MemberNames.Contains("Name")
                 && v.ErrorMessage.Contains("Name is too long.")
                 );
 
             // assert
-            Assert.True(result);
+            resultCreate.Should().BeTrue();
+            resultEdit.Should().BeTrue();
         }
         [Fact]
-        public void EventDTO_CreateEventDTO_ReturnNameOKWith100Characters()
+        public void EventDTO_CreateEventDTOAndEditEventDTO_ReturnNameOKWith100Characters()
         {
             // arrange
-            var eventDTO = new CreateEventDTO()
+            var createEventDTO = new CreateEventDTO()
             {
                 Name = "0123456789" +
                         "0123456789" +
@@ -74,84 +105,136 @@ namespace TakeASeat_Tests.Models
                         "0123456789" +
                         "0123456789"                         
             };
+            var editEventDTO = new EditEventDTO()
+            {
+                Name = "0123456789" +
+                        "0123456789" +
+                        "0123456789" +
+                        "0123456789" +
+                        "0123456789" +
+                        "0123456789" +
+                        "0123456789" +
+                        "0123456789" +
+                        "0123456789" +
+                        "0123456789"
+            };
 
             // act
-            var result = DTOValidation.ValidateObject(eventDTO).Any(
+            var resultCreate = DTOValidation.CheckForErrors(createEventDTO).Any(
+                v => v.MemberNames.Contains("Name")
+                && v.ErrorMessage.Contains("Name is too long.")
+                );
+            var resultEdit = DTOValidation.CheckForErrors(editEventDTO).Any(
                 v => v.MemberNames.Contains("Name")
                 && v.ErrorMessage.Contains("Name is too long.")
                 );
 
             // assert
-            Assert.False(result);
+            resultCreate.Should().BeFalse();
+            resultEdit.Should().BeFalse();
         }
         [Fact]
-        public void EventDTO_CreateEventDTO_ReturnNameIsOKWith10Characters()
+        public void EventDTO_CreateEventDTOAndEditEventDTO_ReturnNameIsOKWith10Characters()
         {
             // arrange
-            var eventDTO = new CreateEventDTO()
+            var createEventDTO = new CreateEventDTO()
             {
                 Name = "0123456789"                         
             };
+            var editEventDTO = new EditEventDTO()
+            {
+                Name = "0123456789"
+            };
 
             // act
-            var result = DTOValidation.ValidateObject(eventDTO).Any(
+            var resultCreate = DTOValidation.CheckForErrors(createEventDTO).Any(
+                v => v.MemberNames.Contains("Name")
+                && v.ErrorMessage.Contains("Name is too short.")
+                );
+            var resultEdit = DTOValidation.CheckForErrors(editEventDTO).Any(
                 v => v.MemberNames.Contains("Name")
                 && v.ErrorMessage.Contains("Name is too short.")
                 );
 
             // assert
-            Assert.False(result);
+            resultCreate.Should().BeFalse();
+            resultEdit.Should().BeFalse();
         }
         [Fact]
-        public void EventDTO_CreateEventDTO_ReturnDurationUnderLimitRange()
+        public void EventDTO_CreateEventDTOAndEditEventDTO_ReturnDurationUnderLimitRange()
         {
             // arrange
-            var eventDTO = new CreateEventDTO()
+            var createEventDTO = new CreateEventDTO()
             {
+                Duration = 10
+            };
+            var editEventDTO = new EditEventDTO()
+            { 
                 Duration = 10
             };
 
             // act
-            var result = DTOValidation.ValidateObject(eventDTO);
+            var resultCreate = DTOValidation.CheckForErrors(createEventDTO);
+            var resultEdit = DTOValidation.CheckForErrors(editEventDTO);
 
             // assert
-            Assert.NotEmpty(result);
+            resultCreate.Should().NotBeEmpty();
+            resultEdit.Should().NotBeEmpty();
         }
         [Fact]
-        public void EventDTO_CreateEventDTO_ReturnDurationAboveLimitRange()
+        public void EventDTO_CreateEventDTOAndEditEventDTO_ReturnDurationAboveLimitRange()
         {
             // arrange
-            var eventDTO = new CreateEventDTO()
+            var createEventDTO = new CreateEventDTO()
+            {
+                Duration = 100000
+            };
+            var editEventDTO = new EditEventDTO()
             {
                 Duration = 100000
             };
 
             // act
-            var result = DTOValidation.ValidateObject(eventDTO);
+            var resultCreate = DTOValidation.CheckForErrors(createEventDTO);
+            var resultEdit = DTOValidation.CheckForErrors(editEventDTO);
 
             // assert
-            Assert.NotEmpty(result);
+            resultCreate.Should().NotBeEmpty();
+            resultEdit.Should().NotBeEmpty();
         }
         [Fact]
-        public void EventDTO_CreateEventDTO_ReturnDurationOK()
+        public void EventDTO_CreateEventDTOAndEditEventDTO_ReturnDurationOK()
         {
             // arrange
-            var eventDTO_1 = new CreateEventDTO()
+            var eventDTO_1_create = new CreateEventDTO()
             {
                 Duration = 30
             };
-            var eventDTO_2 = new CreateEventDTO()
+            var eventDTO_2_create = new CreateEventDTO()
+            {
+                Duration = 240
+            };
+            var eventDTO_1_edit = new EditEventDTO()
+            {
+                Duration = 30
+            };
+            var eventDTO_2_edit = new EditEventDTO()
             {
                 Duration = 240
             };
 
             // act
-            var result_1 = DTOValidation.ValidateObject(eventDTO_1).Where(v => v.MemberNames.Equals("Duration"));
-            var result_2 = DTOValidation.ValidateObject(eventDTO_2).Where(v => v.MemberNames.Equals("Duration"));
+            var result_1_create = DTOValidation.CheckForErrors(eventDTO_1_create).Where(v => v.MemberNames.Equals("Duration"));
+            var result_2_create = DTOValidation.CheckForErrors(eventDTO_2_create).Where(v => v.MemberNames.Equals("Duration"));
+            var result_1_edit = DTOValidation.CheckForErrors(eventDTO_1_edit).Where(v => v.MemberNames.Equals("Duration"));
+            var result_2_edit = DTOValidation.CheckForErrors(eventDTO_2_edit).Where(v => v.MemberNames.Equals("Duration"));
 
             // assert
-            Assert.Empty(result_1);
-            Assert.Empty(result_2);
+            result_2_create.Should().BeEmpty();
+            result_1_create.Should().BeEmpty();
+            result_2_edit.Should().BeEmpty();
+            result_1_edit.Should().BeEmpty();
+
         }
 
     }

@@ -109,7 +109,7 @@ namespace TakeASeat_Tests.Service
             // assert            
             response.Should().BeOfType(typeof(PaymentDataDTO));
             response.amount.Should().Be("30,8");
-            response.chk.Should().Be("23bd212a8c06e59fcc45bc4aeefb91aa25fe12577c3e031ece052bca52bcb9ce");            
+            response.chk.Should().Be("41ede15e263c02d1f356217bb78db7597d30308a98bd2ad35e7ae51af37705c8");            
         }
         [Fact]
         public async Task PaymentRepository_getPaymentData_ReturnNoCantAccessKeysException()

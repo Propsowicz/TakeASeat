@@ -9,7 +9,7 @@ namespace TakeASeat_Tests.Utils
 {
     public class DTOValidation
     {
-        public static IList<ValidationResult> ValidateObject(object model)
+        public static IList<ValidationResult> CheckForErrors(object model)
         {
             var validationResults = new List<ValidationResult>();
             var ctx = new ValidationContext(model, null, null);

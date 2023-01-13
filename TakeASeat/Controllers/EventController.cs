@@ -7,7 +7,6 @@ using TakeASeat.Data.DatabaseContext;
 using TakeASeat.Models;
 using TakeASeat.RequestUtils;
 using TakeASeat.Services.EventService;
-using TakeASeat.Services.Generic;
 
 namespace TakeASeat.Controllers
 {

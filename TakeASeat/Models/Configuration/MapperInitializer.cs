@@ -35,7 +35,7 @@ namespace TakeASeat.Models.Configuration
             CreateMap<Show, CreateShowDTO>().ReverseMap();
             CreateMap<Show, GetShowDTO>().ReverseMap();
             CreateMap<Show, GetShowDetailsDTO>().ReverseMap();
-            CreateMap<Show, GetClosestShows>().ReverseMap();
+            CreateMap<Show, GetClosestShow>().ReverseMap();
 
             CreateMap<SeatReservation, GetSeatReservationDTO>().ReverseMap();
 

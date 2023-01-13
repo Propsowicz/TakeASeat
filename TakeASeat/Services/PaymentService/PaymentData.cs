@@ -22,7 +22,7 @@ namespace TakeASeat.Services.PaymentService
             // create Params
             _paymentParams = new PaymentParamsDTO();
             _paymentParams.amount = Convert.ToString(Math.Round(_listOfPrices.Sum(), 2));
-            _paymentParams.description = $"SeatReservationsIds::";
+            _paymentParams.description = $"SeatReservationsIds::";                                  
             _paymentParams.id = _DOTPAY_ID;
             foreach (var reservation in _seatReservations)
             {
@@ -53,6 +53,63 @@ namespace TakeASeat.Services.PaymentService
 
             return paymentData;
         }
+        
+    }
+    public class PaymentServerResponse  
+    {
+        private readonly string _DOTPAY_PIN;
+        private readonly ResponseFromPaymentTransaction _paymentResponse;
 
+        public PaymentServerResponse(string DOTPAY_PIN, ResponseFromPaymentTransaction paymentResponse)
+        {
+            _paymentResponse = paymentResponse;
+            _DOTPAY_PIN = DOTPAY_PIN;
+        }
+        public bool isPaymentSuccessfull()
+        {
+            if (_paymentResponse.operation_status == "completed")
+            {
+                return true;
+            }
+            return false;
+        }
+        public string createResponseSignature()
+        {
+            string signatureString = _DOTPAY_PIN + _paymentResponse.operation_number + _paymentResponse.operation_type
+                                    + _paymentResponse.operation_status + _paymentResponse.operation_amount
+                                    + _paymentResponse.operation_currency + _paymentResponse.operation_original_amount
+                                    + _paymentResponse.operation_original_currency + _paymentResponse.operation_datetime
+                                    + _paymentResponse.control + _paymentResponse.description
+                                    + _paymentResponse.email + _paymentResponse.p_info
+                                    + _paymentResponse.p_email + _paymentResponse.channel;
+
+
+            var stringToEncode = new System.Text.UTF8Encoding().GetBytes(signatureString);
+            var noKey = new System.Text.UTF8Encoding().GetBytes("");
+
+            var hmacsha256 = new HMACSHA256(noKey);
+            var hash = hmacsha256.ComputeHash(stringToEncode);
+            var signature = BitConverter.ToString(hash).Replace("-", "").ToLower();
+
+            return signature;
+        }
+        public bool isPaymentValid ()
+        {
+            string serverSignature = createResponseSignature();
+            if (serverSignature == _paymentResponse.signature)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool PaymentValidation()
+        {
+            if (isPaymentSuccessfull() && isPaymentValid())
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

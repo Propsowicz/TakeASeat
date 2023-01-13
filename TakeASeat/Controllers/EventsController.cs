@@ -10,7 +10,6 @@ using TakeASeat.Data;
 using TakeASeat.Data.DatabaseContext;
 using TakeASeat.Models;
 using TakeASeat.RequestUtils;
-using TakeASeat.Services.Generic;
 using TakeASeat.Services.EventService;
 
 namespace TakeASeat.Controllers

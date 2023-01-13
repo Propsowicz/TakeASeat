@@ -109,7 +109,7 @@ namespace TakeASeat_Tests.Controller
             EventController controller = new EventController(_mapper, _eventRepository);
 
             // act            
-            var listOfEventDtoValidationErrors = DTOValidation.ValidateObject(eventDTO);
+            var listOfEventDtoValidationErrors = DTOValidation.CheckForErrors(eventDTO);
             var response = controller.CreateEvent(requestParams);
 
             // assert           
@@ -147,7 +147,7 @@ namespace TakeASeat_Tests.Controller
             };
 
             // act            
-            var listOfEventDtoValidationErrors = DTOValidation.ValidateObject(eventDTO);
+            var listOfEventDtoValidationErrors = DTOValidation.CheckForErrors(eventDTO);
 
             // assert         
             Assert.NotEmpty(listOfEventDtoValidationErrors);
@@ -178,7 +178,7 @@ namespace TakeASeat_Tests.Controller
             };
 
             // act            
-            var listOfEventDtoValidationErrors = DTOValidation.ValidateObject(eventDTO);
+            var listOfEventDtoValidationErrors = DTOValidation.CheckForErrors(eventDTO);
 
             // assert         
             Assert.NotEmpty(listOfEventDtoValidationErrors);

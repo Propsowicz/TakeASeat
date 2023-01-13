@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using TakeASeat.Services.SeatReservationService;
 using TakeASeat.Models;
 using TakeASeat.ProgramConfigurations.DTO;
+using TakeASeat.Services._Utils;
 
 namespace TakeASeat.Services.PaymentService
 {
@@ -76,6 +77,32 @@ namespace TakeASeat.Services.PaymentService
                             .ToListAsync();
                             
             return new GetTotalCostByUser { TotalCost = Math.Round(query.Sum(), 2) };
+        }
+
+        public async Task setPaymentTransactionRecordIsAcceptedToTrue(ResponseFromPaymentTransaction paymentResponse)
+        {
+            var dotpay_PIN = await _context.ProtectedKeys
+                        .FirstOrDefaultAsync(k => k.Key == "DOTPAY_PIN");
+
+            // START -- Mock signature - for developer purpose only
+            var signatureMockCreator = new PaymentServerResponse(dotpay_PIN.Value, paymentResponse).createResponseSignature();
+            paymentResponse.signature = signatureMockCreator;
+            // END
+
+            PaymentServerResponse paymentServerResponse = new PaymentServerResponse(dotpay_PIN.Value, paymentResponse);
+            if (paymentServerResponse.PaymentValidation())
+            {
+                List<int> listOfPaidSeatsReservations = PaymentDescriptionToListOfReservationsConverter.Convert(paymentResponse.description);
+                DateTime timeNow = DateTime.UtcNow;
+                string sqlFormattedDate = timeNow.ToString("yyyy-MM-dd HH:mm:ss.fff");
+
+                await _context.Database.BeginTransactionAsync();
+                await _context.Database.ExecuteSqlRawAsync(
+                    $"UPDATE SeatReservation SET isSold = True, SoldTime = {sqlFormattedDate} WHERE {RawSqlHelper.WHERE_Id_is_Id(listOfPaidSeatsReservations)}"
+                    );                
+                await _context.Database.CommitTransactionAsync();
+                // need to create some kind of connection between payment data and transaction table
+            }
         }
     }
 }

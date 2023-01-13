@@ -251,29 +251,34 @@ namespace TakeASeat.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
                     b.Property<string>("EventSlug")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<int>("EventTypeId")
                         .HasColumnType("int");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("Place")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.HasKey("Id");
 
@@ -356,7 +361,8 @@ namespace TakeASeat.Migrations
 
                     b.Property<string>("TagName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.HasKey("Id");
 
@@ -485,7 +491,8 @@ namespace TakeASeat.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.HasKey("Id");
 
@@ -522,11 +529,13 @@ namespace TakeASeat.Migrations
 
                     b.Property<string>("Currency")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -552,11 +561,13 @@ namespace TakeASeat.Migrations
 
                     b.Property<string>("Key")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -582,11 +593,13 @@ namespace TakeASeat.Migrations
 
                     b.Property<string>("Row")
                         .IsRequired()
+                        .HasMaxLength(1)
                         .HasColumnType("nvarchar(1)");
 
                     b.Property<string>("SeatColor")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<int>("ShowId")
                         .HasColumnType("int");
@@ -644,7 +657,8 @@ namespace TakeASeat.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<int>("EventId")
                         .HasColumnType("int");
@@ -800,22 +814,22 @@ namespace TakeASeat.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5b7cc33d-c661-4e54-b6be-5c90d44a6ee8",
-                            ConcurrencyStamp = "16e19c48-b283-4065-8d8a-181b9b5e0234",
+                            Id = "5204b19a-a476-4e79-97ae-43c40bb31862",
+                            ConcurrencyStamp = "cf5cddec-697a-4c17-8c8d-163bad8fba75",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "1792a977-16e0-4bcf-a7c3-1fc45b49ec50",
-                            ConcurrencyStamp = "a5669d6a-f8b5-4f63-aa5f-3590ecc4f493",
+                            Id = "3dc61429-9a15-4978-bee4-9a71c31e1aa1",
+                            ConcurrencyStamp = "5b490e5d-1a19-49bf-9cd6-a100a94f30f3",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "61bc565d-93bf-4bac-b279-5e77473c945b",
-                            ConcurrencyStamp = "2397eaee-d2f2-462e-90d8-04d0412f991a",
+                            Id = "b4d2f9b6-9558-4c67-9aff-bd5254c33af6",
+                            ConcurrencyStamp = "2f3f3b3f-4f34-439f-bd82-030c6fea2d07",
                             Name = "Organizer",
                             NormalizedName = "ORGANIZER"
                         });
@@ -827,11 +841,13 @@ namespace TakeASeat.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.HasDiscriminator().HasValue("User");
 
@@ -840,12 +856,12 @@ namespace TakeASeat.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "30b45da4-af66-44b2-a946-282abc15a44a",
+                            ConcurrencyStamp = "25417735-793d-47f9-95ca-120f8c863082",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEMv3HqzONSzgWBrwGSNE/GYinVEn0AzfrXZErYuX4GfkVcpZkTZp4Qk/uWvTW5Wt1w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECDDuK5hYFTp7ezBaQXz6xkaagJTwpBoIzo63s6BwnzzfXj5ZbKYl6Dchc7ZjPhPxg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "dd0c830c-4235-4dea-9c6a-8f2bb4475f1f",
+                            SecurityStamp = "7370f88c-0018-42b3-8af9-e47549f6560e",
                             TwoFactorEnabled = false,
                             UserName = "Flinston",
                             FirstName = "George",
@@ -855,12 +871,12 @@ namespace TakeASeat.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ca4548b9-298d-4e5d-9500-9b6591189ce1",
+                            ConcurrencyStamp = "6242df8b-3e9b-4960-a89d-1e929ed9bf41",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAELv2ivat+vMo7O5du6EjwwQuiwvA8Rl8HqxA+IUf5BiXuyxckTm2hwWV8xPq0vvW2Q==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPbJsSaDFw8nRIQ35HA1AjTPzDk71VVG9KmKj1neyI3SS1qT+ipEUK3+vLYxAIxjmQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "42fb1a1a-4d5f-4568-abcd-3d3f0738dec6",
+                            SecurityStamp = "c98a1e24-9414-4940-b5bc-9baa02982d7d",
                             TwoFactorEnabled = false,
                             UserName = "LOG",
                             FirstName = "Logan",

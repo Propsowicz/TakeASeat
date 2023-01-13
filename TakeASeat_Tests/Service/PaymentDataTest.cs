@@ -7,6 +7,7 @@ using TakeASeat.Data;
 using FakeItEasy;
 using FluentAssertions;
 using TakeASeat.Services.PaymentService;
+using TakeASeat.Models;
 
 namespace TakeASeat_Tests.Service
 {
@@ -60,7 +61,7 @@ namespace TakeASeat_Tests.Service
             var result = paymentData.getPaymentData();
 
             // assert
-            result.chk.Should().Be("90df21e3abe8dea81e86cdadd13d428932047da298b0cb899f7ebd2136e7a1fb");
+            result.chk.Should().Be("4df4a8b0f3996dd0de52a84cab450eb3d55e9c862e068d6dd15f3aa860b92a49");
             result.description.Should().Be("SeatReservationsIds::1::2::3::4::5::6::");
             result.amount.Should().Be("50");
             result.currency.Should().Be("USD");
@@ -110,10 +111,78 @@ namespace TakeASeat_Tests.Service
             var result = paymentData.getPaymentData();
 
             // assert
-            result.chk.Should().Be("1730e5ef21f3b6e6027f78d8a785902e37ec4c1bff3e92140cd13fee34d5d190");
+            result.chk.Should().Be("fc944f2a2940666bfe7a8966b0849dd9d6507ab9b41ac00f0f75066c048f5385");
             result.description.Should().Be("SeatReservationsIds::1::2::3::4::5::6::");
             result.amount.Should().Be("64,03");
             result.currency.Should().Be("USD");
+        }
+
+        public ResponseFromPaymentTransaction getPaymentData()
+        {
+            return new ResponseFromPaymentTransaction()
+            {
+                operation_number = "12345-567",
+                operation_type = "payment",
+                operation_status = "completed",
+                operation_amount = "436.39",
+                operation_currency = "PLN",
+                operation_original_amount = "100.00",
+                operation_original_currency = "USD",
+                operation_datetime = DateTime.UtcNow.ToString(),
+                control = "",
+                description = "SeatReservationsIds::2::",
+                email = "some@test.com",
+                p_info = "User Ben Stiller",
+                p_email = "b.stiller@test.test",
+                channel = "1"
+            };
+        }
+
+        [Fact]
+        public void PaymentServerResponse_isPaymentValid_ReturnTrue()
+        {
+            // arrange
+            ResponseFromPaymentTransaction paymentResponse = getPaymentData();
+            var mockSignature = new PaymentServerResponse(_DOTPAY_PIN, paymentResponse).createResponseSignature();
+            paymentResponse.signature = mockSignature;
+            var testPaymentClass = new PaymentServerResponse(_DOTPAY_PIN, paymentResponse);
+
+            // act
+            bool response = testPaymentClass.isPaymentValid();
+
+            // assert
+            response.Should().BeTrue();
+        }
+
+        [Fact]
+        public void PaymentServerResponse_isPaymentSuccessfull_ReturnTrue()
+        {
+            // arrange
+            ResponseFromPaymentTransaction paymentResponse = getPaymentData();
+            var mockSignature = new PaymentServerResponse(_DOTPAY_PIN, paymentResponse).createResponseSignature();
+            paymentResponse.signature = mockSignature;
+            var testPaymentClass = new PaymentServerResponse(_DOTPAY_PIN, paymentResponse);
+
+            // act
+            bool response = testPaymentClass.isPaymentSuccessfull();
+
+            // assert
+            response.Should().BeTrue();
+        }
+        [Fact]
+        public void PaymentServerResponse_PaymentValidation_ReturnTrue()
+        {
+            // arrange
+            ResponseFromPaymentTransaction paymentResponse = getPaymentData();
+            var mockSignature = new PaymentServerResponse(_DOTPAY_PIN, paymentResponse).createResponseSignature();
+            paymentResponse.signature = mockSignature;
+            var testPaymentClass = new PaymentServerResponse(_DOTPAY_PIN, paymentResponse);
+
+            // act
+            bool response = testPaymentClass.PaymentValidation();
+
+            // assert
+            response.Should().BeTrue();
         }
 
     }

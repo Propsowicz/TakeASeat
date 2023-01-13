@@ -35,6 +35,8 @@ namespace TakeASeat.Data.DatabaseContext
                 .WithOne(e => e.User)
                 .HasForeignKey(u => u.UserId)
                 .IsRequired();
+                b.Property(u => u.FirstName).HasMaxLength(250);
+                b.Property(u => u.LastName).HasMaxLength(250);
             });
 
             builder.Entity<Role>(b =>
@@ -43,6 +45,48 @@ namespace TakeASeat.Data.DatabaseContext
                 .WithOne(e => e.Role)
                 .HasForeignKey(u => u.RoleId)
                 .IsRequired();
+            });
+
+            builder.Entity<Event>(b =>
+            {
+                b.Property(e => e.Name).HasMaxLength(250);
+                b.Property(e => e.Description).HasMaxLength(250);
+                b.Property(e => e.ImageUrl).HasMaxLength(400);
+                b.Property(e => e.Place).HasMaxLength(250);
+                b.Property(e => e.EventSlug).HasMaxLength(250);
+            });
+
+            builder.Entity<EventTag>(b =>
+            {
+                b.Property(et => et.TagName).HasMaxLength(250);
+            });
+
+            builder.Entity<EventType>(b =>
+            {
+                b.Property(et => et.Name).HasMaxLength(250);
+            });
+
+            builder.Entity<PaymentTransaction>(b =>
+            {
+                b.Property(pt => pt.Currency).HasMaxLength(3);
+                b.Property(pt => pt.Description).HasMaxLength(250);
+            });
+
+            builder.Entity<ProtectedKeys>(b =>
+            {
+                b.Property(pk => pk.Key).HasMaxLength(50);
+                b.Property(pk => pk.Value).HasMaxLength(50);
+            });
+
+            builder.Entity<Seat>(b =>
+            {
+                b.Property(s => s.Row).HasMaxLength(1);
+                b.Property(s => s.SeatColor).HasMaxLength(20);
+            });
+
+            builder.Entity<Show>(b =>
+            {
+                b.Property(s => s.Description).HasMaxLength(250);
             });
 
             builder.ApplyConfiguration(new UserSeed());

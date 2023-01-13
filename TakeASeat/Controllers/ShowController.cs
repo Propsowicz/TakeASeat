@@ -34,7 +34,7 @@ namespace TakeASeat.Controllers
             }
             var query = await _showRepository.GetShowDetails(id);
 
-            var response = _mapper.Map<GetClosestShows>(query);
+            var response = _mapper.Map<GetClosestShow>(query);
             return StatusCode(200, response);
         }
 

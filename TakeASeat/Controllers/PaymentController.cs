@@ -66,8 +66,6 @@ namespace TakeASeat.Controllers
             await _paymentRepository.createPaymentTransactionRecord(query);           
 
             return StatusCode(204);
-        }   
-
-        
+        }           
     }
 }

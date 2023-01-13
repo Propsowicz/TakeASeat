@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using TakeASeat.Data;
 using TakeASeat.Models;
 using TakeASeat.RequestUtils;
-using TakeASeat.Services.Generic;
 using TakeASeat.Services.SeatReservationService;
 using TakeASeat.Services.SeatService;
 using TakeASeat.Services.ShowService;
@@ -35,7 +34,7 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetSeats(int showId)                               // USED
+        public async Task<IActionResult> GetSeats(int showId)                               
         {
             if (showId < 1)
             {
