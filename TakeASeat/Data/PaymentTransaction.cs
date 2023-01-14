@@ -9,12 +9,10 @@ namespace TakeASeat.Data
         public string Currency { get; set; }
         public string Description { get; set; }
         public bool isAccepted { get; set; } = false;
+        public DateTime TransactionDateTime { get; set; } = DateTime.UtcNow;
+        public DateTime TransactionAcceptanceDateTime { get; set; }
 
-
-        [ForeignKey(nameof(User))]
-        public string UserId { get; set; }
-        public User User { get; set; }
-
+        public virtual IList<SeatReservation> SeatReservations { get; set; }
         
     }
 }

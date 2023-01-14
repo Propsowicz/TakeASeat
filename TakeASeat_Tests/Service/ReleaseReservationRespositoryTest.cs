@@ -42,7 +42,6 @@ namespace TakeASeat_Tests.Service
                     isReserved = true,
                     ReservedTime= seatReservationNumberOne,
                     isSold = false,
-                    SoldTime = DateTime.UtcNow,
                     UserId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                 },
                 new SeatReservation()
@@ -50,7 +49,6 @@ namespace TakeASeat_Tests.Service
                     isReserved = true,
                     ReservedTime= seatReservationNumberTwo,
                     isSold = false,
-                    SoldTime = DateTime.UtcNow,
                     UserId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                 }                
             };

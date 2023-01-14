@@ -33,14 +33,7 @@ namespace TakeASeat.Services.SeatReservationService
                 });
             await _context.SaveChangesAsync();
             await SetReservation(seats, reservation.Entity.Id);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="seatReservationId"></param>
-        /// <returns></returns>
-
+        }       
         public async Task DeleteSeatReservation(int seatReservationId)
         {
             var query = await _context.SeatReservation
@@ -82,6 +75,7 @@ namespace TakeASeat.Services.SeatReservationService
         public async Task<IList<Seat[]>> GetSeats(int showId)
         {
             return await _context.Seats
+                    .AsNoTracking()
                     .Where(s => s.ShowId == showId)
                     .GroupBy(s => s.Row)
                     .Select(grp => grp.ToArray())
@@ -89,24 +83,9 @@ namespace TakeASeat.Services.SeatReservationService
         }
 
         public async Task RemoveMultipleReservation(List<int> reservationIds)
-        {
-            //string WhereConditions = string.Empty;
-            //for (var i = 0; i < reservationIds.Count; i++)
-            //{
-            //    if (i == reservationIds.Count - 1)
-            //    {
-            //        WhereConditions += $"ReservationId = {reservationIds[i]}";
-            //    }
-            //    else
-            //    {
-            //        WhereConditions += $"ReservationId = {reservationIds[i]} OR ";
-            //    }
-            //}
-            //                                                                                                                      not tested
-
+        {                                                                                                                         
             await _context.Database.BeginTransactionAsync();
             await _context.Database.ExecuteSqlRawAsync(
-                //$"UPDATE Seats SET ReservationId = NULL WHERE {WhereConditions}"
                 $"UPDATE Seats SET ReservationId = NULL WHERE {RawSqlHelper.WHERE_ReservationId_is_Id(reservationIds)}"
                 );
             await _context.Database.CommitTransactionAsync();
@@ -137,24 +116,9 @@ namespace TakeASeat.Services.SeatReservationService
         }
 
         public async Task SetReservation(IEnumerable<Seat> seats, int? ReservationId)
-        {
-            //string WhereConditions = string.Empty;
-            //var listedSeats = seats.ToList();
-            //for (var i = 0; i < listedSeats.Count; i++)
-            //{
-            //    if (i == listedSeats.Count - 1)
-            //    {
-            //        WhereConditions += $"Id = {listedSeats[i].Id}";
-            //    }
-            //    else
-            //    {
-            //        WhereConditions += $"Id = {listedSeats[i].Id} OR ";
-            //    }
-            //}
-            //                                                                                                                          not tested
+        {                                                                                                                      
             await _context.Database.BeginTransactionAsync();
             await _context.Database.ExecuteSqlRawAsync(
-                //$"UPDATE Seats SET ReservationId = {ReservationId} WHERE {WhereConditions}"
                 $"UPDATE Seats SET ReservationId = {ReservationId} WHERE {RawSqlHelper.WHERE_Id_is_SeatId(seats)}"
                 );
             await _context.Database.CommitTransactionAsync();

@@ -59,11 +59,11 @@ namespace TakeASeat.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return StatusCode(400);
             }
 
             var query = _mapper.Map<PaymentTransaction>(paymentTranscationDTO);
-            await _paymentRepository.createPaymentTransactionRecord(query);           
+            await _paymentRepository.createPaymentTransactionRecord(query);
 
             return StatusCode(204);
         }           

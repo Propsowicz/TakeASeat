@@ -24,5 +24,6 @@ namespace TakeASeat_Tests.Service
             response[0].Should().Be(2);
             response[1].Should().Be(3);
         }
+        
     }
 }

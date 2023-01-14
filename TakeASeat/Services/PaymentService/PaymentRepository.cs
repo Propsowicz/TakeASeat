@@ -21,11 +21,48 @@ namespace TakeASeat.Services.PaymentService
         {
             await _context.PaymentTransaction.AddAsync(paymentTranscation);
             await _context.SaveChangesAsync();
+            await addSeatReservationsToPaymentTransactionRecord(paymentTranscation.Id, paymentTranscation.Description);
+
+            // START
+            // Below Code is for a developer purpose only
+            // It is a simulation of getting a response from the dotpay server
+            // it should be exeucted as separate API endpoint
+            ResponseFromPaymentTransaction mockResponseFromPaymentTransaction = new ResponseFromPaymentTransaction()
+            {
+                id = "123456",
+                operation_number = "test-123",
+                operation_type = "payment",
+                operation_status = "completed",
+                operation_amount = Convert.ToString(4.3 * paymentTranscation.Amount),
+                operation_currency = "PLN", 
+                operation_original_amount = Convert.ToString(paymentTranscation.Amount),
+                operation_original_currency = paymentTranscation.Currency,
+                operation_datetime = DateTime.UtcNow.ToString(),
+                control = string.Empty,
+                description= paymentTranscation.Description,
+                email = "random@test.com",
+                p_info = "TakeASeat inc",
+                p_email = "takeASeat@takeASeat.com",
+                channel = "1"
+            };
+            await setPaymentTransactionRecordIsAcceptedToTrue(mockResponseFromPaymentTransaction);
+            // END
+        }
+
+        private async Task addSeatReservationsToPaymentTransactionRecord (int paymentTransactionId, string paymentTransactionDescription)
+        {
+            List<int> listOfPaidSeatsReservations = PaymentDescriptionToListOfReservationsConverter.Convert(paymentTransactionDescription);
+            await _context.Database.BeginTransactionAsync();
+            await _context.Database.ExecuteSqlRawAsync(
+                $"UPDATE SeatReservation SET PaymentTransactionId = {paymentTransactionId} WHERE {RawSqlHelper.WHERE_Id_is_Id(listOfPaidSeatsReservations)}"
+                );
+            await _context.Database.CommitTransactionAsync();
         }
 
         public async Task<PaymentDataDTO> getPaymentData(string userId)
         {
             var mainQuery = _context.Seats
+                        .AsNoTracking()
                         .Where(s => s.SeatReservation.UserId == userId
                         && s.SeatReservation.isReserved == true
                         && s.SeatReservation.isSold == false)
@@ -59,6 +96,7 @@ namespace TakeASeat.Services.PaymentService
         public async Task<IList<Seat>> getReservedSeats(string userId)
         {
             return await _context.Seats
+                        .AsNoTracking()
                         .Where(s => s.SeatReservation.UserId == userId
                         && s.SeatReservation.isReserved == true
                         && s.SeatReservation.isSold == false)
@@ -72,7 +110,8 @@ namespace TakeASeat.Services.PaymentService
         {
             var query = await _context.Seats
                             .AsNoTracking()
-                            .Where(s => s.SeatReservation.UserId == userId)
+                            .Where(s => s.SeatReservation.UserId == userId
+                            && s.SeatReservation.isSold == false)
                             .Select(s => s.Price)
                             .ToListAsync();
                             
@@ -93,16 +132,26 @@ namespace TakeASeat.Services.PaymentService
             if (paymentServerResponse.PaymentValidation())
             {
                 List<int> listOfPaidSeatsReservations = PaymentDescriptionToListOfReservationsConverter.Convert(paymentResponse.description);
-                DateTime timeNow = DateTime.UtcNow;
-                string sqlFormattedDate = timeNow.ToString("yyyy-MM-dd HH:mm:ss.fff");
-
-                await _context.Database.BeginTransactionAsync();
-                await _context.Database.ExecuteSqlRawAsync(
-                    $"UPDATE SeatReservation SET isSold = True, SoldTime = {sqlFormattedDate} WHERE {RawSqlHelper.WHERE_Id_is_Id(listOfPaidSeatsReservations)}"
-                    );                
-                await _context.Database.CommitTransactionAsync();
-                // need to create some kind of connection between payment data and transaction table
+                await setSeatReservationsIsSoldAsTrue(listOfPaidSeatsReservations);
+                await setPaymentTransactionIsAcceptedAsTrue(listOfPaidSeatsReservations);
             }
         }
+        private async Task setSeatReservationsIsSoldAsTrue(List<int> listOfPaidSeatsReservations)
+        {            
+            await _context.Database.BeginTransactionAsync();
+            await _context.Database.ExecuteSqlRawAsync(
+                $"UPDATE SeatReservation SET isSold = 1 WHERE {RawSqlHelper.WHERE_Id_is_Id(listOfPaidSeatsReservations)}"
+                );
+            await _context.Database.CommitTransactionAsync();
+        }
+        private async Task setPaymentTransactionIsAcceptedAsTrue(List<int> listOfSeatReservations)
+        {
+            var paymentTransactionId = _context.SeatReservation.FirstOrDefault(sr => sr.Id == listOfSeatReservations[0]).PaymentTransactionId;
+            var paymentTransaction = await _context.PaymentTransaction.FirstOrDefaultAsync(pt => pt.Id == paymentTransactionId);
+            paymentTransaction.isAccepted = true;
+            paymentTransaction.TransactionAcceptanceDateTime= DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+        }
+                
     }
 }

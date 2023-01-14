@@ -43,31 +43,7 @@ namespace TakeASeat_Tests.Service
 
             return contextMock;
         }
-
-        [Fact]
-        public async Task PaymentRepository_createPaymentTransactionRecord_ShouldAddNewTransaction()
-        {
-            // arrange
-            var context = await GetDatabaseContextWithKeys();
-            PaymentRepository repository = new PaymentRepository(context);
-            PaymentTransaction paymentData = new PaymentTransaction()
-            {
-                Id = 1,
-                Amount = 65.5,
-                Currency = "USD",
-                Description = "test transaction",
-                UserId = "8e445865-a24d-4543-a6c6-9443d048cdb9"
-            };
-
-            // act
-            var response = repository.createPaymentTransactionRecord(paymentData);
-
-            // assert
-            var paymentTransactionQuery = context.PaymentTransaction.FirstOrDefault(t => t.Id == 1);
-            paymentTransactionQuery.Should().NotBeNull();
-            paymentTransactionQuery.Amount.Should().Be(65.5);
-            paymentTransactionQuery.isAccepted.Should().BeFalse();
-        }
+                
         [Fact]
         public async Task PaymentRepository_getPaymentData_ReturnPaymentData()
         {

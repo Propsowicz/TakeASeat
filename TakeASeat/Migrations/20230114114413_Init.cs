@@ -79,6 +79,24 @@ namespace TakeASeat.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PaymentTransaction",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Amount = table.Column<double>(type: "float", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    isAccepted = table.Column<bool>(type: "bit", nullable: false),
+                    TransactionDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TransactionAcceptanceDateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentTransaction", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProtectedKeys",
                 columns: table => new
                 {
@@ -200,52 +218,6 @@ namespace TakeASeat.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PaymentTransaction",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Amount = table.Column<double>(type: "float", nullable: false),
-                    Currency = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
-                    isAccepted = table.Column<bool>(type: "bit", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PaymentTransaction", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PaymentTransaction_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SeatReservation",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    isReserved = table.Column<bool>(type: "bit", nullable: false),
-                    ReservedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    isSold = table.Column<bool>(type: "bit", nullable: false),
-                    SoldTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SeatReservation", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SeatReservation_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Events",
                 columns: table => new
                 {
@@ -277,22 +249,31 @@ namespace TakeASeat.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Ticket",
+                name: "SeatReservation",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SeatReservationId = table.Column<int>(type: "int", nullable: false)
+                    isReserved = table.Column<bool>(type: "bit", nullable: false),
+                    ReservedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    isSold = table.Column<bool>(type: "bit", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PaymentTransactionId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ticket", x => x.Id);
+                    table.PrimaryKey("PK_SeatReservation", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Ticket_SeatReservation_SeatReservationId",
-                        column: x => x.SeatReservationId,
-                        principalTable: "SeatReservation",
+                        name: "FK_SeatReservation_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SeatReservation_PaymentTransaction_PaymentTransactionId",
+                        column: x => x.PaymentTransactionId,
+                        principalTable: "PaymentTransaction",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -344,6 +325,25 @@ namespace TakeASeat.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Ticket",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SeatReservationId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ticket", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Ticket_SeatReservation_SeatReservationId",
+                        column: x => x.SeatReservationId,
+                        principalTable: "SeatReservation",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Seats",
                 columns: table => new
                 {
@@ -377,9 +377,9 @@ namespace TakeASeat.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Discriminator", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "3dc61429-9a15-4978-bee4-9a71c31e1aa1", "5b490e5d-1a19-49bf-9cd6-a100a94f30f3", "Role", "User", "USER" },
-                    { "5204b19a-a476-4e79-97ae-43c40bb31862", "cf5cddec-697a-4c17-8c8d-163bad8fba75", "Role", "Administrator", "ADMINISTRATOR" },
-                    { "b4d2f9b6-9558-4c67-9aff-bd5254c33af6", "2f3f3b3f-4f34-439f-bd82-030c6fea2d07", "Role", "Organizer", "ORGANIZER" }
+                    { "979d7757-2917-450e-b044-dfb149d270c2", "772b4ab1-cc2d-4db4-af36-7bfdf3294c87", "Role", "Administrator", "ADMINISTRATOR" },
+                    { "abbec95a-07cd-46af-9345-35a3ddd2ab18", "8676c665-7bcb-4d68-9b44-9d41034f474e", "Role", "User", "USER" },
+                    { "d2f4c064-160b-44eb-9f53-90e81b014b5c", "05f96495-aae6-4560-91ce-7993db22c80c", "Role", "Organizer", "ORGANIZER" }
                 });
 
             migrationBuilder.InsertData(
@@ -387,8 +387,8 @@ namespace TakeASeat.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "8e445865-a24d-4543-a6c6-9443d048cdb0", 0, "6242df8b-3e9b-4960-a89d-1e929ed9bf41", "User", null, false, "Logan", "Capuchino", false, null, null, null, "AQAAAAEAACcQAAAAEPbJsSaDFw8nRIQ35HA1AjTPzDk71VVG9KmKj1neyI3SS1qT+ipEUK3+vLYxAIxjmQ==", null, false, "c98a1e24-9414-4940-b5bc-9baa02982d7d", false, "LOG" },
-                    { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "25417735-793d-47f9-95ca-120f8c863082", "User", null, false, "George", "Flinston", false, null, null, null, "AQAAAAEAACcQAAAAECDDuK5hYFTp7ezBaQXz6xkaagJTwpBoIzo63s6BwnzzfXj5ZbKYl6Dchc7ZjPhPxg==", null, false, "7370f88c-0018-42b3-8af9-e47549f6560e", false, "Flinston" }
+                    { "8e445865-a24d-4543-a6c6-9443d048cdb0", 0, "738ea4d2-2820-492d-a8d1-b1903ab955c6", "User", null, false, "Logan", "Capuchino", false, null, null, null, "AQAAAAEAACcQAAAAEKlzjUYHzPpDjMjb6vvnMmM/XeE3U7E3IJZ1kTln4uHHCqhVvL/Qo8CrasDrW40GWQ==", null, false, "5dc8482c-aa03-4b46-8c7c-054e0f30f404", false, "LOG" },
+                    { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "858dd2f5-7463-41f6-b240-58e6a5416909", "User", null, false, "George", "Flinston", false, null, null, null, "AQAAAAEAACcQAAAAELm/ZZlTEQ5erC+cavDzD/lMrZRfoy/n9PjUqZ4LBJa4WWHK9cmX8DLzJp+yrSVqYw==", null, false, "54c7b5f7-9821-4ef0-ac59-42eb5449d5ba", false, "Flinston" }
                 });
 
             migrationBuilder.InsertData(
@@ -523,9 +523,9 @@ namespace TakeASeat.Migrations
                 column: "EventTagId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PaymentTransaction_UserId",
-                table: "PaymentTransaction",
-                column: "UserId");
+                name: "IX_SeatReservation_PaymentTransactionId",
+                table: "SeatReservation",
+                column: "PaymentTransactionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SeatReservation_UserId",
@@ -574,9 +574,6 @@ namespace TakeASeat.Migrations
                 name: "EventTagEventM2M");
 
             migrationBuilder.DropTable(
-                name: "PaymentTransaction");
-
-            migrationBuilder.DropTable(
                 name: "ProtectedKeys");
 
             migrationBuilder.DropTable(
@@ -599,6 +596,9 @@ namespace TakeASeat.Migrations
 
             migrationBuilder.DropTable(
                 name: "Events");
+
+            migrationBuilder.DropTable(
+                name: "PaymentTransaction");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

@@ -9,12 +9,14 @@ namespace TakeASeat.Data
         public bool isReserved { get; set; } = false;
         public DateTime ReservedTime { get; set; }
         public bool isSold { get; set; } = false;
-        public DateTime SoldTime { get; set; }
-
 
         [ForeignKey(nameof(User))]
         public string UserId { get; set; }
         public User User { get; set; }
+
+        [ForeignKey(nameof(PaymentTransaction))]
+        public int? PaymentTransactionId { get; set; }
+        public PaymentTransaction? PaymentTransaction { get; set; }
 
         public virtual IList<Seat> Seats { get; set; }
     }
