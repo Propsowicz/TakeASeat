@@ -1,10 +1,29 @@
+/* eslint-disable */
+
 import React from 'react';
 import { Divider } from 'primereact/divider';
 import { Button } from 'primereact/button';
+import { url, typHeader } from '../../const/constValues';
 
 
 const OrderSummary = (props) => {
     console.log('elo');
+    const createPaymentTransactionRecord = async (e) => {
+        const paymentData = {
+            amount: e.target.amount.value,
+            currency: e.target.currency.value,
+            description: e.target.description.value,
+        };
+        console.log(paymentData)
+        const response = await fetch(`${url}/api/Payment/create`, {
+            method: "POST",
+            headers: typHeader,
+            body: JSON.stringify(paymentData)
+        })
+        if (response.status !== 200){
+            console.log("error")
+        }
+    };
     return (
         <div className="order-summary-cart grid">
             <div className="col-12 md:col-12 lg:col-12"><p className="panel-text">Customer data:</p></div>
@@ -33,7 +52,7 @@ const OrderSummary = (props) => {
             <div className="col-12 md:col-12 lg:col-3 grid">
                 <p className="panel-text-descr col-12" />
 
-                <form action="https://ssl.dotpay.pl/test_payment/" method="post" target="_parent">
+                <form action="https://ssl.dotpay.pl/test_payment/" method="post" target="_parent" onSubmit={createPaymentTransactionRecord}>
                     <input type="hidden" name="amount" value={props.data.amount} />
                     <input type="hidden" name="type" value={props.data.type} />
                     <input type="hidden" name="currency" value={props.data.currency} />
@@ -42,7 +61,7 @@ const OrderSummary = (props) => {
                     <input type="hidden" name="url" value={props.data.url} />
                     <input type="hidden" name="urlc" value={props.data.urlc} />
                     <input type="hidden" name="chk" value={props.data.chk} />
-                    <Button label="Go to Payment" />
+                    <Button label="Go to Payment" type='submit'/>
                 </form>
 
 
