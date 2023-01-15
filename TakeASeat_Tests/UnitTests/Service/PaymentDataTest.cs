@@ -9,13 +9,13 @@ using FluentAssertions;
 using TakeASeat.Services.PaymentService;
 using TakeASeat.Models;
 
-namespace TakeASeat_Tests.Service
+namespace TakeASeat_Tests.UnitTests.Service
 {
     public class PaymentDataTest
     {
         string _DOTPAY_PIN = "123QWE456ASD";
         string _DOTPAY_ID = "123456789";
-        
+
         [Fact]
         public void PaymentData_getPaymentData_ReturnRightPaymentDataAmountWithoutDecimalPlaces()
         {

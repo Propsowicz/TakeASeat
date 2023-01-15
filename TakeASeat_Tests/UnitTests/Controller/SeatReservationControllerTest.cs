@@ -12,7 +12,7 @@ using TakeASeat.Controllers;
 using TakeASeat.RequestUtils;
 using Microsoft.AspNetCore.Mvc;
 
-namespace TakeASeat_Tests.Controller
+namespace TakeASeat_Tests.UnitTests.Controller
 {
     public class SeatReservationControllerTest
     {
@@ -21,15 +21,15 @@ namespace TakeASeat_Tests.Controller
 
         public SeatReservationControllerTest()
         {
-            _mapper = A.Fake<IMapper>();    
+            _mapper = A.Fake<IMapper>();
             _seatResRepository = A.Fake<ISeatResRepository>();
         }
         [Fact]
-        public void SeatReservationController_DeleteSeatReservation_Return400 ()
+        public void SeatReservationController_DeleteSeatReservation_Return400()
         {
             // arrange
             SeatsReservationController controller = new SeatsReservationController(_mapper, _seatResRepository);
-            RequestReservationParams requestParams = new RequestReservationParams() {  seatReservationId = 0 };
+            RequestReservationParams requestParams = new RequestReservationParams() { seatReservationId = 0 };
 
             // act
             var response = controller.DeleteSeatReservation(requestParams);

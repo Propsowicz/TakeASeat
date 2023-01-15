@@ -13,7 +13,7 @@ using TakeASeat.Services.SeatReservationService;
 using TakeASeat.Data;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace TakeASeat_Tests.Service
+namespace TakeASeat_Tests.UnitTests.Service
 {
     public class SeatReservationRepositoryTest
     {
@@ -48,7 +48,7 @@ namespace TakeASeat_Tests.Service
             contextMock.Database.EnsureCreated();
 
             return contextMock;
-        }        
+        }
         [Fact]
         public async Task SeatReservationRepository_DeleteEmptyReservation_ShouldDeleteReservation()
         {
@@ -56,11 +56,11 @@ namespace TakeASeat_Tests.Service
             var context = await GetDatabaseContext();
             var repository = new SeatResRepository(context, _seatRepository);
             string userId = "123";
-            await context.SeatReservation.AddAsync(new SeatReservation() 
+            await context.SeatReservation.AddAsync(new SeatReservation()
             {
-                isReserved= true,
+                isReserved = true,
                 UserId = userId,
-                ReservedTime= DateTime.UtcNow,                
+                ReservedTime = DateTime.UtcNow,
             });
             await context.SaveChangesAsync();
             int seatReservationId = context.SeatReservation.FirstOrDefault(r => r.UserId == userId).Id;
@@ -145,7 +145,7 @@ namespace TakeASeat_Tests.Service
             };
             await context.Seats.AddRangeAsync(seats);
             await context.SaveChangesAsync();
-            int oldNumberOfSeatsInReservation = context.Seats.Where(s => s.ReservationId== seatReservationId).Count();
+            int oldNumberOfSeatsInReservation = context.Seats.Where(s => s.ReservationId == seatReservationId).Count();
             int oldNumberOfReservationsByUser = context.SeatReservation.Where(r => r.UserId == userId).ToList().Count();
 
             // act
@@ -184,7 +184,7 @@ namespace TakeASeat_Tests.Service
                     ShowId = 11,
                     ReservationId = seatReservationId
                 }
-               
+
             };
             await context.Seats.AddRangeAsync(seats);
             await context.SaveChangesAsync();

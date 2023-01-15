@@ -13,7 +13,7 @@ using TakeASeat.Controllers;
 using TakeASeat.RequestUtils;
 using TakeASeat.Services.EventService;
 
-namespace TakeASeat_Tests.Controller
+namespace TakeASeat_Tests.UnitTests.Controller
 {
     public class EventsControllerTest
     {
@@ -34,7 +34,7 @@ namespace TakeASeat_Tests.Controller
             RequestEventParams requestParams = new RequestEventParams();
             requestParams.PageNumber = 1;
             requestParams.PageSize = 10;
-            requestParams.SearchString= "xxx";
+            requestParams.SearchString = "xxx";
             requestParams.EventTypes = new List<string>() { "Movie" };
             requestParams.OrderBy = "-name";
             EventsController controller = new EventsController(_mapper, _eventRepository);

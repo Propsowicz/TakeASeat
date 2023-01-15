@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TakeASeat.Data.DatabaseContext;
-using TakeASeat_Tests.Data;
+using TakeASeat_Tests.UnitTests.Data;
 using FakeItEasy;
 using FluentAssertions;
 using TakeASeat.Services.PaymentService;
@@ -12,12 +12,18 @@ using TakeASeat.Data;
 using TakeASeat.Models;
 using Microsoft.EntityFrameworkCore;
 using TakeASeat.ProgramConfigurations.DTO;
+using TakeASeat.Services.TicketService;
 
-namespace TakeASeat_Tests.Service
+namespace TakeASeat_Tests.UnitTests.Service
 {
     [Collection("Sequential")]
     public class PaymentRepositoryTest
-    {      
+    {
+        private readonly ITicketRepository _ticketRepository;
+        public PaymentRepositoryTest()
+        {
+            _ticketRepository = A.Fake<ITicketRepository>();    
+        }
         public async Task<DatabaseContext> GetDatabaseContextWithoutKeys()
         {
             var options = new DbContextOptionsBuilder<DatabaseContext>()
@@ -26,7 +32,7 @@ namespace TakeASeat_Tests.Service
 
             var contextMock = new DatabaseContext(options);
             contextMock.Database.EnsureCreated();
-            
+
             return contextMock;
         }
         public async Task<DatabaseContext> GetDatabaseContextWithKeys()
@@ -43,19 +49,19 @@ namespace TakeASeat_Tests.Service
 
             return contextMock;
         }
-                
+
         [Fact]
         public async Task PaymentRepository_getPaymentData_ReturnPaymentData()
         {
             // arrange
             var context = await GetDatabaseContextWithKeys();
-            PaymentRepository repository = new PaymentRepository(context);
+            PaymentRepository repository = new PaymentRepository(context, _ticketRepository);
             string userId = "8e445865-a24d-4543-a6c6-9443d048cdb0";
             await context.SeatReservation.AddAsync(new SeatReservation()
             {
                 isReserved = true,
-                ReservedTime= DateTime.UtcNow,
-                UserId = userId                
+                ReservedTime = DateTime.UtcNow,
+                UserId = userId
             });
             await context.SaveChangesAsync();
             var reservation = await context.SeatReservation.LastOrDefaultAsync();
@@ -77,7 +83,7 @@ namespace TakeASeat_Tests.Service
                 ReservationId = reservation.Id
             }
             );
-            await context.SaveChangesAsync();            
+            await context.SaveChangesAsync();
 
             // act
             var response = await repository.getPaymentData(userId);
@@ -85,14 +91,14 @@ namespace TakeASeat_Tests.Service
             // assert            
             response.Should().BeOfType(typeof(PaymentDataDTO));
             response.amount.Should().Be("30,8");
-            response.chk.Should().Be("41ede15e263c02d1f356217bb78db7597d30308a98bd2ad35e7ae51af37705c8");            
+            response.chk.Should().Be("41ede15e263c02d1f356217bb78db7597d30308a98bd2ad35e7ae51af37705c8");
         }
         [Fact]
         public async Task PaymentRepository_getPaymentData_ReturnNoCantAccessKeysException()
         {
             // arrange
             var context = await GetDatabaseContextWithoutKeys();
-            PaymentRepository repository = new PaymentRepository(context);
+            PaymentRepository repository = new PaymentRepository(context, _ticketRepository);
             string userId = "8e445865-a24d-4543-a6c6-9443d048cdb9";
             await context.SeatReservation.AddAsync(new SeatReservation()
             {
@@ -117,7 +123,7 @@ namespace TakeASeat_Tests.Service
                 Price = 15.4,
                 SeatColor = "yellow",
                 ShowId = 11,
-                ReservationId = reservation.Id  
+                ReservationId = reservation.Id
             }
             );
             await context.SaveChangesAsync();
@@ -134,7 +140,7 @@ namespace TakeASeat_Tests.Service
         {
             // arrange
             var context = await GetDatabaseContextWithKeys();
-            PaymentRepository repository = new PaymentRepository(context);
+            PaymentRepository repository = new PaymentRepository(context, _ticketRepository);
             string userId = "8e445865-a24d-4543-a6c6-9443d048cdb0";
             await context.SeatReservation.AddAsync(new SeatReservation()
             {
@@ -152,7 +158,7 @@ namespace TakeASeat_Tests.Service
                 SeatColor = "blue",
                 ShowId = 11,
                 ReservationId = reservation.Id
-            }            
+            }
             );
             await context.SaveChangesAsync();
 
@@ -163,7 +169,7 @@ namespace TakeASeat_Tests.Service
             response.Should().BeOfType(typeof(GetTotalCostByUser));
             response.TotalCost.Should().Be(40.8);
 
-            
+
         }
     }
 }

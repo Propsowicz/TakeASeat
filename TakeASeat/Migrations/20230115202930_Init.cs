@@ -325,25 +325,6 @@ namespace TakeASeat.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Ticket",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SeatReservationId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Ticket", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Ticket_SeatReservation_SeatReservationId",
-                        column: x => x.SeatReservationId,
-                        principalTable: "SeatReservation",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Seats",
                 columns: table => new
                 {
@@ -372,14 +353,47 @@ namespace TakeASeat.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Ticket",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TickedCode = table.Column<int>(type: "int", nullable: false),
+                    Row = table.Column<string>(type: "nvarchar(1)", nullable: false),
+                    Position = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false),
+                    ShowDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EventName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ShowDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ShowId = table.Column<int>(type: "int", nullable: false),
+                    PaymentTransactionId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ticket", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Ticket_PaymentTransaction_PaymentTransactionId",
+                        column: x => x.PaymentTransactionId,
+                        principalTable: "PaymentTransaction",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Ticket_Shows_ShowId",
+                        column: x => x.ShowId,
+                        principalTable: "Shows",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Discriminator", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "979d7757-2917-450e-b044-dfb149d270c2", "772b4ab1-cc2d-4db4-af36-7bfdf3294c87", "Role", "Administrator", "ADMINISTRATOR" },
-                    { "abbec95a-07cd-46af-9345-35a3ddd2ab18", "8676c665-7bcb-4d68-9b44-9d41034f474e", "Role", "User", "USER" },
-                    { "d2f4c064-160b-44eb-9f53-90e81b014b5c", "05f96495-aae6-4560-91ce-7993db22c80c", "Role", "Organizer", "ORGANIZER" }
+                    { "1a3b006e-24a8-42ff-bfc0-c30ed7c40044", "782c7ba2-78b0-4a32-a4c1-93c1367cb68a", "Role", "User", "USER" },
+                    { "778f28bd-3a35-4b6f-9695-9b8c403012b2", "c32f6fc2-5320-432a-b348-04d02b3e6693", "Role", "Administrator", "ADMINISTRATOR" },
+                    { "ad6eed2f-ed9d-4dd0-9779-9f1069215d5a", "5e8910ca-fb29-4aa2-b799-d7b25bc24129", "Role", "Organizer", "ORGANIZER" }
                 });
 
             migrationBuilder.InsertData(
@@ -387,8 +401,8 @@ namespace TakeASeat.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "8e445865-a24d-4543-a6c6-9443d048cdb0", 0, "738ea4d2-2820-492d-a8d1-b1903ab955c6", "User", null, false, "Logan", "Capuchino", false, null, null, null, "AQAAAAEAACcQAAAAEKlzjUYHzPpDjMjb6vvnMmM/XeE3U7E3IJZ1kTln4uHHCqhVvL/Qo8CrasDrW40GWQ==", null, false, "5dc8482c-aa03-4b46-8c7c-054e0f30f404", false, "LOG" },
-                    { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "858dd2f5-7463-41f6-b240-58e6a5416909", "User", null, false, "George", "Flinston", false, null, null, null, "AQAAAAEAACcQAAAAELm/ZZlTEQ5erC+cavDzD/lMrZRfoy/n9PjUqZ4LBJa4WWHK9cmX8DLzJp+yrSVqYw==", null, false, "54c7b5f7-9821-4ef0-ac59-42eb5449d5ba", false, "Flinston" }
+                    { "8e445865-a24d-4543-a6c6-9443d048cdb0", 0, "ce345e7f-d49e-4558-9076-50d626356f43", "User", null, false, "Logan", "Capuchino", false, null, null, null, "AQAAAAEAACcQAAAAEFH+dJw8S8ebZGOm/WT0MdcTkKp4Mf3v2Ww/GVoiyrVFdq9ig47t4SN5hPzt2Cp1vA==", null, false, "53c1ddee-7d68-4b5e-b8ed-c2eb92ba0269", false, "LOG" },
+                    { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "e4b81c0d-84d6-4576-954a-0556e4f83ab0", "User", null, false, "George", "Flinston", false, null, null, null, "AQAAAAEAACcQAAAAEM9AEQQUTRyuZ2+P/D/9dDNEM7+vRgMefkp1i6zqTim5e/4ipwvk1o1Pp/yP6OC2OA==", null, false, "f0b09964-2c3d-4188-9210-ecc379102f13", false, "Flinston" }
                 });
 
             migrationBuilder.InsertData(
@@ -548,9 +562,14 @@ namespace TakeASeat.Migrations
                 column: "EventId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ticket_SeatReservationId",
+                name: "IX_Ticket_PaymentTransactionId",
                 table: "Ticket",
-                column: "SeatReservationId");
+                column: "PaymentTransactionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ticket_ShowId",
+                table: "Ticket",
+                column: "ShowId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -589,16 +608,16 @@ namespace TakeASeat.Migrations
                 name: "EventTags");
 
             migrationBuilder.DropTable(
-                name: "Shows");
-
-            migrationBuilder.DropTable(
                 name: "SeatReservation");
 
             migrationBuilder.DropTable(
-                name: "Events");
+                name: "Shows");
 
             migrationBuilder.DropTable(
                 name: "PaymentTransaction");
+
+            migrationBuilder.DropTable(
+                name: "Events");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

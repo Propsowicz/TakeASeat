@@ -5,15 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using TakeASeat.Data.DatabaseContext;
 using TakeASeat.Services.SeatReservationService;
-using TakeASeat_Tests.Data;
 using FakeItEasy;
 using FluentAssertions;
 using TakeASeat.Data;
 using TakeASeat.BackgroundServices;
 using TakeASeat.Services.BackgroundService;
 using Azure;
+using TakeASeat_Tests.UnitTests.Data;
 
-namespace TakeASeat_Tests.Service
+namespace TakeASeat_Tests.UnitTests.Service
 {
     public class ReleaseReservationRespositoryTest : IDisposable
     {
@@ -23,7 +23,7 @@ namespace TakeASeat_Tests.Service
 
         public ReleaseReservationRespositoryTest()
         {
-            _seatReservationRepository = A.Fake<ISeatResRepository>();                    
+            _seatReservationRepository = A.Fake<ISeatResRepository>();
             _DbMock = new DatabaseContextMock();
             _timeNow = DateTime.UtcNow;
         }
@@ -33,7 +33,7 @@ namespace TakeASeat_Tests.Service
         }
 
         public List<SeatReservation> createMockSeatReservations(DateTime seatReservationNumberOne, DateTime seatReservationNumberTwo)
-                                                                
+
         {
             List<SeatReservation> seatResevations = new List<SeatReservation>()
             {
@@ -50,20 +50,20 @@ namespace TakeASeat_Tests.Service
                     ReservedTime= seatReservationNumberTwo,
                     isSold = false,
                     UserId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
-                }                
+                }
             };
             return seatResevations;
         }
 
-        [Fact]        
+        [Fact]
         public async Task ReleaseReservationService_ReleaseUnpaidReservations_ShouldNotDeleteAnyReservation()
         {
             // arrange
             var context = await _DbMock.GetDatabaseContext();
             DateTime seatReservationNumberOne = _timeNow.AddMinutes(-1);
-            DateTime seatReservationNumberTwo = _timeNow.AddMinutes(-1);            
-            var seatResevations = createMockSeatReservations(seatReservationNumberOne, seatReservationNumberTwo);             
-                     
+            DateTime seatReservationNumberTwo = _timeNow.AddMinutes(-1);
+            var seatResevations = createMockSeatReservations(seatReservationNumberOne, seatReservationNumberTwo);
+
             ReleaseReservationService repository = new ReleaseReservationService(context, _seatReservationRepository);
             await context.SeatReservation.AddRangeAsync(seatResevations);
             await context.SaveChangesAsync();

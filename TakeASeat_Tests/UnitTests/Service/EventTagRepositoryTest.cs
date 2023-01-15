@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 using TakeASeat.Data.DatabaseContext;
 using TakeASeat.Models;
 using TakeASeat.Services.EventTagRepository;
-using TakeASeat_Tests.Data;
+using TakeASeat_Tests.UnitTests.Data;
 
-namespace TakeASeat_Tests.Service
+namespace TakeASeat_Tests.UnitTests.Service
 {
     public class EventTagRepositoryTest
     {
         private readonly DatabaseContextMock _DbMock;
         public EventTagRepositoryTest()
         {
-            _DbMock = new DatabaseContextMock(); 
+            _DbMock = new DatabaseContextMock();
         }
-        
+
         [Fact]
         public async Task EventTagRepository_AddEventTags_ShouldAddTagToEvent()
         {
@@ -40,7 +40,7 @@ namespace TakeASeat_Tests.Service
                 }
             };
             int eventId = 3;
-            int oldTagsNumber = context.EventTagEventM2M.Where(t => t.EventId == eventId).Count();  
+            int oldTagsNumber = context.EventTagEventM2M.Where(t => t.EventId == eventId).Count();
 
             // act 
             var response = repository.AddEventTags(eventTagsDTO, eventId);
@@ -95,6 +95,6 @@ namespace TakeASeat_Tests.Service
             int newTagsNumber = context.EventTagEventM2M.Where(t => t.EventId == eventId).Count();
             newTagsNumber.Should().Be(0);
         }
-        
+
     }
 }

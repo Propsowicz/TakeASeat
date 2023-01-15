@@ -15,7 +15,7 @@ using TakeASeat.Controllers;
 using TakeASeat.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace TakeASeat_Tests.Controller
+namespace TakeASeat_Tests.UnitTests.Controller
 {
     public class UserControllerTest
     {
@@ -23,13 +23,13 @@ namespace TakeASeat_Tests.Controller
         private readonly IMapper _mapper;
         private readonly IAuthManager _authManager;
         private readonly IUserRepository _userRepository;
-        
+
         public UserControllerTest()
         {
             _userManager = A.Fake<UserManager<User>>();
-            _mapper = A.Fake<IMapper>();    
-            _authManager= A.Fake<IAuthManager>();
-            _userRepository= A.Fake<IUserRepository>();
+            _mapper = A.Fake<IMapper>();
+            _authManager = A.Fake<IAuthManager>();
+            _userRepository = A.Fake<IUserRepository>();
         }
 
         [Fact]
@@ -37,12 +37,12 @@ namespace TakeASeat_Tests.Controller
         {
             // arrange
             var controller = new UserController(_userManager, _mapper, _authManager, _userRepository);
-            var newUser = new RegisterUserDTO() 
-            { 
+            var newUser = new RegisterUserDTO()
+            {
                 Email = "some@email.com",
                 UserName = "testOne",
-                FirstName= "Tester",
-                LastName= "Testerowitzh",
+                FirstName = "Tester",
+                LastName = "Testerowitzh",
                 Password = "Password123!"
             };
 

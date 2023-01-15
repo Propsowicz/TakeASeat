@@ -9,7 +9,7 @@ using TakeASeat.Data;
 using TakeASeat.Data.DatabaseContext;
 using Xunit;
 
-namespace TakeASeat_Tests.Data
+namespace TakeASeat_Tests.UnitTests.Data
 {
     public class DatabaseContextMock
     {

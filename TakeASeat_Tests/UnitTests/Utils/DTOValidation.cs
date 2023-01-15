@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TakeASeat_Tests.Utils
+namespace TakeASeat_Tests.UnitTests.Utils
 {
     public class DTOValidation
     {

@@ -15,7 +15,7 @@ using TakeASeat.Services.SeatReservationService;
 using TakeASeat.Services.SeatService;
 using TakeASeat.Services.ShowService;
 
-namespace TakeASeat_Tests.Controller
+namespace TakeASeat_Tests.UnitTests.Controller
 {
     public class SeatsControllerTest
     {
@@ -27,8 +27,8 @@ namespace TakeASeat_Tests.Controller
         public SeatsControllerTest()
         {
             _mapper = A.Fake<IMapper>();
-            _seatRepository= A.Fake<ISeatRepository>();
-            _showRepository= A.Fake<IShowRepository>();
+            _seatRepository = A.Fake<ISeatRepository>();
+            _showRepository = A.Fake<IShowRepository>();
             _seatReservationRepository = A.Fake<ISeatResRepository>();
         }
 

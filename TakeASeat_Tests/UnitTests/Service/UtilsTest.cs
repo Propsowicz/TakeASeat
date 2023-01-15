@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using TakeASeat.Services._Utils;
 using FluentAssertions;
 
-namespace TakeASeat_Tests.Service
+namespace TakeASeat_Tests.UnitTests.Service
 {
     public class UtilsTest
     {
@@ -24,6 +24,6 @@ namespace TakeASeat_Tests.Service
             response[0].Should().Be(2);
             response[1].Should().Be(3);
         }
-        
+
     }
 }

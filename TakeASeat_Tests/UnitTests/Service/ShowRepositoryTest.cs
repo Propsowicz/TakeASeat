@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TakeASeat.Services.EventTagRepository;
-using TakeASeat_Tests.Data;
 using FakeItEasy;
 using FluentAssertions;
 using TakeASeat.Services.EventService;
@@ -13,10 +12,11 @@ using TakeASeat.Services.ShowService;
 using TakeASeat.Data;
 using X.PagedList;
 using TakeASeat.Models;
+using TakeASeat_Tests.UnitTests.Data;
 
-namespace TakeASeat_Tests.Service
+namespace TakeASeat_Tests.UnitTests.Service
 {
-    public class ShowRepositoryTest 
+    public class ShowRepositoryTest
     {
         private readonly IMapper _mapper;
         private readonly DatabaseContextMock _DbMock;
@@ -25,7 +25,7 @@ namespace TakeASeat_Tests.Service
             _mapper = A.Fake<IMapper>();
             _DbMock = new DatabaseContextMock();
         }
-        
+
 
         [Fact]
         public async void ShowRepository_GetShowDetails_ReturnNotNull()
@@ -54,7 +54,7 @@ namespace TakeASeat_Tests.Service
             var response = await repository.GetShowDetails(showId);
 
             // assert
-            response.Should().BeNull();            
+            response.Should().BeNull();
         }
         [Fact]
         public async void ShowRepository_SetShowReadyToSell_IsReadyToSellShouldBeTrue()
@@ -63,15 +63,15 @@ namespace TakeASeat_Tests.Service
             var context = await _DbMock.GetDatabaseContext();
             ShowRepository repository = new ShowRepository(context, _mapper);
             int showId = 1;
-            bool isReadyToSellOld = context.Shows.FirstOrDefault(x => x.Id == showId).IsReadyToSell;            
+            bool isReadyToSellOld = context.Shows.FirstOrDefault(x => x.Id == showId).IsReadyToSell;
 
             // act
             var response = repository.SetShowReadyToSell(showId);
 
             // assert
             bool isReadyToSellNew = context.Shows.FirstOrDefault(x => x.Id == showId).IsReadyToSell;
-            isReadyToSellOld.Should().BeFalse();    
-            isReadyToSellNew.Should().BeTrue();    
+            isReadyToSellOld.Should().BeFalse();
+            isReadyToSellNew.Should().BeTrue();
         }
         [Fact]
         public async void ShowRepository_GetShowRecordNumber_ReturnNumber()
@@ -98,7 +98,7 @@ namespace TakeASeat_Tests.Service
             var response = await repository.GetShowsByEvent(eventId);
 
             // assert
-            response.Should().NotBeNull();      
+            response.Should().NotBeNull();
         }
         [Fact]
         public async void ShowRepository_GetShowsByEvent_ReturnNull()
@@ -124,7 +124,7 @@ namespace TakeASeat_Tests.Service
             {
                 EventId = 1,
                 Date = new DateTime(2023, 02, 22, 15, 00, 00),
-                Description= "Test Show",
+                Description = "Test Show",
             };
             Show showObj = new Show()
             {
@@ -209,7 +209,7 @@ namespace TakeASeat_Tests.Service
             var context = await _DbMock.GetDatabaseContext();
             ShowRepository repository = new ShowRepository(context, _mapper);
             int oldNumberOfShows = context.Shows.Count();
-            int showId = 33333333;            
+            int showId = 33333333;
 
             // act
             var response = repository.DeleteShow(showId);

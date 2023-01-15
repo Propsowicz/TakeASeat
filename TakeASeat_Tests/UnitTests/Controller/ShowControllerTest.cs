@@ -14,7 +14,7 @@ using FluentAssertions;
 using TakeASeat.Models;
 using TakeASeat.RequestUtils;
 
-namespace TakeASeat_Tests.Controller
+namespace TakeASeat_Tests.UnitTests.Controller
 {
     public class ShowControllerTest
     {
@@ -24,7 +24,7 @@ namespace TakeASeat_Tests.Controller
         public ShowControllerTest()
         {
             _mapper = A.Fake<IMapper>();
-            _showRepository= A.Fake<IShowRepository>();
+            _showRepository = A.Fake<IShowRepository>();
         }
 
         [Fact]
@@ -83,7 +83,7 @@ namespace TakeASeat_Tests.Controller
         public void ShowController_DeleteShow_Return200()
         {
             // arrange
-            DeleteShowParams requestParams = new DeleteShowParams() { ShowId= 1 };
+            DeleteShowParams requestParams = new DeleteShowParams() { ShowId = 1 };
             ShowController controller = new ShowController(_mapper, _showRepository);
 
             // act

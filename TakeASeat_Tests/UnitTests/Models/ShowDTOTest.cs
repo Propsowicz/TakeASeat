@@ -5,19 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using TakeASeat.Models;
-using TakeASeat_Tests.Utils;
+using TakeASeat_Tests.UnitTests.Utils;
 
-namespace TakeASeat_Tests.Models
+namespace TakeASeat_Tests.UnitTests.Models
 {
     public class ShowDTOTest
     {
         [Fact]
-        public void ShowDTO_CreateShowDTO_DateInvalid_CaseYesterday ()
+        public void ShowDTO_CreateShowDTO_DateInvalid_CaseYesterday()
         {
             // arrange
             DateTime testDate = DateTime.UtcNow.AddDays(-1);
             var createShowDTO = new CreateShowDTO()
-            {   
+            {
                 EventId = 1,
                 Date = testDate,
                 Description = "Some Test Description"

@@ -11,7 +11,7 @@ using TakeASeat.Services.ShowService;
 using FluentAssertions;
 using TakeASeat.RequestUtils;
 
-namespace TakeASeat_Tests.Controller
+namespace TakeASeat_Tests.UnitTests.Controller
 {
     public class ShowsControllerTest
     {

@@ -6,12 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TakeASeat.Models;
-using TakeASeat_Tests.Utils;
+using TakeASeat_Tests.UnitTests.Utils;
 
-namespace TakeASeat_Tests.Models
+namespace TakeASeat_Tests.UnitTests.Models
 {
     public class EventDTOTest
-    {       
+    {
         // these tests check dto models validators and integrity between create and edit model validators
 
         [Fact]
@@ -20,7 +20,7 @@ namespace TakeASeat_Tests.Models
             // arrange
             var createEventDTO = new CreateEventDTO()
             {
-                Name = "012345678",                
+                Name = "012345678",
             };
             var editEventDTO = new EditEventDTO()
             {
@@ -103,7 +103,7 @@ namespace TakeASeat_Tests.Models
                         "0123456789" +
                         "0123456789" +
                         "0123456789" +
-                        "0123456789"                         
+                        "0123456789"
             };
             var editEventDTO = new EditEventDTO()
             {
@@ -139,7 +139,7 @@ namespace TakeASeat_Tests.Models
             // arrange
             var createEventDTO = new CreateEventDTO()
             {
-                Name = "0123456789"                         
+                Name = "0123456789"
             };
             var editEventDTO = new EditEventDTO()
             {
@@ -169,7 +169,7 @@ namespace TakeASeat_Tests.Models
                 Duration = 10
             };
             var editEventDTO = new EditEventDTO()
-            { 
+            {
                 Duration = 10
             };
 

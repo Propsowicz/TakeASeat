@@ -13,13 +13,13 @@ using TakeASeat.ProgramConfigurations.DTO;
 using TakeASeat.RequestUtils;
 using TakeASeat.Services.EventService;
 using TakeASeat.Services.EventTagRepository;
-using TakeASeat_Tests.Data;
+using TakeASeat_Tests.UnitTests.Data;
 
-namespace TakeASeat_Tests.Service
+namespace TakeASeat_Tests.UnitTests.Service
 {
-    public class EventRepositoryTest 
+    public class EventRepositoryTest
     {
-                
+
         private readonly IEventTagRepository _eventTagRepository;
         private readonly IMapper _mapper;
         private readonly DatabaseContextMock _DbMock;
@@ -30,7 +30,7 @@ namespace TakeASeat_Tests.Service
             _mapper = A.Fake<IMapper>();
             _DbMock = new DatabaseContextMock();
         }
-        
+
         [Fact]
         public async void EventRepository_GetEventRecordsNumber_ReturnInt()
         {
@@ -66,8 +66,8 @@ namespace TakeASeat_Tests.Service
             EventRepository repository = new EventRepository(context, _mapper, _eventTagRepository);
             RequestEventParams requestParams = new RequestEventParams()
             {
-                PageSize= 1000,
-                PageNumber= 1,
+                PageSize = 1000,
+                PageNumber = 1,
                 OrderBy = "name",
                 SearchString = string.Empty,
             };
@@ -134,7 +134,7 @@ namespace TakeASeat_Tests.Service
             var response = await repository.CreateEvent(eventDTO);
 
             // assert
-            response.Should().NotBeNull();    
+            response.Should().NotBeNull();
             response.Should().BeOfType<Event>();
             response.Name.Should().Be(eventDTO.Name);
         }
@@ -168,7 +168,7 @@ namespace TakeASeat_Tests.Service
             var response = await repository.CreateEvent(eventDTO);
 
             // assert
-            response.Should().BeNull();            
+            response.Should().BeNull();
         }
         [Fact]
         public async void EventRepository_EditEvent_ReturnOldNameNotEqualNewName()
@@ -185,7 +185,7 @@ namespace TakeASeat_Tests.Service
                 Place = "Warsaw",
                 ImageUrl = string.Empty,
                 EventTypeId = 1,
-            };            
+            };
             EventRepository repository = new EventRepository(context, _mapper, _eventTagRepository);
 
             // act
@@ -216,13 +216,13 @@ namespace TakeASeat_Tests.Service
             var response = await repository.EditEvent(eventDTO);
 
             // assert
-            response.Should().BeNull();            
+            response.Should().BeNull();
         }
         [Fact]
         public async void EventRepository_DeleteEvent_ReturnOK()
         {
             // arrange
-            var context = await _DbMock.GetDatabaseContext();           
+            var context = await _DbMock.GetDatabaseContext();
             EventRepository repository = new EventRepository(context, _mapper, _eventTagRepository);
             int eventId = 5;
             int oldEventsNumber = context.Events.ToList().Count();

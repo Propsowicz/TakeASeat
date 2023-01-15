@@ -9,7 +9,7 @@ using TakeASeat.Data.DatabaseContext;
 using TakeASeat.Services.SeatService;
 using FluentAssertions;
 
-namespace TakeASeat_Tests.Service
+namespace TakeASeat_Tests.UnitTests.Service
 {
     public class SeatRepositoryTest
     {
@@ -33,7 +33,7 @@ namespace TakeASeat_Tests.Service
             var repository = new SeatRepository(context);
             List<Seat> seats = new List<Seat>();
             int showId = 99;
-            for(int i = 0; i < 20; i++)
+            for (int i = 0; i < 20; i++)
             {
                 seats.Add(new Seat()
                 {
@@ -44,7 +44,7 @@ namespace TakeASeat_Tests.Service
                     ShowId = showId,
                 });
             }
-            
+
             // act
             await repository.CreateMultipleSeats(seats);
 
@@ -59,7 +59,7 @@ namespace TakeASeat_Tests.Service
             var context = await GetDatabaseContext();
             var repository = new SeatRepository(context);
             List<Seat> seats = new List<Seat>();
-            int showId = 98;            
+            int showId = 98;
 
             // act
             await repository.CreateMultipleSeats(seats);
@@ -68,6 +68,6 @@ namespace TakeASeat_Tests.Service
             int newNumberOfSeatsByShow = context.Seats.Where(s => s.ShowId == showId).ToList().Count();
             newNumberOfSeatsByShow.Should().Be(0);
         }
-        
+
     }
 }

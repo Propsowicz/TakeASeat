@@ -12,7 +12,7 @@ using FluentAssertions;
 using TakeASeat.Services.UserService;
 using TakeASeat.Models;
 
-namespace TakeASeat_Tests.Service
+namespace TakeASeat_Tests.UnitTests.Service
 {
     public class UserRepositoryTest
     {
@@ -20,7 +20,7 @@ namespace TakeASeat_Tests.Service
         private readonly RoleManager<IdentityRole> _roleManager;
         public UserRepositoryTest()
         {
-            _userManager = A.Fake<UserManager<User>>(); 
+            _userManager = A.Fake<UserManager<User>>();
             _roleManager = A.Fake<RoleManager<IdentityRole>>();
         }
         public async Task<DatabaseContext> GetDatabaseContext()
@@ -64,7 +64,7 @@ namespace TakeASeat_Tests.Service
             string organizerRoleId = context.Roles.FirstOrDefault(r => r.Name == "Organizer").Id;
             EditUserRolesDTO userDTO = new EditUserRolesDTO()
             {
-                UserId= user.Id,
+                UserId = user.Id,
                 UserRoles = new List<GetRoleDTO>()
                 {
                     new GetRoleDTO()
@@ -84,7 +84,7 @@ namespace TakeASeat_Tests.Service
             await repository.ChangeRoles(userDTO);
 
             // assert
-            var userRoles = await context.UserRoles.Where(ur => ur.UserId == user.Id).ToListAsync();    
+            var userRoles = await context.UserRoles.Where(ur => ur.UserId == user.Id).ToListAsync();
             userRoles.Should().HaveCount(2);
             userRoles[0].Role.Name.Should().Be("Administrator");
         }
@@ -94,7 +94,7 @@ namespace TakeASeat_Tests.Service
             // arrange
             var context = await GetDatabaseContext();
             var repository = new UserRepository(_userManager, context, _roleManager);
-            
+
 
             // act 
             var response = await repository.GetUsersRecordsNumber();

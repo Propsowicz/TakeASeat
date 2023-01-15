@@ -163,7 +163,6 @@ namespace TakeASeat.Services.EventService
             eventObj.Place = eventDTO.Place;
             eventObj.ImageUrl= eventDTO.ImageUrl;
 
-            //await _context.SaveChangesAsync();
             return eventObj;
         }
 

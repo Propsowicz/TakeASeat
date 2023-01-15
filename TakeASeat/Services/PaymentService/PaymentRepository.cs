@@ -6,16 +6,19 @@ using TakeASeat.Services.SeatReservationService;
 using TakeASeat.Models;
 using TakeASeat.ProgramConfigurations.DTO;
 using TakeASeat.Services._Utils;
+using TakeASeat.Services.TicketService;
 
 namespace TakeASeat.Services.PaymentService
 {
     public class PaymentRepository : IPaymentRepository
     {
         private readonly DatabaseContext _context;
+        private readonly ITicketRepository _ticketRepository;
 
-        public PaymentRepository(DatabaseContext context)
+        public PaymentRepository(DatabaseContext context, ITicketRepository ticketRepository)
         {
             _context= context;
+            _ticketRepository= ticketRepository;
         }
         public async Task createPaymentTransactionRecord(PaymentTransaction paymentTranscation)
         {
@@ -26,7 +29,7 @@ namespace TakeASeat.Services.PaymentService
             // START
             // Below Code is for a developer purpose only
             // It is a simulation of getting a response from the dotpay server
-            // it should be exeucted as separate API endpoint
+            // In production it should be exeucted as separate API endpoint
             ResponseFromPaymentTransaction mockResponseFromPaymentTransaction = new ResponseFromPaymentTransaction()
             {
                 id = "123456",
@@ -123,17 +126,23 @@ namespace TakeASeat.Services.PaymentService
             var dotpay_PIN = await _context.ProtectedKeys
                         .FirstOrDefaultAsync(k => k.Key == "DOTPAY_PIN");
 
-            // START -- Mock signature - for developer purpose only
+            // Mock signature - for developer purpose only
             var signatureMockCreator = new PaymentServerResponse(dotpay_PIN.Value, paymentResponse).createResponseSignature();
             paymentResponse.signature = signatureMockCreator;
-            // END
 
             PaymentServerResponse paymentServerResponse = new PaymentServerResponse(dotpay_PIN.Value, paymentResponse);
             if (paymentServerResponse.PaymentValidation())
             {
                 List<int> listOfPaidSeatsReservations = PaymentDescriptionToListOfReservationsConverter.Convert(paymentResponse.description);
                 await setSeatReservationsIsSoldAsTrue(listOfPaidSeatsReservations);
-                await setPaymentTransactionIsAcceptedAsTrue(listOfPaidSeatsReservations);
+                PaymentTransaction paymentTransaction = await getPaymentTransactionObject(listOfPaidSeatsReservations);
+                await setPaymentTransactionIsAcceptedAsTrue(paymentTransaction);
+                var listOfTickets = await _ticketRepository.CreateRangeOfTicketRecords(paymentTransaction);
+                var listOfTicketsTest = await _context.Ticket
+                                                .AsNoTracking()
+                                                .Include(t => t.Show)
+                                                .ToListAsync();
+                await _ticketRepository.SendTicketsViaEmail(listOfTicketsTest);
             }
         }
         private async Task setSeatReservationsIsSoldAsTrue(List<int> listOfPaidSeatsReservations)
@@ -144,13 +153,18 @@ namespace TakeASeat.Services.PaymentService
                 );
             await _context.Database.CommitTransactionAsync();
         }
-        private async Task setPaymentTransactionIsAcceptedAsTrue(List<int> listOfSeatReservations)
-        {
-            var paymentTransactionId = _context.SeatReservation.FirstOrDefault(sr => sr.Id == listOfSeatReservations[0]).PaymentTransactionId;
-            var paymentTransaction = await _context.PaymentTransaction.FirstOrDefaultAsync(pt => pt.Id == paymentTransactionId);
+        private async Task setPaymentTransactionIsAcceptedAsTrue(PaymentTransaction paymentTransaction)
+        {            
             paymentTransaction.isAccepted = true;
             paymentTransaction.TransactionAcceptanceDateTime= DateTime.UtcNow;
             await _context.SaveChangesAsync();
+        }
+        private async Task<PaymentTransaction> getPaymentTransactionObject(List<int> listOfSeatReservations)
+        {
+            var paymentTransactionId = _context.SeatReservation.FirstOrDefault(sr => sr.Id == listOfSeatReservations[0]).PaymentTransactionId;
+            var paymentTransaction = await _context.PaymentTransaction.FirstOrDefaultAsync(pt => pt.Id == paymentTransactionId);
+            ArgumentNullException.ThrowIfNull(paymentTransaction);
+            return paymentTransaction;
         }
                 
     }

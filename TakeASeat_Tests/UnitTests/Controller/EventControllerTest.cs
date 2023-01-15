@@ -11,10 +11,10 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using TakeASeat.Models;
 using System.ComponentModel.DataAnnotations;
-using TakeASeat_Tests.Utils;
 using TakeASeat.RequestUtils;
+using TakeASeat_Tests.UnitTests.Utils;
 
-namespace TakeASeat_Tests.Controller
+namespace TakeASeat_Tests.UnitTests.Controller
 {
     public class EventControllerTest
     {
@@ -64,7 +64,7 @@ namespace TakeASeat_Tests.Controller
             objectResult.Should().BeOfType(typeof(StatusCodeResult));
         }
 
-        [Fact]       
+        [Fact]
         public void EventController_GetEvent_Return400_2()
         {
             // arrange
@@ -228,12 +228,12 @@ namespace TakeASeat_Tests.Controller
             var eventDTO = new EditEventDTO()
             {
                 Id = 0,
-                Name = "0123456789",                       
+                Name = "0123456789",
                 Description = "0123456789",
-                Duration = 150,                      
+                Duration = 150,
                 ImageUrl = "0123456789",
                 EventTypeId = 1,
-                Place = "0123456789"                         
+                Place = "0123456789"
             };
             var eventTagsDTO = new List<GetEventTagDTO>()
             {
@@ -243,7 +243,7 @@ namespace TakeASeat_Tests.Controller
             {
                 eventDTO = eventDTO,
                 eventTagsDTO = eventTagsDTO
-            }; 
+            };
             EventController controller = new EventController(_mapper, _eventRepository);
 
             // act            
