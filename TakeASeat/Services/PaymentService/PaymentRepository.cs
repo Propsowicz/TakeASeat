@@ -48,7 +48,7 @@ namespace TakeASeat.Services.PaymentService
                 p_email = "takeASeat@takeASeat.com",
                 channel = "1"
             };
-            await setPaymentTransactionRecordIsAcceptedToTrue(mockResponseFromPaymentTransaction);
+            await finishPaymentTransaction(mockResponseFromPaymentTransaction);
             // END
         }
 
@@ -121,7 +121,7 @@ namespace TakeASeat.Services.PaymentService
             return new GetTotalCostByUser { TotalCost = Math.Round(query.Sum(), 2) };
         }
 
-        public async Task setPaymentTransactionRecordIsAcceptedToTrue(ResponseFromPaymentTransaction paymentResponse)
+        public async Task finishPaymentTransaction(ResponseFromPaymentTransaction paymentResponse)
         {
             var dotpay_PIN = await _context.ProtectedKeys
                         .FirstOrDefaultAsync(k => k.Key == "DOTPAY_PIN");
@@ -131,25 +131,24 @@ namespace TakeASeat.Services.PaymentService
             paymentResponse.signature = signatureMockCreator;
 
             PaymentServerResponse paymentServerResponse = new PaymentServerResponse(dotpay_PIN.Value, paymentResponse);
-            if (paymentServerResponse.PaymentValidation())
+            if (paymentServerResponse.isValid())
             {
-                List<int> listOfPaidSeatsReservations = PaymentDescriptionToListOfReservationsConverter.Convert(paymentResponse.description);
-                await setSeatReservationsIsSoldAsTrue(listOfPaidSeatsReservations);
-                PaymentTransaction paymentTransaction = await getPaymentTransactionObject(listOfPaidSeatsReservations);
+                List<int> listOfPaidSeatsReservationsIds = PaymentDescriptionToListOfReservationsConverter.Convert(paymentResponse.description);
+                await setSeatReservationsIsSoldAsTrue(listOfPaidSeatsReservationsIds);
+
+                PaymentTransaction paymentTransaction = await getPaymentTransactionObject(listOfPaidSeatsReservationsIds);
                 await setPaymentTransactionIsAcceptedAsTrue(paymentTransaction);
-                var listOfTickets = await _ticketRepository.CreateRangeOfTicketRecords(paymentTransaction);
-                var listOfTicketsTest = await _context.Ticket
-                                                .AsNoTracking()
-                                                .Include(t => t.Show)
-                                                .ToListAsync();
-                await _ticketRepository.SendTicketsViaEmail(listOfTicketsTest);
+
+                await _ticketRepository.CreateRangeOfTicketRecords(paymentTransaction);
+                UserDataToSendEmailDTO userData = await getUserData(listOfPaidSeatsReservationsIds);
+                await sendTicketsToUser(paymentTransaction, userData);
             }
         }
-        private async Task setSeatReservationsIsSoldAsTrue(List<int> listOfPaidSeatsReservations)
+        private async Task setSeatReservationsIsSoldAsTrue(List<int> listOfPaidSeatsReservationsIds)
         {            
             await _context.Database.BeginTransactionAsync();
             await _context.Database.ExecuteSqlRawAsync(
-                $"UPDATE SeatReservation SET isSold = 1 WHERE {RawSqlHelper.WHERE_Id_is_Id(listOfPaidSeatsReservations)}"
+                $"UPDATE SeatReservation SET isSold = 1 WHERE {RawSqlHelper.WHERE_Id_is_Id(listOfPaidSeatsReservationsIds)}"
                 );
             await _context.Database.CommitTransactionAsync();
         }
@@ -159,12 +158,31 @@ namespace TakeASeat.Services.PaymentService
             paymentTransaction.TransactionAcceptanceDateTime= DateTime.UtcNow;
             await _context.SaveChangesAsync();
         }
-        private async Task<PaymentTransaction> getPaymentTransactionObject(List<int> listOfSeatReservations)
+        private async Task<PaymentTransaction> getPaymentTransactionObject(List<int> listOfPaidSeatsReservationsIds)
         {
-            var paymentTransactionId = _context.SeatReservation.FirstOrDefault(sr => sr.Id == listOfSeatReservations[0]).PaymentTransactionId;
+            var paymentTransactionId = _context.SeatReservation.FirstOrDefault(sr => sr.Id == listOfPaidSeatsReservationsIds[0]).PaymentTransactionId;
             var paymentTransaction = await _context.PaymentTransaction.FirstOrDefaultAsync(pt => pt.Id == paymentTransactionId);
             ArgumentNullException.ThrowIfNull(paymentTransaction);
             return paymentTransaction;
+        }
+        private async Task<UserDataToSendEmailDTO> getUserData(List<int> listOfPaidSeatsReservationsIds) {
+            var query = await _context.SeatReservation.Where(sr => sr.Id == listOfPaidSeatsReservationsIds[0]).Include(sr => sr.User).FirstOrDefaultAsync();
+            return new UserDataToSendEmailDTO()
+            {
+                UserName = query.User.UserName, 
+                Email = query.User.Email,
+                FirstName= query.User.FirstName,
+                LastName= query.User.LastName,
+            };
+        }
+        private async Task sendTicketsToUser(PaymentTransaction paymentTransaction, UserDataToSendEmailDTO userData)
+        {
+            var listOfTickets = await _context.Ticket
+                                            .AsNoTracking()
+                                            .Where(t => t.PaymentTransactionId == paymentTransaction.Id)
+                                            .Include(t => t.Show)
+                                            .ToListAsync();
+            await _ticketRepository.SendTicketsViaEmail(listOfTickets, userData);
         }
                 
     }

@@ -136,10 +136,9 @@ namespace TakeASeat_Tests.UnitTests.Service
                 p_email = "b.stiller@test.test",
                 channel = "1"
             };
-        }
-
+        }        
         [Fact]
-        public void PaymentServerResponse_isPaymentValid_ReturnTrue()
+        public void PaymentServerResponse_isValid_ReturnTrue()
         {
             // arrange
             ResponseFromPaymentTransaction paymentResponse = getPaymentData();
@@ -148,38 +147,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             var testPaymentClass = new PaymentServerResponse(_DOTPAY_PIN, paymentResponse);
 
             // act
-            bool response = testPaymentClass.isPaymentValid();
-
-            // assert
-            response.Should().BeTrue();
-        }
-
-        [Fact]
-        public void PaymentServerResponse_isPaymentSuccessfull_ReturnTrue()
-        {
-            // arrange
-            ResponseFromPaymentTransaction paymentResponse = getPaymentData();
-            var mockSignature = new PaymentServerResponse(_DOTPAY_PIN, paymentResponse).createResponseSignature();
-            paymentResponse.signature = mockSignature;
-            var testPaymentClass = new PaymentServerResponse(_DOTPAY_PIN, paymentResponse);
-
-            // act
-            bool response = testPaymentClass.isPaymentSuccessfull();
-
-            // assert
-            response.Should().BeTrue();
-        }
-        [Fact]
-        public void PaymentServerResponse_PaymentValidation_ReturnTrue()
-        {
-            // arrange
-            ResponseFromPaymentTransaction paymentResponse = getPaymentData();
-            var mockSignature = new PaymentServerResponse(_DOTPAY_PIN, paymentResponse).createResponseSignature();
-            paymentResponse.signature = mockSignature;
-            var testPaymentClass = new PaymentServerResponse(_DOTPAY_PIN, paymentResponse);
-
-            // act
-            bool response = testPaymentClass.PaymentValidation();
+            bool response = testPaymentClass.isValid();
 
             // assert
             response.Should().BeTrue();

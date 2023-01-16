@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Cors.Infrastructure;
 using Serilog;
 using TakeASeat.ProgramConfigurations.DTO;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.OpenApi.Models;
 
 namespace TakeASeat.ProgramConfigurations
 {
@@ -90,6 +91,21 @@ namespace TakeASeat.ProgramConfigurations
                 option.ReportApiVersions = true;
                 option.AssumeDefaultVersionWhenUnspecified = true;
             });
+        }
+
+        public static void ConfigureSwaggerGen(this IServiceCollection services)
+        {
+            var builder = services.AddSwaggerGen(option =>
+            option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Description = "JWT Authorization header using /Bearer scheme/ " + 
+                                "Example: 'Bearer zxc.asd.qwe'",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer"
+            }
+            ));
         }
 
     }

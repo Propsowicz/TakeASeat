@@ -38,7 +38,7 @@ builder.Host.ConfigureSerilog();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.ConfigureSwaggerGen();
 
 // Database link
 builder.Services.AddDbContext<DatabaseContext>(option =>

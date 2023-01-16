@@ -64,15 +64,7 @@ namespace TakeASeat.Services.PaymentService
         {
             _paymentResponse = paymentResponse;
             _DOTPAY_PIN = DOTPAY_PIN;
-        }
-        public bool isPaymentSuccessfull()
-        {
-            if (_paymentResponse.operation_status == "completed")
-            {
-                return true;
-            }
-            return false;
-        }
+        }        
         public string createResponseSignature()
         {
             string signatureString = _DOTPAY_PIN + _paymentResponse.operation_number + _paymentResponse.operation_type
@@ -93,7 +85,15 @@ namespace TakeASeat.Services.PaymentService
 
             return signature;
         }
-        public bool isPaymentValid ()
+        private bool isPaymentSuccessfull()
+        {
+            if (_paymentResponse.operation_status == "completed")
+            {
+                return true;
+            }
+            return false;
+        }
+        private bool isPaymentResponseValid ()
         {
             string serverSignature = createResponseSignature();
             if (serverSignature == _paymentResponse.signature)
@@ -103,9 +103,9 @@ namespace TakeASeat.Services.PaymentService
             return false;
         }
 
-        public bool PaymentValidation()
+        public bool isValid()
         {
-            if (isPaymentSuccessfull() && isPaymentValid())
+            if (isPaymentSuccessfull() && isPaymentResponseValid())
             {
                 return true;
             }
