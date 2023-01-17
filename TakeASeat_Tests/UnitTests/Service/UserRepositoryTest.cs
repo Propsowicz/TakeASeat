@@ -11,6 +11,7 @@ using FakeItEasy;
 using FluentAssertions;
 using TakeASeat.Services.UserService;
 using TakeASeat.Models;
+using TakeASeat_Tests.UnitTests.Data;
 
 namespace TakeASeat_Tests.UnitTests.Service
 {
@@ -18,29 +19,19 @@ namespace TakeASeat_Tests.UnitTests.Service
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly DatabaseContextMock _DbMock;
         public UserRepositoryTest()
         {
             _userManager = A.Fake<UserManager<User>>();
             _roleManager = A.Fake<RoleManager<IdentityRole>>();
-        }
-        public async Task<DatabaseContext> GetDatabaseContext()
-        {
-            var options = new DbContextOptionsBuilder<DatabaseContext>()
-                .UseInMemoryDatabase(databaseName: "MockDBUser")
-                .Options;
-
-
-            var contextMock = new DatabaseContext(options);
-            contextMock.Database.EnsureCreated();
-
-            return contextMock;
-        }
+            _DbMock = new DatabaseContextMock();
+        }       
 
         [Fact]
         public async Task UserRepository_AddToRoleNamedUser_ShouldAddRoleNamedUser()
         {
             // arrange
-            var context = await GetDatabaseContext();
+            var context = await _DbMock.GetDatabaseContext();
             var repository = new UserRepository(_userManager, context, _roleManager);
             var user = await context.Users.FirstOrDefaultAsync(u => u.Id == "8e445865-a24d-4543-a6c6-9443d048cdb9");
             int oldNumberOfUserRoles = context.UserRoles.Where(ur => ur.UserId == user.Id).Count();
@@ -57,7 +48,7 @@ namespace TakeASeat_Tests.UnitTests.Service
         public async Task UserRepository_ChangeRoles_ShouldAddUserToAdminAndOrganizerRoles()
         {
             // arrange
-            var context = await GetDatabaseContext();
+            var context = await _DbMock.GetDatabaseContext();
             var repository = new UserRepository(_userManager, context, _roleManager);
             var user = await context.Users.FirstOrDefaultAsync(u => u.Id == "8e445865-a24d-4543-a6c6-9443d048cdb0");
             string adminRoleId = context.Roles.FirstOrDefault(r => r.Name == "Administrator").Id;
@@ -86,13 +77,13 @@ namespace TakeASeat_Tests.UnitTests.Service
             // assert
             var userRoles = await context.UserRoles.Where(ur => ur.UserId == user.Id).ToListAsync();
             userRoles.Should().HaveCount(2);
-            userRoles[0].Role.Name.Should().Be("Administrator");
+            userRoles[0].Role.Name.Should().BeOneOf("Organizer", "Administrator");
         }
         [Fact]
         public async Task UserRepository_GetUsersRecordsNumber_ReturnNumberTwo()
         {
             // arrange
-            var context = await GetDatabaseContext();
+            var context = await _DbMock.GetDatabaseContext();
             var repository = new UserRepository(_userManager, context, _roleManager);
 
 

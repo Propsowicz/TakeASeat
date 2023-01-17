@@ -35,7 +35,7 @@ namespace TakeASeat.Controllers
             {
                 return StatusCode(400);
             }
-            var query = await _eventRepository.GetEvent(eventId);
+            var query = await _eventRepository.getEvent(eventId);
             var response = _mapper.Map<GetEventDetailsDTO>(query);
 
             return StatusCode(200, response);
@@ -54,7 +54,7 @@ namespace TakeASeat.Controllers
                 return StatusCode(400);
             }
 
-            await _eventRepository.CreateEventWithTags(eventData.eventDTO, eventData.eventTagsDTO);
+            await _eventRepository.createEventWithTags(eventData.eventDTO, eventData.eventTagsDTO);
 
             return StatusCode(201);
         }
@@ -72,7 +72,7 @@ namespace TakeASeat.Controllers
                 return StatusCode(400);
             }
 
-            await _eventRepository.EditEventWithTags(eventData.eventDTO, eventData.eventTagsDTO);
+            await _eventRepository.editEventWithTags(eventData.eventDTO, eventData.eventTagsDTO);
 
             return StatusCode(200);
         }
@@ -89,7 +89,7 @@ namespace TakeASeat.Controllers
             {
                 return StatusCode(400);
             }
-            await _eventRepository.DeleteEvent(requestParams.EventId);            
+            await _eventRepository.deleteEvent(requestParams.EventId);            
 
             return StatusCode(200);
         }

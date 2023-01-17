@@ -29,7 +29,7 @@ namespace TakeASeat.Services.PaymentService
             // START
             // Below Code is for a developer purpose only
             // It is a simulation of getting a response from the dotpay server
-            // In production it should be exeucted as separate API endpoint
+            // In production it should be executed as separate API endpoint
             ResponseFromPaymentTransaction mockResponseFromPaymentTransaction = new ResponseFromPaymentTransaction()
             {
                 id = "123456",
@@ -48,7 +48,7 @@ namespace TakeASeat.Services.PaymentService
                 p_email = "takeASeat@takeASeat.com",
                 channel = "1"
             };
-            await finishPaymentTransaction(mockResponseFromPaymentTransaction);
+            await finalizeTicketOrder(mockResponseFromPaymentTransaction);
             // END
         }
 
@@ -79,10 +79,10 @@ namespace TakeASeat.Services.PaymentService
                         && s.isSold == false)
                         .ToList();
             
-            var dotpay_PIN = await _context.ProtectedKeys
+            var dotpay_PIN = await _context.ProtectedKeys.AsNoTracking()
                         .FirstOrDefaultAsync(k => k.Key == "DOTPAY_PIN");
 
-            var dotpay_ID = await _context.ProtectedKeys
+            var dotpay_ID = await _context.ProtectedKeys.AsNoTracking()
                         .FirstOrDefaultAsync(k => k.Key == "DOTPAY_ID");
 
             if (dotpay_PIN != null && dotpay_ID != null) 
@@ -121,9 +121,9 @@ namespace TakeASeat.Services.PaymentService
             return new GetTotalCostByUser { TotalCost = Math.Round(query.Sum(), 2) };
         }
 
-        public async Task finishPaymentTransaction(ResponseFromPaymentTransaction paymentResponse)
+        public async Task finalizeTicketOrder(ResponseFromPaymentTransaction paymentResponse)
         {
-            var dotpay_PIN = await _context.ProtectedKeys
+            var dotpay_PIN = await _context.ProtectedKeys.AsNoTracking()
                         .FirstOrDefaultAsync(k => k.Key == "DOTPAY_PIN");
 
             // Mock signature - for developer purpose only

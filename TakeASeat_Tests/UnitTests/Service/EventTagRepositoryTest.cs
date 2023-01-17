@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using AutoMapper;
+using FakeItEasy;
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,11 +16,13 @@ namespace TakeASeat_Tests.UnitTests.Service
 {
     public class EventTagRepositoryTest
     {
+        
         private readonly DatabaseContextMock _DbMock;
+
         public EventTagRepositoryTest()
         {
             _DbMock = new DatabaseContextMock();
-        }
+        }        
 
         [Fact]
         public async Task EventTagRepository_AddEventTags_ShouldAddTagToEvent()
@@ -43,7 +47,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             int oldTagsNumber = context.EventTagEventM2M.Where(t => t.EventId == eventId).Count();
 
             // act 
-            var response = repository.AddEventTags(eventTagsDTO, eventId);
+            var response = repository.addEventTags(eventTagsDTO, eventId);
 
             // assert
             int newTagsNumber = context.EventTagEventM2M.Where(t => t.EventId == eventId).Count();
@@ -72,7 +76,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             int oldTagsNumber = context.EventTagEventM2M.Where(t => t.EventId == eventId).Count();
 
             // act 
-            var response = repository.AddEventTags(eventTagsDTO, eventId);
+            var response = repository.addEventTags(eventTagsDTO, eventId);
 
             // assert
             int newTagsNumber = context.EventTagEventM2M.Where(t => t.EventId == eventId).Count();
@@ -88,7 +92,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             int oldTagsNumber = context.EventTagEventM2M.Where(t => t.EventId == eventId).Count();
 
             // act 
-            var response = repository.RemoveEventTags(eventId);
+            var response = repository.removeEventTags(eventId);
             context.SaveChanges();                                          // need to save here (didnt create unitOfWork)
 
             // assert

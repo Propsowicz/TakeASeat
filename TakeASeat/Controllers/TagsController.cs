@@ -21,8 +21,7 @@ namespace TakeASeat.Controllers
             _showRepository= showRepository;
             _eventTagRepository= eventTagRepository;
             _mapper= mapper;
-        }
-               
+        }               
 
         [HttpGet("tags-list")]
         [ApiVersion("1.0")]
@@ -35,23 +34,6 @@ namespace TakeASeat.Controllers
             var response = _mapper.Map<IList<GetEventTagDTO>>(query);
 
             return StatusCode(200, response);
-        }
-
-        [HttpPost("add-multiple")]  //maybe del?
-        [ApiVersion("1.0")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> AddEventTags([FromBody] List<GetEventTagDTO> eventTagsDTO, int eventId)
-        {
-            if (!ModelState.IsValid || eventId < 1)
-            {
-                return BadRequest();
-            }
-            await _eventTagRepository.AddEventTags(eventTagsDTO, eventId);
-
-            return StatusCode(200);
-        }
-
+        }        
     }
 }

@@ -13,6 +13,8 @@ using TakeASeat.Data;
 using X.PagedList;
 using TakeASeat.Models;
 using TakeASeat_Tests.UnitTests.Data;
+using Microsoft.EntityFrameworkCore;
+using TakeASeat.Data.DatabaseContext;
 
 namespace TakeASeat_Tests.UnitTests.Service
 {
@@ -24,8 +26,7 @@ namespace TakeASeat_Tests.UnitTests.Service
         {
             _mapper = A.Fake<IMapper>();
             _DbMock = new DatabaseContextMock();
-        }
-
+        }      
 
         [Fact]
         public async void ShowRepository_GetShowDetails_ReturnNotNull()
@@ -36,7 +37,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             int showId = 2;
 
             // act
-            var response = await repository.GetShowDetails(showId);
+            var response = await repository.getShowDetails(showId);
 
             // assert
             response.Should().NotBeNull();
@@ -51,7 +52,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             int showId = 0;
 
             // act
-            var response = await repository.GetShowDetails(showId);
+            var response = await repository.getShowDetails(showId);
 
             // assert
             response.Should().BeNull();
@@ -66,7 +67,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             bool isReadyToSellOld = context.Shows.FirstOrDefault(x => x.Id == showId).IsReadyToSell;
 
             // act
-            var response = repository.SetShowReadyToSell(showId);
+            var response = repository.setShowReadyToSell(showId);
 
             // assert
             bool isReadyToSellNew = context.Shows.FirstOrDefault(x => x.Id == showId).IsReadyToSell;
@@ -81,7 +82,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             ShowRepository repository = new ShowRepository(context, _mapper);
 
             // act
-            var response = await repository.GetShowRecordNumber();
+            var response = await repository.getShowRecordsNumber();
 
             // assert
             response.Should().BeOfType(typeof(int));
@@ -95,7 +96,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             int eventId = 1;
 
             // act
-            var response = await repository.GetShowsByEvent(eventId);
+            var response = await repository.getShowsByEvent(eventId);
 
             // assert
             response.Should().NotBeNull();
@@ -109,7 +110,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             int eventId = 0;
 
             // act
-            var response = await repository.GetShowsByEvent(eventId);
+            var response = await repository.getShowsByEvent(eventId);
 
             // assert
             response.Should().BeNull();
@@ -136,7 +137,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             int oldNumberOfShows = context.Shows.ToList().Count();
 
             // act
-            var response = repository.CreateShow(showDTO);
+            var response = repository.createShow(showDTO);
 
             // assert
             int newNumberOfShows = context.Shows.ToList().Count();
@@ -162,7 +163,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             int oldNumberOfShows = context.Shows.ToList().Count();
 
             // act
-            var response = repository.CreateShow(showDTO);
+            var response = repository.createShow(showDTO);
 
             // assert
             int newNumberOfShows = context.Shows.ToList().Count();
@@ -178,7 +179,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             int showId = 3;
 
             // act
-            var response = repository.DeleteShow(showId);
+            var response = repository.deleteShow(showId);
 
             // assert
             int newNumberOfShows = context.Shows.ToList().Count();
@@ -196,7 +197,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             showToEdit.IsReadyToSell = true;
 
             // act
-            var response = repository.DeleteShow(showId);
+            var response = repository.deleteShow(showId);
 
             // assert
             int newNumberOfShows = context.Shows.ToList().Count();
@@ -212,7 +213,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             int showId = 33333333;
 
             // act
-            var response = repository.DeleteShow(showId);
+            var response = repository.deleteShow(showId);
 
             // assert
             int newNumberOfShows = context.Shows.Count();

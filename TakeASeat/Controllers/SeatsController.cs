@@ -62,7 +62,7 @@ namespace TakeASeat.Controllers
             {
                 return StatusCode(400);
             }
-            await _showRepository.SetShowReadyToSell(showId);
+            await _showRepository.setShowReadyToSell(showId);
 
             var seats = _mapper.Map<IEnumerable<Seat>>(seatsDTO);
             await _seatRepository.CreateMultipleSeats(seats);

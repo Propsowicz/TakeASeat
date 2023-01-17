@@ -10,24 +10,24 @@ using TakeASeat.Data.DatabaseContext;
 using TakeASeat.Migrations;
 using TakeASeat.Services.TicketService;
 using FluentAssertions;
+using TakeASeat_Tests.UnitTests.Data;
 
 namespace TakeASeat_Tests.UnitTests.Service
 {
     public class TicketRepositoryTest
     {
-        public async Task<DatabaseContext> GetDatabaseContext()
+        private readonly DatabaseContextMock _DbMock;
+        public TicketRepositoryTest()
         {
-            var options = new DbContextOptionsBuilder<DatabaseContext>()
-                .UseInMemoryDatabase(databaseName: "MockDBTickets")
-                .Options;
+            _DbMock= new DatabaseContextMock();
+        }
 
-            var contextMock = new DatabaseContext(options);
-            contextMock.Database.EnsureCreated();
-
-            for(int i = 0; i < 10; i++)
+        private async Task createSeatsForTests(DatabaseContext context)
+        {
+            for (int i = 0; i < 10; i++)
             {
-                await contextMock.Seats.AddAsync(new Seat()
-                {                    
+                await context.Seats.AddAsync(new Seat()
+                {
                     Row = 'C',
                     Position = i + 1,
                     Price = 10,
@@ -37,7 +37,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             };
             for (int i = 0; i < 10; i++)
             {
-                await contextMock.Seats.AddAsync(new Seat()
+                await context.Seats.AddAsync(new Seat()
                 {
                     Row = 'D',
                     Position = i + 1,
@@ -46,17 +46,15 @@ namespace TakeASeat_Tests.UnitTests.Service
                     ShowId = 5,
                 });
             };
-            await contextMock.SaveChangesAsync();
-
-            return contextMock;
-        }
-
+            await context.SaveChangesAsync();
+        }      
 
         [Fact]
         public async Task TicketRepository_CreateRangeOfTicketRecords_ShouldCreateTwoTickets()
         {
             // arrange
-            var context = await GetDatabaseContext();
+            var context = await _DbMock.GetDatabaseContext();
+            await createSeatsForTests(context);
             var repository = new TicketRepository(context);
             var paymentTransaction = new PaymentTransaction()
             {
@@ -95,7 +93,8 @@ namespace TakeASeat_Tests.UnitTests.Service
         public async Task TicketRepository_CreateRangeOfTicketRecords_ShouldCreateFourTickets()
         {
             // arrange
-            var context = await GetDatabaseContext();
+            var context = await _DbMock.GetDatabaseContext();
+            await createSeatsForTests(context);
             var repository = new TicketRepository(context);
             var paymentTransaction = new PaymentTransaction()
             {

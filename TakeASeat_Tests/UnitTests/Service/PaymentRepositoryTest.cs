@@ -20,41 +20,22 @@ namespace TakeASeat_Tests.UnitTests.Service
     public class PaymentRepositoryTest
     {
         private readonly ITicketRepository _ticketRepository;
+        private readonly DatabaseContextMock _DbMock;
         public PaymentRepositoryTest()
         {
-            _ticketRepository = A.Fake<ITicketRepository>();    
-        }
-        public async Task<DatabaseContext> GetDatabaseContextWithoutKeys()
-        {
-            var options = new DbContextOptionsBuilder<DatabaseContext>()
-                .UseInMemoryDatabase(databaseName: "MockDBPaymentIsolateWithoutKeys")
-                .Options;
-
-            var contextMock = new DatabaseContext(options);
-            contextMock.Database.EnsureCreated();
-
-            return contextMock;
-        }
-        public async Task<DatabaseContext> GetDatabaseContextWithKeys()
-        {
-            var options = new DbContextOptionsBuilder<DatabaseContext>()
-                .UseInMemoryDatabase(databaseName: "MockDBPaymentIsolateWithKeys")
-                .Options;
-
-            var contextMock = new DatabaseContext(options);
-            contextMock.Database.EnsureCreated();
-            await contextMock.ProtectedKeys.AddAsync(new ProtectedKeys() { Key = "DOTPAY_PIN", Value = "123QWE456ASD" });
-            await contextMock.ProtectedKeys.AddAsync(new ProtectedKeys() { Key = "DOTPAY_ID", Value = "123456789" });
-            await contextMock.SaveChangesAsync();
-
-            return contextMock;
-        }
+            _ticketRepository = A.Fake<ITicketRepository>();
+            _DbMock = new DatabaseContextMock();
+        }        
 
         [Fact]
         public async Task PaymentRepository_getPaymentData_ReturnPaymentData()
         {
             // arrange
-            var context = await GetDatabaseContextWithKeys();
+            var context = await _DbMock.GetDatabaseContext();
+            await context.ProtectedKeys.AddAsync(new ProtectedKeys() { Key = "DOTPAY_PIN", Value = "123QWE456ASD" });
+            await context.ProtectedKeys.AddAsync(new ProtectedKeys() { Key = "DOTPAY_ID", Value = "123456789" });
+            await context.SaveChangesAsync();
+
             PaymentRepository repository = new PaymentRepository(context, _ticketRepository);
             string userId = "8e445865-a24d-4543-a6c6-9443d048cdb0";
             await context.SeatReservation.AddAsync(new SeatReservation()
@@ -97,7 +78,7 @@ namespace TakeASeat_Tests.UnitTests.Service
         public async Task PaymentRepository_getPaymentData_ReturnNoCantAccessKeysException()
         {
             // arrange
-            var context = await GetDatabaseContextWithoutKeys();
+            var context = await _DbMock.GetDatabaseContext();
             PaymentRepository repository = new PaymentRepository(context, _ticketRepository);
             string userId = "8e445865-a24d-4543-a6c6-9443d048cdb9";
             await context.SeatReservation.AddAsync(new SeatReservation()
@@ -139,7 +120,11 @@ namespace TakeASeat_Tests.UnitTests.Service
         public async Task PaymentRepository_getTotalCost_ReturnNumber40comma8()
         {
             // arrange
-            var context = await GetDatabaseContextWithKeys();
+            var context = await _DbMock.GetDatabaseContext();
+            await context.ProtectedKeys.AddAsync(new ProtectedKeys() { Key = "DOTPAY_PIN", Value = "123QWE456ASD" });
+            await context.ProtectedKeys.AddAsync(new ProtectedKeys() { Key = "DOTPAY_ID", Value = "123456789" });
+            await context.SaveChangesAsync();
+
             PaymentRepository repository = new PaymentRepository(context, _ticketRepository);
             string userId = "8e445865-a24d-4543-a6c6-9443d048cdb0";
             await context.SeatReservation.AddAsync(new SeatReservation()
@@ -150,11 +135,20 @@ namespace TakeASeat_Tests.UnitTests.Service
             });
             await context.SaveChangesAsync();
             var reservation = await context.SeatReservation.LastOrDefaultAsync();
-            await context.Seats.AddAsync(new Seat()
+            await context.Seats.AddRangeAsync(new Seat()
             {
                 Row = 'B',
                 Position = 3,
                 Price = 10,
+                SeatColor = "blue",
+                ShowId = 11,
+                ReservationId = reservation.Id
+            },
+            new Seat()
+            {
+                Row = 'B',
+                Position = 4,
+                Price = 30.8,
                 SeatColor = "blue",
                 ShowId = 11,
                 ReservationId = reservation.Id

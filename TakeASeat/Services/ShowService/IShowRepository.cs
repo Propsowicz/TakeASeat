@@ -7,15 +7,14 @@ namespace TakeASeat.Services.ShowService
 {
     public interface IShowRepository
     {
-        //Task<IPagedList<Show>> GetShows(int pageNumber, int pageSize);
-        Task<int> GetShowRecordNumber();
-        Task<Show> GetShowDetails(int id);
-        Task SetShowReadyToSell(int id);
-        Task<IPagedList<GetShowsDTO>> GetShows(int pageNumber, int pageSize);
-        Task<IPagedList<GetShowsByEventDTO>> GetShowsByEvent(int eventId);
-        Task<IPagedList<GetShowsDTO>> GetShowsByEventTag(RequestTagsParams requestParams);
+        Task<int> getShowRecordsNumber();
+        Task<Show> getShowDetails(int id);
+        Task setShowReadyToSell(int id);
+        Task<IPagedList<GetShowsDTO>> getShows(int pageNumber, int pageSize);
+        Task<IPagedList<GetShowsByEventDTO>> getShowsByEvent(int eventId);
+        Task<IPagedList<GetShowsDTO>> getShowsByEventTag(RequestTagsParams requestParams);
 
-        Task CreateShow(CreateShowDTO showDTO);
-        Task DeleteShow(int showId);
+        Task createShow(CreateShowDTO showDTO);
+        Task deleteShow(int showId);
     }
 }

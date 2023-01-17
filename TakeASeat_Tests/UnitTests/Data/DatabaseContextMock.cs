@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.InMemory;
 using TakeASeat.Data;
@@ -16,14 +17,25 @@ namespace TakeASeat_Tests.UnitTests.Data
         public async Task<DatabaseContext> GetDatabaseContext()
         {
             var options = new DbContextOptionsBuilder<DatabaseContext>()
-                .UseInMemoryDatabase(databaseName: "MockDB")
+                .UseInMemoryDatabase(databaseName: $"MockDB-{Guid.NewGuid()}")
                 .Options;
 
             var contextMock = new DatabaseContext(options);
             contextMock.Database.EnsureCreated();
-            await contextMock.ProtectedKeys.AddAsync(new ProtectedKeys() { Key = "DOTPAY_PIN", Value = "123QWE456ASD" });
-            await contextMock.ProtectedKeys.AddAsync(new ProtectedKeys() { Key = "DOTPAY_ID", Value = "123456789" });
-            await contextMock.SaveChangesAsync();
+            
+            return contextMock;
+        }
+        public async Task<DatabaseContext> GetSqliteDatabaseContext()
+        {
+            var connection = new SqliteConnection("Filename=:memory:");
+            connection.Open();
+
+            var options = new DbContextOptionsBuilder<DatabaseContext>()
+                .UseSqlite(connection)
+                .Options;
+
+            var contextMock = new DatabaseContext(options);
+            contextMock.Database.EnsureCreated();
 
             return contextMock;
         }

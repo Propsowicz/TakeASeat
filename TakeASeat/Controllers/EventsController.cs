@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
-//using System.Data.Entity;
 using Microsoft.EntityFrameworkCore;
 
 using System.Linq;
@@ -35,7 +34,7 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetEvents([FromQuery] RequestEventParams requestParams)
         {
-            var query = await _eventRepository.GetEvents(requestParams);
+            var query = await _eventRepository.getEvents(requestParams);
             var response = _mapper.Map<List<GetEventDTO>>(query);
 
             return StatusCode(200, response);
@@ -52,7 +51,7 @@ namespace TakeASeat.Controllers
                 return StatusCode(404);
             }
 
-            var query = await _eventRepository.GetEventsByUser(requestParams, userName);
+            var query = await _eventRepository.getEventsByUser(requestParams, userName);
             var response = _mapper.Map<List<GetEventWithListOfShowsDTO>>(query);
 
             return StatusCode(200, response);
@@ -65,7 +64,7 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetEventRecordsNumber()
         {
-            var response = await _eventRepository.GetEventRecordsNumber();
+            var response = await _eventRepository.getEventRecordsNumber();
             
             return StatusCode(200, response);
         }              

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TakeASeat.Data.DatabaseContext;
 
@@ -11,9 +12,10 @@ using TakeASeat.Data.DatabaseContext;
 namespace TakeASeat.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230117100657_NewFKs")]
+    partial class NewFKs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -845,22 +847,22 @@ namespace TakeASeat.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9ef7b03b-432e-4319-90de-13a6f3afa5f1",
-                            ConcurrencyStamp = "a9329983-5bc0-464f-bb52-a3a4d270ed76",
+                            Id = "398a3e73-85f4-47f9-8b00-b0b839c1e986",
+                            ConcurrencyStamp = "e54bbc37-c695-44a3-8450-662be68a5547",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "b94bfda4-97e7-429e-b7fe-3086becd8818",
-                            ConcurrencyStamp = "21471440-5ba0-4a83-953d-df7bf71e31bf",
+                            Id = "3c6b9542-f388-4d4f-9d07-aba5eb395fe5",
+                            ConcurrencyStamp = "939138ed-aa08-4ab9-921e-1ca7ba417739",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "15806b95-b7a5-4f14-bbbb-43d63b60a1a6",
-                            ConcurrencyStamp = "570dae51-647d-474c-9eee-65f9155c45eb",
+                            Id = "df041ffd-666c-44c4-944e-122ab2e6e3fb",
+                            ConcurrencyStamp = "6f416d04-55f8-437a-bd74-fba3035e1221",
                             Name = "Organizer",
                             NormalizedName = "ORGANIZER"
                         });
@@ -887,12 +889,12 @@ namespace TakeASeat.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "618ec6bc-23aa-4385-9c4d-632969a2b3cb",
+                            ConcurrencyStamp = "8ccd26de-f929-4d6c-be36-4ef314df909c",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEDGnKu7tZveK11rD7q0RxuueAoTiLFprSMTvL0g60mXqwwXqhLjcUr7WZ51wC5uiBg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIbaujrzd7iBBsbbcC8pF1UbB0Jpa8yQgJ1cwAEcId6kJ/VVV0HxoBNQgc76vtB0/w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "22b3a8aa-4f3f-4f80-9421-933dfce4349b",
+                            SecurityStamp = "8c97fa52-f4f9-489a-b303-daa8ce574357",
                             TwoFactorEnabled = false,
                             UserName = "Flinston",
                             FirstName = "George",
@@ -902,12 +904,12 @@ namespace TakeASeat.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6b62db22-aa81-499b-8baf-0c53614f55ce",
+                            ConcurrencyStamp = "122947d1-5679-462e-b0a9-764dc976e51d",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEHRdnW2n6buGy9nsg4DWlyDNkG56vdJlIT/dvABOJWcT2qmWANZIbN5yIkuox1sdzQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEH5mV0LyLYR+Vt6XpCC8lW0CUT1NY0tX2/TNcSyK1nNwe7Xgao20FVh2CzHy/Zcczg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "11107314-a417-4207-81a2-90cef9f3e734",
+                            SecurityStamp = "df5d9cf6-8224-43c1-9945-8b49b619f635",
                             TwoFactorEnabled = false,
                             UserName = "LOG",
                             FirstName = "Logan",

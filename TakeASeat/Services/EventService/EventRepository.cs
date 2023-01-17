@@ -26,7 +26,7 @@ namespace TakeASeat.Services.EventService
             _eventTagRepository = eventTagRepository;
         }
                 
-        public async Task<IPagedList<Event>> GetEvents(RequestEventParams requestParams)
+        public async Task<IPagedList<Event>> getEvents(RequestEventParams requestParams)
         {
             var query = _context.Events
                             .AsNoTracking();
@@ -57,7 +57,7 @@ namespace TakeASeat.Services.EventService
 
             return await query.ToPagedListAsync(requestParams.PageNumber, requestParams.PageSize);
         }
-        public async Task<IPagedList<Event>> GetEventsByUser(RequestEventParams requestParams, string userName)
+        public async Task<IPagedList<Event>> getEventsByUser(RequestEventParams requestParams, string userName)
         {            
             var query = _context.Events
                             .AsNoTracking()                            
@@ -92,12 +92,12 @@ namespace TakeASeat.Services.EventService
         }
 
 
-        public async Task<int> GetEventRecordsNumber()
+        public async Task<int> getEventRecordsNumber()
         {
             return await _context.Events.CountAsync();
         }
 
-        public async Task<Event> CreateEvent(CreateEventDTO eventDTO)
+        public async Task<Event> createEvent(CreateEventDTO eventDTO)
         {
             var eventName = eventDTO.Name;
             if (eventDTO.CreatorId == null || eventDTO.Description == null ||
@@ -114,14 +114,13 @@ namespace TakeASeat.Services.EventService
         }
 
 
-        public async Task CreateEventWithTags(CreateEventDTO eventDTO, List<GetEventTagDTO> eventTagsDTO)
+        public async Task createEventWithTags(CreateEventDTO eventDTO, List<GetEventTagDTO> eventTagsDTO)
         {
-            var createdEvent = await CreateEvent(eventDTO);
-            await _eventTagRepository.AddEventTags(eventTagsDTO, createdEvent.Id);
-            
+            var createdEvent = await createEvent(eventDTO);
+            await _eventTagRepository.addEventTags(eventTagsDTO, createdEvent.Id);            
         }
 
-        public async Task<Event> GetEvent(int id)
+        public async Task<Event> getEvent(int id)
         {
             var query = await _context.Events
                             .AsNoTracking()
@@ -135,15 +134,15 @@ namespace TakeASeat.Services.EventService
             return query;
         }
 
-        public async Task EditEventWithTags(EditEventDTO eventDTO, List<GetEventTagDTO> eventTagsDTO)
+        public async Task editEventWithTags(EditEventDTO eventDTO, List<GetEventTagDTO> eventTagsDTO)
         {
-            var editedEvent = await EditEvent(eventDTO);
-            await _eventTagRepository.RemoveEventTags(eventDTO.Id);
-            await _eventTagRepository.AddEventTags(eventTagsDTO, editedEvent.Id);
+            var editedEvent = await editEvent(eventDTO);
+            await _eventTagRepository.removeEventTags(eventDTO.Id);
+            await _eventTagRepository.addEventTags(eventTagsDTO, editedEvent.Id);
 
         }
 
-        public async Task<Event> EditEvent(EditEventDTO eventDTO)
+        public async Task<Event> editEvent(EditEventDTO eventDTO)
         {
             if (eventDTO.Id < 1 || eventDTO.Description == null ||
                 eventDTO.Name == null || eventDTO.Place == null)
@@ -166,7 +165,7 @@ namespace TakeASeat.Services.EventService
             return eventObj;
         }
 
-        public async Task DeleteEvent(int eventId)
+        public async Task deleteEvent(int eventId)
         {
             var queryValidation = await _context.Shows
                                     .AsNoTracking()

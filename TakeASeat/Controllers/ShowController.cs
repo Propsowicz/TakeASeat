@@ -32,7 +32,7 @@ namespace TakeASeat.Controllers
             {
                 return StatusCode(400);
             }
-            var query = await _showRepository.GetShowDetails(id);
+            var query = await _showRepository.getShowDetails(id);
 
             var response = _mapper.Map<GetClosestShow>(query);
             return StatusCode(200, response);
@@ -50,7 +50,7 @@ namespace TakeASeat.Controllers
             {
                 return BadRequest();
             }
-            await _showRepository.CreateShow(showDTO);
+            await _showRepository.createShow(showDTO);
 
             return StatusCode(201);
         }
@@ -67,7 +67,7 @@ namespace TakeASeat.Controllers
             {
                 return StatusCode(400);
             }
-            await _showRepository.DeleteShow(requestParams.ShowId);
+            await _showRepository.deleteShow(requestParams.ShowId);
 
             return StatusCode(200);
         }

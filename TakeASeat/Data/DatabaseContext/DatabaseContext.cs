@@ -82,6 +82,15 @@ namespace TakeASeat.Data.DatabaseContext
             {
                 b.Property(s => s.Row).HasMaxLength(1);
                 b.Property(s => s.SeatColor).HasMaxLength(20);
+                b.HasOne(s => s.Show).WithMany(s => s.Seats).HasForeignKey(s => s.ShowId).OnDelete(DeleteBehavior.Cascade);
+                b.HasOne(s => s.SeatReservation).WithMany(sr => sr.Seats).HasForeignKey(s => s.ReservationId).OnDelete(DeleteBehavior.NoAction);
+            });
+
+            builder.Entity<SeatReservation>(b =>
+            {                
+                b.HasOne(sr => sr.User).WithMany().HasForeignKey(sr => sr.UserId).OnDelete(DeleteBehavior.Cascade);
+                b.HasOne(sr => sr.PaymentTransaction).WithMany(pt => pt.SeatReservations)
+                                                    .HasForeignKey(sr => sr.PaymentTransactionId).OnDelete(DeleteBehavior.Cascade);
             });
 
             builder.Entity<Show>(b =>

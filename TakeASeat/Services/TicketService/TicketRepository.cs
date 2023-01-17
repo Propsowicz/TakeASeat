@@ -64,8 +64,8 @@ namespace TakeASeat.Services.TicketService
         }        
         private async Task SendEmailWithAttachment(List<Ticket> listOfTickets, UserDataToSendEmailDTO userData)
         {
-            var emailServiceProviderPassword = _context.ProtectedKeys.FirstOrDefault(k => k.Key == "EMAIL_PASSWORD");
-            var emailServiceProviderAddress = _context.ProtectedKeys.FirstOrDefault(k => k.Key == "EMAIL_FROM");
+            var emailServiceProviderPassword = _context.ProtectedKeys.AsNoTracking().FirstOrDefault(k => k.Key == "EMAIL_PASSWORD");
+            var emailServiceProviderAddress = _context.ProtectedKeys.AsNoTracking().FirstOrDefault(k => k.Key == "EMAIL_FROM");
 
             if (emailServiceProviderPassword == null || emailServiceProviderAddress == null)
             {
@@ -135,8 +135,5 @@ namespace TakeASeat.Services.TicketService
 
             return stream;
         }
-    }
-
-        
-    
+    }       
 }

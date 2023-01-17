@@ -32,7 +32,7 @@ namespace TakeASeat.Services.SeatReservationService
                     UserId= userId,
                 });
             await _context.SaveChangesAsync();
-            await SetReservation(seats, reservation.Entity.Id);
+            await AddReservationToMultipleSeats(seats, reservation.Entity.Id);
         }       
         public async Task DeleteSeatReservation(int seatReservationId)
         {
@@ -40,7 +40,7 @@ namespace TakeASeat.Services.SeatReservationService
                                 .Where(r => r.Id == seatReservationId)
                                 .FirstOrDefaultAsync(); 
                         
-            await RemoveReservation(seatReservationId);
+            await RemoveReservationFromSeat(seatReservationId);
 
             ArgumentNullException.ThrowIfNull(query);
             _context.Remove(query);
@@ -51,7 +51,7 @@ namespace TakeASeat.Services.SeatReservationService
         {
             
             var listOfReservations = seatReservations.Select(r => r.Id).ToList();
-            await RemoveMultipleReservation(listOfReservations);
+            await RemoveReservationFromMultipleSeats(listOfReservations);
 
             _context.RemoveRange(seatReservations);
             await _context.SaveChangesAsync();
@@ -71,7 +71,6 @@ namespace TakeASeat.Services.SeatReservationService
                 await _context.SaveChangesAsync();
             }
         }
-
         public async Task<IList<Seat[]>> GetSeats(int showId)
         {
             return await _context.Seats
@@ -81,8 +80,7 @@ namespace TakeASeat.Services.SeatReservationService
                     .Select(grp => grp.ToArray())
                     .ToListAsync();
         }
-
-        public async Task RemoveMultipleReservation(List<int> reservationIds)
+        public async Task RemoveReservationFromMultipleSeats(List<int> reservationIds)
         {                                                                                                                         
             await _context.Database.BeginTransactionAsync();
             await _context.Database.ExecuteSqlRawAsync(
@@ -90,8 +88,7 @@ namespace TakeASeat.Services.SeatReservationService
                 );
             await _context.Database.CommitTransactionAsync();
         }
-
-        public async Task RemoveReservation(int reservationId)
+        public async Task RemoveReservationFromSeat(int reservationId)
         {
             await _context.Database.BeginTransactionAsync();
             await _context.Database.ExecuteSqlInterpolatedAsync(
@@ -99,23 +96,20 @@ namespace TakeASeat.Services.SeatReservationService
                 );
             await _context.Database.CommitTransactionAsync();
         }
-
         public async Task RemoveSingleSeatFromOrder(int reservationId)
         {
             var seat = await _context.Seats
-                    .Where(s => s.Id == reservationId)
-                    .FirstOrDefaultAsync();
+                    .FirstOrDefaultAsync(s => s.Id == reservationId);
 
             ArgumentNullException.ThrowIfNull(seat);
             seat.ReservationId = null;
             await _context.SaveChangesAsync();
 
-            // DeleteEmptyReservation() checks if lastly deleted seat was the only seat left for the reservation.
-            // If it was, so there is no more seats -> delete the reservation
+            // DeleteEmptyReservation() checks if lastly deleted seat was the only seat left in the reservation.
+            // If it was (so there is no more seats) -> delete the reservation
             DeleteEmptyReservation(reservationId);
         }
-
-        public async Task SetReservation(IEnumerable<Seat> seats, int? ReservationId)
+        public async Task AddReservationToMultipleSeats(IEnumerable<Seat> seats, int? ReservationId)
         {                                                                                                                      
             await _context.Database.BeginTransactionAsync();
             await _context.Database.ExecuteSqlRawAsync(

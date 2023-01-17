@@ -15,7 +15,7 @@ using TakeASeat_Tests.UnitTests.Data;
 
 namespace TakeASeat_Tests.UnitTests.Service
 {
-    public class ReleaseReservationRespositoryTest : IDisposable
+    public class ReleaseReservationRespositoryTest
     {
         private readonly ISeatResRepository _seatReservationRepository;
         private readonly DatabaseContextMock _DbMock;
@@ -27,10 +27,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             _DbMock = new DatabaseContextMock();
             _timeNow = DateTime.UtcNow;
         }
-        public void Dispose()
-        {
-            _DbMock.CleanDB();
-        }
+        
 
         public List<SeatReservation> createMockSeatReservations(DateTime seatReservationNumberOne, DateTime seatReservationNumberTwo)
 

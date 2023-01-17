@@ -8,31 +8,28 @@ using TakeASeat.Data;
 using TakeASeat.Data.DatabaseContext;
 using TakeASeat.Services.SeatService;
 using FluentAssertions;
+using Microsoft.Data.Sqlite;
+using TakeASeat_Tests.UnitTests.Data;
 
 namespace TakeASeat_Tests.UnitTests.Service
 {
     public class SeatRepositoryTest
     {
-        public async Task<DatabaseContext> GetDatabaseContext()
+        private readonly DatabaseContextMock _DbMock;
+        public SeatRepositoryTest()
         {
-            var options = new DbContextOptionsBuilder<DatabaseContext>()
-                .UseInMemoryDatabase(databaseName: "MockDBSeats")
-                .Options;
-
-            var contextMock = new DatabaseContext(options);
-            contextMock.Database.EnsureCreated();
-
-            return contextMock;
+            _DbMock= new DatabaseContextMock();
         }
+            
 
         [Fact]
         public async Task SeatRepository_CreateMultipleSeats_ShouldCreateTwentySeats()
         {
             // arrange
-            var context = await GetDatabaseContext();
+            var context = await _DbMock.GetDatabaseContext();
             var repository = new SeatRepository(context);
             List<Seat> seats = new List<Seat>();
-            int showId = 99;
+            int showId = 2;
             for (int i = 0; i < 20; i++)
             {
                 seats.Add(new Seat()
@@ -56,7 +53,7 @@ namespace TakeASeat_Tests.UnitTests.Service
         public async Task SeatRepository_CreateMultipleSeats_ShouldCreateZeroSeats()
         {
             // arrange
-            var context = await GetDatabaseContext();
+            var context = await _DbMock.GetDatabaseContext();
             var repository = new SeatRepository(context);
             List<Seat> seats = new List<Seat>();
             int showId = 98;

@@ -13,7 +13,7 @@ namespace TakeASeat.Services.EventTagRepository
             _context= context;
         }
              
-        public async Task AddEventTags(List<GetEventTagDTO> eventTagsDTO, int eventId)
+        public async Task addEventTags(List<GetEventTagDTO> eventTagsDTO, int eventId)
         {
             if (eventId < 1 || eventTagsDTO == null || eventTagsDTO.FirstOrDefault().Id < 1 )
                 {
@@ -41,7 +41,7 @@ namespace TakeASeat.Services.EventTagRepository
                         .ToListAsync();
         }
 
-        public async Task RemoveEventTags(int eventId)
+        public async Task removeEventTags(int eventId)
         {
             if (eventId < 1)
             {
@@ -49,7 +49,6 @@ namespace TakeASeat.Services.EventTagRepository
             }
             var query = await _context.EventTagEventM2M.Where(t => t.EventId== eventId).ToListAsync();
             _context.RemoveRange(query);
-            //await _context.SaveChangesAsync();     
         }
     }
 }

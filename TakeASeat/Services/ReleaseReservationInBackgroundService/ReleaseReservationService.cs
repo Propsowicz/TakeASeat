@@ -21,6 +21,7 @@ namespace TakeASeat.Services.BackgroundService
             var dateTime = DateTime.UtcNow.AddMinutes(-5);
            ;
             var seatReservationQuery = await _context.SeatReservation
+                                            .AsNoTracking()
                                             .Where(r =>
                                             r.isReserved == true
                                             && r.isSold == false)

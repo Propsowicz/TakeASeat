@@ -12,48 +12,27 @@ using System.Data.Entity;
 using TakeASeat.Services.SeatReservationService;
 using TakeASeat.Data;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Data.Sqlite;
+using TakeASeat_Tests.UnitTests.Data;
 
 namespace TakeASeat_Tests.UnitTests.Service
 {
     public class SeatReservationRepositoryTest
     {
         private readonly ISeatRepository _seatRepository;
+        private readonly DatabaseContextMock _DbMock;
         public SeatReservationRepositoryTest()
         {
             _seatRepository = A.Fake<ISeatRepository>();
+            _DbMock = new DatabaseContextMock();
+
         }
 
-        public async Task<DatabaseContext> GetDatabaseContext()
-        {
-            var options = new DbContextOptionsBuilder<DatabaseContext>()
-                .UseInMemoryDatabase(databaseName: "MockDBSeatReservations")
-                .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning))
-                .Options;
-
-
-            var contextMock = new DatabaseContext(options);
-            contextMock.Database.EnsureCreated();
-
-            return contextMock;
-        }
-        public async Task<DatabaseContext> GetDatabaseContextIsolatedForSeatsTest()
-        {
-            var options = new DbContextOptionsBuilder<DatabaseContext>()
-                .UseInMemoryDatabase(databaseName: "MockDBSeats")
-                .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning))
-                .Options;
-
-
-            var contextMock = new DatabaseContext(options);
-            contextMock.Database.EnsureCreated();
-
-            return contextMock;
-        }
         [Fact]
         public async Task SeatReservationRepository_DeleteEmptyReservation_ShouldDeleteReservation()
         {
             // arrange
-            var context = await GetDatabaseContext();
+            var context = await _DbMock.GetDatabaseContext();
             var repository = new SeatResRepository(context, _seatRepository);
             string userId = "123";
             await context.SeatReservation.AddAsync(new SeatReservation()
@@ -78,7 +57,7 @@ namespace TakeASeat_Tests.UnitTests.Service
         public async Task SeatReservationRepository_DeleteEmptyReservation_ShouldNotDeleteReservation()
         {
             // arrange
-            var context = await GetDatabaseContext();
+            var context = await _DbMock.GetDatabaseContext();
             var repository = new SeatResRepository(context, _seatRepository);
             string userId = "1234";
             await context.SeatReservation.AddAsync(new SeatReservation()
@@ -113,7 +92,7 @@ namespace TakeASeat_Tests.UnitTests.Service
         public async Task SeatReservationRepository_RemoveSingleSeatFromOrder_ShouldDeleteOnlyOneSeat()
         {
             // arrange
-            var context = await GetDatabaseContext();
+            var context = await _DbMock.GetDatabaseContext();
             var repository = new SeatResRepository(context, _seatRepository);
             string userId = "12345";
             await context.SeatReservation.AddAsync(new SeatReservation()
@@ -163,7 +142,7 @@ namespace TakeASeat_Tests.UnitTests.Service
         public async Task SeatReservationRepository_RemoveSingleSeatFromOrder_ShouldDeleteSeatAndReservation()
         {
             // arrange
-            var context = await GetDatabaseContextIsolatedForSeatsTest();
+            var context = await _DbMock.GetDatabaseContext();
             var repository = new SeatResRepository(context, _seatRepository);
             string userId = "123456abc";
             await context.SeatReservation.AddAsync(new SeatReservation()
@@ -189,14 +168,14 @@ namespace TakeASeat_Tests.UnitTests.Service
             await context.Seats.AddRangeAsync(seats);
             await context.SaveChangesAsync();
             int oldNumberOfSeatsInReservation = context.Seats.Where(s => s.ReservationId == seatReservationId).Count();
-            int oldNumberOfReservationsByUser = context.SeatReservation.Where(r => r.UserId == userId).ToList().Count();
+            int oldNumberOfReservationsByUser = context.SeatReservation.Where(r => r.UserId == userId).Count();
 
             // act
             await repository.RemoveSingleSeatFromOrder(seatReservationId);
 
             // assert
             int newNumberOfSeatsInReservation = context.Seats.Where(s => s.ReservationId == seatReservationId).Count();
-            int newNumberOfReservationsByUser = context.SeatReservation.Where(r => r.UserId == userId).ToList().Count();
+            int newNumberOfReservationsByUser = context.SeatReservation.Where(r => r.UserId == userId).Count();
             oldNumberOfReservationsByUser.Should().Be(1);
             newNumberOfReservationsByUser.Should().Be(0);
             oldNumberOfSeatsInReservation.Should().Be(1);

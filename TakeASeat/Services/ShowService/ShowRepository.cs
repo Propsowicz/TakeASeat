@@ -24,7 +24,7 @@ namespace TakeASeat.Services.ShowService
             _mapper= mapper;
         }
         
-        public async Task<Show> GetShowDetails(int id)
+        public async Task<Show> getShowDetails(int id)
         {
             if (id < 1)
             {
@@ -42,13 +42,11 @@ namespace TakeASeat.Services.ShowService
                         .ThenInclude(t => t.EventTag)
                 .FirstOrDefaultAsync();
 
-            //ArgumentNullException.ThrowIfNull(query);
-
             return query;
                 
         }
 
-        public async Task SetShowReadyToSell(int id)
+        public async Task setShowReadyToSell(int id)
         {
             var show = await _context.Shows.Where(s => s.Id == id).FirstOrDefaultAsync();
             ArgumentNullException.ThrowIfNull(show);
@@ -57,7 +55,7 @@ namespace TakeASeat.Services.ShowService
             await _context.SaveChangesAsync();
         }
 
-        public async Task<int> GetShowRecordNumber()
+        public async Task<int> getShowRecordsNumber()
         {
             var query = await _context.Shows
                 .AsNoTracking()
@@ -70,7 +68,7 @@ namespace TakeASeat.Services.ShowService
                 
         }
 
-        public async Task<IPagedList<GetShowsDTO>> GetShows(int pageNumber, int pageSize)
+        public async Task<IPagedList<GetShowsDTO>> getShows(int pageNumber, int pageSize)
         {
             var query = await _context.Shows
                 .AsNoTracking()
@@ -98,7 +96,7 @@ namespace TakeASeat.Services.ShowService
             return query;
         }
 
-        public async Task<IPagedList<GetShowsByEventDTO>> GetShowsByEvent(int eventId)
+        public async Task<IPagedList<GetShowsByEventDTO>> getShowsByEvent(int eventId)
         {
             if (eventId < 1)
             {
@@ -125,7 +123,7 @@ namespace TakeASeat.Services.ShowService
             return query;
         }
 
-        public async Task<IPagedList<GetShowsDTO>> GetShowsByEventTag(RequestTagsParams requestParams)
+        public async Task<IPagedList<GetShowsDTO>> getShowsByEventTag(RequestTagsParams requestParams)
         {   
             var eventTagName = requestParams.EventTagName;
 
@@ -157,10 +155,9 @@ namespace TakeASeat.Services.ShowService
             ArgumentNullException.ThrowIfNull(query);
 
             return query;
-
         }
 
-        public async Task CreateShow(CreateShowDTO showDTO)
+        public async Task createShow(CreateShowDTO showDTO)
         {
             if (showDTO.EventId < 1 || showDTO.Date == null || showDTO.Description == null)
             {
@@ -171,7 +168,7 @@ namespace TakeASeat.Services.ShowService
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteShow(int showId)
+        public async Task deleteShow(int showId)
         {
             var query = await  _context.Shows.FirstOrDefaultAsync(s => s.Id == showId);
             if (query == null)

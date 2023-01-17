@@ -30,7 +30,7 @@ namespace TakeASeat.Controllers
         {
             int PageNumber = 1;
             int PageSize = 5;
-            var response = await _showRepository.GetShows(PageNumber, PageSize);
+            var response = await _showRepository.getShows(PageNumber, PageSize);
 
             return StatusCode(200, response);
         }
@@ -42,7 +42,7 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetShows([FromQuery] RequestShowParams requestParams)                  
         {            
-            var response = await _showRepository.GetShows(requestParams.PageNumber, requestParams.PageSize);
+            var response = await _showRepository.getShows(requestParams.PageNumber, requestParams.PageSize);
 
             return StatusCode(200, response);
         }
@@ -54,7 +54,7 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetShowsByEventTags([FromQuery] RequestTagsParams requestParams)
         {
-            var response = await _showRepository.GetShowsByEventTag(requestParams);
+            var response = await _showRepository.getShowsByEventTag(requestParams);
 
             return StatusCode(200, response);
         }
@@ -66,7 +66,7 @@ namespace TakeASeat.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetShowsRecordNumber()                  
         {
-            var query = await _showRepository.GetShowRecordNumber();
+            var query = await _showRepository.getShowRecordsNumber();
 
             return StatusCode(200, query);
         }
@@ -82,7 +82,7 @@ namespace TakeASeat.Controllers
             {
                 return StatusCode(400);
             }
-            var response = await _showRepository.GetShowsByEvent(eventId);
+            var response = await _showRepository.getShowsByEvent(eventId);
 
             return StatusCode(200, response);
         }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FakeItEasy;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using TakeASeat.Data;
 using TakeASeat.Data.DatabaseContext;
 using TakeASeat.Models;
@@ -30,7 +31,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             _mapper = A.Fake<IMapper>();
             _DbMock = new DatabaseContextMock();
         }
-
+        
         [Fact]
         public async void EventRepository_GetEventRecordsNumber_ReturnInt()
         {
@@ -39,7 +40,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             EventRepository repository = new EventRepository(context, _mapper, _eventTagRepository);
 
             // act
-            var response = await repository.GetEventRecordsNumber();
+            var response = await repository.getEventRecordsNumber();
 
             // assert
             response.Should().BeOfType(typeof(int));
@@ -53,7 +54,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             EventRepository repository = new EventRepository(context, _mapper, _eventTagRepository);
 
             // act
-            var response = await repository.GetEventRecordsNumber();
+            var response = await repository.getEventRecordsNumber();
 
             // assert
             response.Should().Be(context.Events.ToList().Count());
@@ -74,7 +75,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             string userName = "TestUser";
 
             // act
-            var response = await repository.GetEventsByUser(requestParams, userName);
+            var response = await repository.getEventsByUser(requestParams, userName);
 
             // assert
             Assert.Equal(10, requestParams.PageSize);
@@ -96,7 +97,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             string userName = "LOG";
 
             // act
-            var response = await repository.GetEventsByUser(requestParams, userName);
+            var response = await repository.getEventsByUser(requestParams, userName);
 
             // assert
             Assert.Equal(10, requestParams.PageSize);
@@ -131,7 +132,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             EventRepository repository = new EventRepository(context, _mapper, _eventTagRepository);
 
             // act
-            var response = await repository.CreateEvent(eventDTO);
+            var response = await repository.createEvent(eventDTO);
 
             // assert
             response.Should().NotBeNull();
@@ -165,7 +166,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             EventRepository repository = new EventRepository(context, _mapper, _eventTagRepository);
 
             // act
-            var response = await repository.CreateEvent(eventDTO);
+            var response = await repository.createEvent(eventDTO);
 
             // assert
             response.Should().BeNull();
@@ -189,7 +190,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             EventRepository repository = new EventRepository(context, _mapper, _eventTagRepository);
 
             // act
-            var response = await repository.EditEvent(eventDTO);
+            var response = await repository.editEvent(eventDTO);
 
             // assert
             response.Should().NotBeNull();
@@ -213,7 +214,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             EventRepository repository = new EventRepository(context, _mapper, _eventTagRepository);
 
             // act
-            var response = await repository.EditEvent(eventDTO);
+            var response = await repository.editEvent(eventDTO);
 
             // assert
             response.Should().BeNull();
@@ -228,7 +229,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             int oldEventsNumber = context.Events.ToList().Count();
 
             // act
-            var response = repository.DeleteEvent(eventId);
+            var response = repository.deleteEvent(eventId);
 
             // assert
             int newEventsNumber = context.Events.ToList().Count();

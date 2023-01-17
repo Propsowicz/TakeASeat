@@ -10,6 +10,6 @@ namespace TakeASeat.Services.PaymentService
         Task<PaymentDataDTO> getPaymentData(string userId);
         Task<GetTotalCostByUser> getTotalCost(string userId);
         Task createPaymentTransactionRecord(PaymentTransaction paymentTranscation);
-        Task finishPaymentTransaction(ResponseFromPaymentTransaction paymentResponse);
+        Task finalizeTicketOrder(ResponseFromPaymentTransaction paymentResponse);
     }
 }

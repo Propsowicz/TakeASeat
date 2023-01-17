@@ -52,8 +52,7 @@ namespace TakeASeat.Services.PaymentService
             paymentData.chk = createPaymentSignature();
 
             return paymentData;
-        }
-        
+        }        
     }
     public class PaymentServerResponse  
     {

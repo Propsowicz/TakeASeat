@@ -23,6 +23,7 @@ using TakeASeat.Services.EventTypesService;
 using TakeASeat.Services.EventTagRepository;
 using TakeASeat.Services.TicketService;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // SERVICES
@@ -102,3 +103,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+public partial class Program { } // so you can reference it from tests

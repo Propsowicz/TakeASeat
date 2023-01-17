@@ -152,6 +152,52 @@ namespace TakeASeat_Tests.UnitTests.Service
             // assert
             response.Should().BeTrue();
         }
+        [Fact]
+        public void PaymentServerResponse_isValid_ReturnFalseBcuzWrongSignature()
+        {
+            // arrange
+            ResponseFromPaymentTransaction paymentResponse = getPaymentData();
+            var mockSignature = "wrong-signature";
+            paymentResponse.signature = mockSignature;
+            var testPaymentClass = new PaymentServerResponse(_DOTPAY_PIN, paymentResponse);
 
+            // act
+            bool response = testPaymentClass.isValid();
+
+            // assert
+            response.Should().BeFalse();
+        }
+        [Fact]
+        public void PaymentServerResponse_isValid_ReturnFalseBcuzPaymentUnsuccessfull()
+        {
+            // arrange
+            ResponseFromPaymentTransaction paymentResponse = getPaymentData();
+            paymentResponse.operation_status = "not-completed";
+            var mockSignature = new PaymentServerResponse(_DOTPAY_PIN, paymentResponse).createResponseSignature();
+            paymentResponse.signature = mockSignature;
+            var testPaymentClass = new PaymentServerResponse(_DOTPAY_PIN, paymentResponse);
+
+            // act
+            bool response = testPaymentClass.isValid();
+
+            // assert
+            response.Should().BeFalse();
+        }
+        [Fact]
+        public void PaymentServerResponse_isValid_ReturnFalseBcuzPaymentUnsuccessfullAndWrongSignature()
+        {
+            // arrange
+            ResponseFromPaymentTransaction paymentResponse = getPaymentData();
+            paymentResponse.operation_status = "not-completed";
+            var mockSignature = "wrong-signature";
+            paymentResponse.signature = mockSignature;
+            var testPaymentClass = new PaymentServerResponse(_DOTPAY_PIN, paymentResponse);
+
+            // act
+            bool response = testPaymentClass.isValid();
+
+            // assert
+            response.Should().BeFalse();
+        }
     }
 }
