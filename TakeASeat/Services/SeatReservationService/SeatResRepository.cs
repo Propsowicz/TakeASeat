@@ -40,7 +40,7 @@ namespace TakeASeat.Services.SeatReservationService
                                 .Where(r => r.Id == seatReservationId)
                                 .FirstOrDefaultAsync(); 
                         
-            await RemoveReservationFromSeat(seatReservationId);
+            await RemoveReservationFromMultipleSeats(seatReservationId);
 
             ArgumentNullException.ThrowIfNull(query);
             _context.Remove(query);
@@ -51,7 +51,7 @@ namespace TakeASeat.Services.SeatReservationService
         {
             
             var listOfReservations = seatReservations.Select(r => r.Id).ToList();
-            await RemoveReservationFromMultipleSeats(listOfReservations);
+            await RemoveMultipleReservationsFromMultipleSeats(listOfReservations);
 
             _context.RemoveRange(seatReservations);
             await _context.SaveChangesAsync();
@@ -80,7 +80,7 @@ namespace TakeASeat.Services.SeatReservationService
                     .Select(grp => grp.ToArray())
                     .ToListAsync();
         }
-        public async Task RemoveReservationFromMultipleSeats(List<int> reservationIds)
+        public async Task RemoveMultipleReservationsFromMultipleSeats(List<int> reservationIds)
         {                                                                                                                         
             await _context.Database.BeginTransactionAsync();
             await _context.Database.ExecuteSqlRawAsync(
@@ -88,7 +88,7 @@ namespace TakeASeat.Services.SeatReservationService
                 );
             await _context.Database.CommitTransactionAsync();
         }
-        public async Task RemoveReservationFromSeat(int reservationId)
+        public async Task RemoveReservationFromMultipleSeats(int reservationId)
         {
             await _context.Database.BeginTransactionAsync();
             await _context.Database.ExecuteSqlInterpolatedAsync(
@@ -96,8 +96,9 @@ namespace TakeASeat.Services.SeatReservationService
                 );
             await _context.Database.CommitTransactionAsync();
         }
-        public async Task RemoveSingleSeatFromOrder(int reservationId)
+        public async Task RemoveReservationFromSeat(int reservationId)
         {
+            if (reservationId < 1) { return; }
             var seat = await _context.Seats
                     .FirstOrDefaultAsync(s => s.Id == reservationId);
 

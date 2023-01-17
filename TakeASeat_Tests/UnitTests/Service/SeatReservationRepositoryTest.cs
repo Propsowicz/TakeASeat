@@ -88,8 +88,9 @@ namespace TakeASeat_Tests.UnitTests.Service
             oldNumberOfReservationsByUser.Should().Be(1);
             newNumberOfReservationsByUser.Should().Be(1);
         }
+
         [Fact]
-        public async Task SeatReservationRepository_RemoveSingleSeatFromOrder_ShouldDeleteOnlyOneSeat()
+        public async Task SeatReservationRepository_RemoveReservationFromSeat_ShouldDeleteOnlyOneSeat()
         {
             // arrange
             var context = await _DbMock.GetDatabaseContext();
@@ -128,7 +129,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             int oldNumberOfReservationsByUser = context.SeatReservation.Where(r => r.UserId == userId).ToList().Count();
 
             // act
-            await repository.RemoveSingleSeatFromOrder(seatReservationId);
+            await repository.RemoveReservationFromSeat(seatReservationId);
 
             // assert
             int newNumberOfSeatsInReservation = context.Seats.Where(s => s.ReservationId == seatReservationId).Count();
@@ -139,7 +140,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             newNumberOfSeatsInReservation.Should().Be(1);
         }
         [Fact]
-        public async Task SeatReservationRepository_RemoveSingleSeatFromOrder_ShouldDeleteSeatAndReservation()
+        public async Task SeatReservationRepository_RemoveReservationFromSeat_ShouldDeleteSeatAndReservation()
         {
             // arrange
             var context = await _DbMock.GetDatabaseContext();
@@ -171,7 +172,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             int oldNumberOfReservationsByUser = context.SeatReservation.Where(r => r.UserId == userId).Count();
 
             // act
-            await repository.RemoveSingleSeatFromOrder(seatReservationId);
+            await repository.RemoveReservationFromSeat(seatReservationId);
 
             // assert
             int newNumberOfSeatsInReservation = context.Seats.Where(s => s.ReservationId == seatReservationId).Count();

@@ -81,7 +81,7 @@ namespace TakeASeat.Controllers
             {
                 return StatusCode(400);
             }
-            await _seatReservationRepository.RemoveSingleSeatFromOrder(seatParams.SeatId);
+            await _seatReservationRepository.RemoveReservationFromSeat(seatParams.SeatId);
 
             return StatusCode(204);
         }

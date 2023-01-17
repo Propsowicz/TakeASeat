@@ -9,9 +9,9 @@ namespace TakeASeat.Services.SeatReservationService
         Task DeleteSeatReservations(IEnumerable<SeatReservation> seatReservations);
         Task DeleteSeatReservation(int seatReservationId);
         Task AddReservationToMultipleSeats(IEnumerable<Seat> seats, int? ReservationId);        
-        Task RemoveSingleSeatFromOrder(int reservationId);
-        Task RemoveReservationFromSeat(int reservationId);
-        Task RemoveReservationFromMultipleSeats(List<int> reservationIds);
+        Task RemoveReservationFromSeat(int reservationId); //order
+        Task RemoveReservationFromMultipleSeats(int reservationId); //single
+        Task RemoveMultipleReservationsFromMultipleSeats(List<int> reservationIds); //multiple
     }
 
 }
