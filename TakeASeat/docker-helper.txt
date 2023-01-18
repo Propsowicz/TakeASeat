@@ -1,0 +1,6 @@
+old connections string (working on local mssql)
+    "DefaultConnection": "server=localhost\\sqlexpress;database=TakeASeat;trusted_connection=true;TrustServerCertificate=True"
+
+
+commands to manage database inside docker (linux terminal):
+/opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'Password123'

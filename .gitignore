@@ -35,3 +35,7 @@ msbuild.wrn
 
 # Visual Studio 2015
 .vs/
+
+# appsettings & docker helper
+.appsettings.json
+.docker-helper.txt

@@ -71,7 +71,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 
 // Backgorund service
-builder.Services.AddHostedService<ReleaseReservation>();
+//builder.Services.AddHostedService<ReleaseReservation>();
 
 //JWT
 builder.Services.AddAuthentication();
@@ -88,6 +88,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    using (var scope = app.Services.CreateScope())
+    {
+        var DatabaseContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+        DatabaseContext.Database.EnsureCreated();
+
+    }
 }
 
 //app.ConfigureGlobalExceptionHandler(app);
@@ -104,3 +111,4 @@ app.MapControllers();
 
 app.Run();
 public partial class Program { } // so you can reference it from tests
+
