@@ -71,7 +71,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 
 // Backgorund service
-//builder.Services.AddHostedService<ReleaseReservation>();
+builder.Services.AddHostedService<ReleaseReservation>();
 
 //JWT
 builder.Services.AddAuthentication();
