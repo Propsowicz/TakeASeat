@@ -37,5 +37,5 @@ msbuild.wrn
 .vs/
 
 # appsettings & docker helper
-.appsettings.json
-.docker-helper.txt
+*.appsettings.json
+*.docker-helper.txt
