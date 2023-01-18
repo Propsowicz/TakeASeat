@@ -10,6 +10,7 @@
         "react-dom": "^18.2.0",
         "react-router-dom": "^6.6.0",
         "react-scripts": "^5.0.1",
+        "uglifyjs-webpack-plugin": "^2.2.0",
         "url-loader": "^4.1.1"
     },
     "version": "0.1.0",
