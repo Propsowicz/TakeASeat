@@ -1,0 +1,50 @@
+version: "3.8"
+services:  
+  backend:
+    build:       
+      context: ./backend/TakeASeat
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_URLS=http://+:5000
+      - ASPNETCORE_ENVIRONMENT=Development
+    volumes:
+      - .:/backend
+    ports:
+      - "5000:5000"
+    image: backend
+
+  eventsDb:
+    image: "mcr.microsoft.com/mssql/server:2017-latest"
+    container_name: eventsDb
+    environment:
+        SA_PASSWORD: "Password123"
+        ACCEPT_EULA: "Y"
+    restart: always
+    ports:
+        - "1433:1433"
+  
+  frontend:
+    build:
+      context: ./frontend/take-a-seat
+      dockerfile: Dockerfile
+    stdin_open: true    
+    ports:
+      - 3000:3000
+    volumes:
+      - react_build:/frontend/build
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - 8000:8000
+    volumes:
+      - ./nginx/nginx-setup.conf:/etc/nginx/conf.d/default.conf:ro
+      - react_build:/var/www/react
+    depends_on:
+      - backend
+      - frontend
+    restart: always
+
+volumes:
+  react_build:
+

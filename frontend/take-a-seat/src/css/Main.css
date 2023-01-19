@@ -1,0 +1,361 @@
+.site-header {
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    width: 100%;
+    background-color: black;
+  }
+
+.site-main-body {    
+  margin: 3rem auto 0 auto;    
+  width: 70%;
+  min-height: 50rem;
+}
+
+.site-main-body-events {    
+  margin: 3rem auto 0 auto;    
+  width: 70%;
+  min-height: 30rem;
+}
+
+.site-main-body-created-events {
+  margin: 4rem auto 0 auto;    
+  width: 70%;
+  min-height: 30rem;
+}
+
+.site-main-body-payment {    
+  margin: 3rem auto 0 auto;    
+  width: 70%;
+  min-height: 30rem;
+}
+
+.site-main-body-create {
+  margin: 0rem auto 0 auto;    
+  width: 80%;
+  min-height: 20rem;
+}
+
+.site-main-body-edit {
+  margin: 3rem auto 0 auto;    
+  width: 80%;
+  min-height: 20rem;
+}
+
+.site-main-body-login {    
+  margin: 3rem auto 0 auto;    
+  width: 70%;
+  min-height: 30rem;
+  text-align: center;
+}
+
+.site-main-body-register {
+  margin: 3rem auto 0 auto;    
+  width: 70%;
+  min-height: 30rem;
+  text-align: center;
+}
+
+.show-panel {
+  margin: 1rem 0 1rem 0;
+  
+}
+
+.footer {
+  margin-top: 2rem;
+  width: 100%;
+  min-height: 10rem;
+  background-color: black;
+  color: #C4B5FD;
+  padding: 1rem 3rem;
+  text-align: center;
+}
+
+.footer-container {
+  width: 70%;
+  margin: 0 auto;
+}
+
+.panel-text {
+  margin-top: -0.5rem;
+  margin-bottom: -0.5rem;
+  color: white;
+}
+
+.panel-text-descr {
+  font-size: 0.75rem;
+  color: grey;
+}
+
+.generic-chip {
+  margin: 0 0.5rem 0 0rem;
+}
+
+.generic-chip:hover {
+  cursor: pointer;
+  background-color: #C4B5FD;
+  color: black;
+}
+
+.footer-chip {
+  margin: 0.3rem;
+}
+
+.landing-img {
+  width: 100%;
+  max-width: 50rem;
+}
+
+.bg-yellow {
+  background: yellow;
+}
+
+.bg-red {
+  background: red;
+}
+
+.bg-green {
+  background: green;
+}
+
+.bg-blue {
+  background: blue;
+}
+
+.bg-orange {
+  background: orange;
+}
+
+.bg-grey {
+  background: grey;
+}
+
+.seat-component {
+  height: 2.1rem;
+  width: 2.1rem;
+  padding: 0;
+  border-radius: 2px;
+  color: black;
+}
+
+.seat-component:hover {
+  cursor: pointer;
+  background-color: rgba(162, 162, 162, 0.866);
+}
+
+.custom-gap-2 {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+
+.seat-component-reserved {
+  color: black;
+  background: rgb(64, 64, 64);
+}
+
+.seat-tooltip {
+  width: 5rem;
+  height: 1.7rem;
+  margin-top: -1rem;
+}
+
+.seat-rows {
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 4rem;
+  background-color: #071426;
+  border-radius: 5px;
+  border: 1px solid #0b213f;
+  margin: 0.2rem 0 0.2rem 0;
+}
+
+.show-detail-panel {
+  margin: 1rem 0 1rem 0;
+}
+
+.event-description {
+  margin-top: -0.5rem;
+}
+
+.show-details-text-descr {
+  font-size: 0.75rem;
+  color: grey;
+  margin-bottom: -2rem;
+}
+
+.show-detail-event-div {
+  width: 100%;
+  height: auto;
+}
+
+.show-detail-event-image {
+  width: 100%;
+  height: auto;
+}
+
+.scene-comp {
+  width: 100%;
+  height: 3rem;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+}
+
+.scene-comp-descr {
+  margin-top: -0.7rem;
+  text-align: center;
+}
+
+.add-seat-form {
+  width: 100%;
+  height: 4rem;
+  
+}
+
+.login-container {
+  margin: 0 auto 0 auto;
+  width: 35%;
+}
+
+.login-component {
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+}
+
+.l-log-comp {
+  padding: 0rem;
+}
+
+.order-table {
+  border: 1px solid #383838;
+}
+
+.seat-reservation-remove-button{
+  width: 2rem;
+  height: 2rem;
+  font-weight: 600;
+  justify-content: center;
+  align-items: center;
+  background-color: red;
+  border: 1px solid red;
+  border-radius: 15px;
+  padding: 0;
+  
+}
+
+.margin-lr {
+  margin: 0 3rem 0 3rem;
+}
+
+.div-full-width {
+  width: 800px;
+}
+
+.order-summary-cart {
+  margin: 0 auto 0 auto;
+  padding-top: 1rem;
+  min-width: 850px;
+  height: auto;
+  background: #071426;
+  border: 1px solid #383838;
+}
+
+.show-by-event-container {
+  padding: 1rem;
+  text-decoration: none;
+}
+
+.show-by-event-container:hover {
+  border-radius: 5px;
+  background-color: #0b213f;
+}
+
+.event-params-bar {
+  padding-top: 1.5rem;
+  margin: 0 auto 0 auto;
+}
+
+.ul-item {
+  padding-bottom: 2rem;
+}
+
+.ul-item:last-of-type {
+  padding-bottom: 1rem;
+}
+
+.ul-item a {
+  text-decoration: none;
+}
+
+.row-price-text {
+  padding-left: 1em;
+  color: #C4B5FD;
+}
+
+.create-event-container {
+  margin: 0 auto 0 auto;
+  width: 100%;
+}
+
+.create-event-component {
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+}
+
+.create-event-component-number {
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.0rem;
+  height: 2.6rem;
+}
+
+.event-creation-panel {
+  margin-top: 1rem;
+}
+
+.listed-shows {
+  margin-left: 0.1rem;
+}
+
+.link-button {
+  text-decoration: none;
+}
+
+.link-button:hover {
+  border-radius: 5px;
+  background-color: #0b213f;
+}
+
+.organizator-panel-delete-btn {
+  border-radius: 1rem;
+  border: none;
+  background-color: red;
+  width: 2rem;
+  height: 2rem;
+  justify-self: center;
+  align-self: center;
+}
+
+.organizator-panel-delete-btn:hover {
+  cursor: pointer;
+  background-color: #383838;
+}
+
+.calendar-component {
+  height: 100%;
+}
+
+.admin-panel-user-div {
+  justify-content: center;
+  align-items: center;
+}
+
+.admin-panel-user-div:hover {
+  background-color: #383838;
+}
+
+.save-btn {
+  height: 2.4rem;
+}

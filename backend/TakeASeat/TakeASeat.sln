@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33122.133
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TakeASeat", "TakeASeat\TakeASeat.csproj", "{F3D55F12-7853-4133-9C73-909EB5EBAA8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TakeASeat_Tests", "TakeASeat_Tests\TakeASeat_Tests.csproj", "{6665CB10-0F6A-4443-AE15-BC6AF89B6CFA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F3D55F12-7853-4133-9C73-909EB5EBAA8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3D55F12-7853-4133-9C73-909EB5EBAA8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3D55F12-7853-4133-9C73-909EB5EBAA8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3D55F12-7853-4133-9C73-909EB5EBAA8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6665CB10-0F6A-4443-AE15-BC6AF89B6CFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6665CB10-0F6A-4443-AE15-BC6AF89B6CFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6665CB10-0F6A-4443-AE15-BC6AF89B6CFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6665CB10-0F6A-4443-AE15-BC6AF89B6CFA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4900FAF6-9029-4D7F-A7F6-080DDDF3B393}
+	EndGlobalSection
+EndGlobal

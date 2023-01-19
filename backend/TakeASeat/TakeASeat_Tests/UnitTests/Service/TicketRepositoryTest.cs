@@ -1,0 +1,148 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TakeASeat.Data;
+using TakeASeat.Data.DatabaseContext;
+using TakeASeat.Migrations;
+using TakeASeat.Services.TicketService;
+using FluentAssertions;
+using TakeASeat_Tests.UnitTests.Data;
+
+namespace TakeASeat_Tests.UnitTests.Service
+{
+    public class TicketRepositoryTest
+    {
+        private readonly DatabaseContextMock _DbMock;
+        public TicketRepositoryTest()
+        {
+            _DbMock= new DatabaseContextMock();
+        }
+
+        private async Task createSeatsForTests(DatabaseContext context)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                await context.Seats.AddAsync(new Seat()
+                {
+                    Row = 'C',
+                    Position = i + 1,
+                    Price = 10,
+                    SeatColor = "red",
+                    ShowId = 3,
+                });
+            };
+            for (int i = 0; i < 10; i++)
+            {
+                await context.Seats.AddAsync(new Seat()
+                {
+                    Row = 'D',
+                    Position = i + 1,
+                    Price = 100,
+                    SeatColor = "red",
+                    ShowId = 5,
+                });
+            };
+            await context.SaveChangesAsync();
+        }      
+
+        [Fact]
+        public async Task TicketRepository_CreateRangeOfTicketRecords_ShouldCreateTwoTickets()
+        {
+            // arrange
+            var context = await _DbMock.GetDatabaseContext();
+            await createSeatsForTests(context);
+            var repository = new TicketRepository(context);
+            var paymentTransaction = new PaymentTransaction()
+            {
+                Currency = "USD",
+                Description = "SeatReservationsIds::1::"
+            };
+            await context.PaymentTransaction.AddAsync(paymentTransaction);
+            await context.SaveChangesAsync();
+            var seatReservation = new SeatReservation()
+            {
+                isReserved= true,
+                ReservedTime= DateTime.UtcNow,
+                PaymentTransactionId = paymentTransaction.Id,
+                UserId = "testUserId"
+            };
+            await context.SeatReservation.AddAsync(seatReservation);
+            await context.SaveChangesAsync();
+
+            var seat_1 = context.Seats.FirstOrDefault(s => s.Id == 1);
+            var seat_2 = context.Seats.FirstOrDefault(s => s.Id == 2);
+            seat_1.ReservationId = seatReservation.Id;
+            seat_2.ReservationId = seatReservation.Id;
+            await context.SaveChangesAsync();
+
+            // act
+            var response = await repository.CreateRangeOfTicketRecords(paymentTransaction);
+
+            // assert
+            response.Should().HaveCount(2);
+            response[0].Should().BeOfType(typeof(Ticket));
+            response[0].PaymentTransactionId.Should().Be(paymentTransaction.Id);
+            response[0].ShowId.Should().Be(3);
+            response[1].ShowId.Should().Be(3);
+        }
+        [Fact]
+        public async Task TicketRepository_CreateRangeOfTicketRecords_ShouldCreateFourTickets()
+        {
+            // arrange
+            var context = await _DbMock.GetDatabaseContext();
+            await createSeatsForTests(context);
+            var repository = new TicketRepository(context);
+            var paymentTransaction = new PaymentTransaction()
+            {
+                Currency = "USD",
+                Description = "SeatReservationsIds::2::3::"
+            };
+            await context.PaymentTransaction.AddAsync(paymentTransaction);
+            await context.SaveChangesAsync();
+
+            var seatReservation_1 = new SeatReservation()
+            {
+                isReserved = true,
+                ReservedTime = DateTime.UtcNow,
+                PaymentTransactionId = paymentTransaction.Id,
+                UserId = "testUserId"
+            };
+            await context.SeatReservation.AddAsync(seatReservation_1);
+            var seatReservation_2 = new SeatReservation()
+            {
+                isReserved = true,
+                ReservedTime = DateTime.UtcNow,
+                PaymentTransactionId = paymentTransaction.Id,
+                UserId = "testUserId"
+            };
+            await context.SeatReservation.AddAsync(seatReservation_2);
+            await context.SaveChangesAsync();
+
+            var seat_1 = context.Seats.FirstOrDefault(s => s.Id == 8);
+            var seat_2 = context.Seats.FirstOrDefault(s => s.Id == 9);
+            var seat_3 = context.Seats.FirstOrDefault(s => s.Id == 15);
+            var seat_4 = context.Seats.FirstOrDefault(s => s.Id == 16);
+            seat_1.ReservationId = seatReservation_1.Id;
+            seat_2.ReservationId = seatReservation_1.Id;
+            seat_3.ReservationId = seatReservation_2.Id;
+            seat_4.ReservationId = seatReservation_2.Id;
+            await context.SaveChangesAsync();
+
+            // act
+            var response = await repository.CreateRangeOfTicketRecords(paymentTransaction);
+
+            // assert
+            response.Should().HaveCount(4);
+            response[0].Should().BeOfType(typeof(Ticket));
+            response[0].PaymentTransactionId.Should().Be(paymentTransaction.Id);
+            response[0].ShowId.Should().Be(3);
+            response[1].ShowId.Should().Be(3);
+            response[2].ShowId.Should().Be(5);
+            response[3].ShowId.Should().Be(5);
+        }
+    }
+}
