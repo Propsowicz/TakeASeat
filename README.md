@@ -110,7 +110,7 @@ The application is tested in the xUnit framework. The unit tests are made using 
 
 #### Docker
 
-The whole application is dockerized. Above is docker container structure.
+The entire application is dockerized. Above is the docker container structure.
 
 ```
 version: "3.8"
