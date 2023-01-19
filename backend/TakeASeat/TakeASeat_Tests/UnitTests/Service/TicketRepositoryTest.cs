@@ -3,15 +3,20 @@ using TakeASeat.Data.DatabaseContext;
 using TakeASeat.Services.TicketService;
 using FluentAssertions;
 using TakeASeat_Tests.UnitTests.Data;
+using Microsoft.Extensions.Options;
+using TakeASeat.ProgramConfigurations;
+using FakeItEasy;
 
 namespace TakeASeat_Tests.UnitTests.Service
 {
     public class TicketRepositoryTest
     {
         private readonly DatabaseContextMock _DbMock;
+        private readonly IOptions<EmailProviderData> _emailData;
         public TicketRepositoryTest()
         {
             _DbMock= new DatabaseContextMock();
+            _emailData = A.Fake<IOptions<EmailProviderData>>();
         }
 
         private async Task createSeatsForTests(DatabaseContext context)
@@ -47,7 +52,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             // arrange
             var context = await _DbMock.GetDatabaseContext();
             await createSeatsForTests(context);
-            var repository = new TicketRepository(context);
+            var repository = new TicketRepository(context, _emailData);
             var paymentTransaction = new PaymentTransaction()
             {
                 Currency = "USD",
@@ -87,7 +92,7 @@ namespace TakeASeat_Tests.UnitTests.Service
             // arrange
             var context = await _DbMock.GetDatabaseContext();
             await createSeatsForTests(context);
-            var repository = new TicketRepository(context);
+            var repository = new TicketRepository(context, _emailData);
             var paymentTransaction = new PaymentTransaction()
             {
                 Currency = "USD",

@@ -7,16 +7,20 @@ using Syncfusion.Drawing;
 using MimeKit;
 using TakeASeat.ProgramConfigurations.DTO;
 using TakeASeat.Models;
+using TakeASeat.ProgramConfigurations;
+using Microsoft.Extensions.Options;
 
 namespace TakeASeat.Services.TicketService
 {
     public class TicketRepository : ITicketRepository
     {
         private readonly DatabaseContext _context;
-        
-        public TicketRepository(DatabaseContext context)
+        private readonly EmailProviderData _emailProvider;
+
+        public TicketRepository(DatabaseContext context, IOptions<EmailProviderData> options)
         {
             _context = context;
+            _emailProvider = options.Value;
         }
 
         public async Task<List<Ticket>> CreateRangeOfTicketRecords(PaymentTransaction paymentTransaction)
@@ -60,30 +64,30 @@ namespace TakeASeat.Services.TicketService
         }        
         private async Task SendEmailWithAttachment(List<Ticket> listOfTickets, UserDataToSendEmailDTO userData)
         {
-            var emailServiceProviderPassword = _context.ProtectedKeys.AsNoTracking().FirstOrDefault(k => k.Key == "EMAIL_PASSWORD");
-            var emailServiceProviderAddress = _context.ProtectedKeys.AsNoTracking().FirstOrDefault(k => k.Key == "EMAIL_FROM");
+            var emailServiceProviderPassword = _emailProvider.PASSWORD;
+            var emailServiceProviderAddress = _emailProvider.ADDRESS;
 
             if (emailServiceProviderPassword == null || emailServiceProviderAddress == null)
             {
                 throw new CantAccessDataException("Can't access Email Service Provider Data.");
             }          
-            var emailMessage = await createEmail(listOfTickets, userData, emailServiceProviderAddress);
-            sendEmail(emailServiceProviderPassword, emailServiceProviderAddress, emailMessage);            
+            var emailMessage = await createEmail(listOfTickets, userData);
+            sendEmail(emailMessage);            
         }
-        private void sendEmail(ProtectedKeys emailServiceProviderPassword, ProtectedKeys emailServiceProviderAddress, MimeMessage emailMessage)
+        private void sendEmail(MimeMessage emailMessage)
         {
             var client = new MailKit.Net.Smtp.SmtpClient();
             client.Connect("smtp.gmail.com", 465, true);
             client.AuthenticationMechanisms.Remove("XOAUTH2");
-            client.Authenticate(emailServiceProviderAddress.Value, emailServiceProviderPassword.Value);
+            client.Authenticate(_emailProvider.ADDRESS, _emailProvider.PASSWORD);
             client.Send(emailMessage);
             client.Disconnect(true);
             client.Dispose();
         }
-        private async Task<MimeMessage> createEmail(List<Ticket> listOfTickets, UserDataToSendEmailDTO userData, ProtectedKeys emailServiceProviderAddress)
+        private async Task<MimeMessage> createEmail(List<Ticket> listOfTickets, UserDataToSendEmailDTO userData)
         {
             var emailMessage = new MimeMessage();
-            emailMessage.From.Add(new MailboxAddress("TakeASeat", emailServiceProviderAddress.Value));
+            emailMessage.From.Add(new MailboxAddress("TakeASeat", _emailProvider.ADDRESS));
             emailMessage.To.Add(new MailboxAddress(userData.UserName, userData.Email));
             emailMessage.Subject = "Your Tickets are finally here!";
 

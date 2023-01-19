@@ -23,7 +23,6 @@ namespace TakeASeat.Data.DatabaseContext
         public DbSet<Ticket> Ticket { get; set; }
         public DbSet<SeatReservation> SeatReservation { get; set; }
         public DbSet<PaymentTransaction> PaymentTransaction { get; set; }
-        public DbSet<ProtectedKeys> ProtectedKeys { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -69,13 +68,7 @@ namespace TakeASeat.Data.DatabaseContext
             {
                 b.Property(pt => pt.Currency).HasMaxLength(3);
                 b.Property(pt => pt.Description).HasMaxLength(250);
-            });
-
-            builder.Entity<ProtectedKeys>(b =>
-            {
-                b.Property(pk => pk.Key).HasMaxLength(50);
-                b.Property(pk => pk.Value).HasMaxLength(50);
-            });
+            });                       
 
             builder.Entity<Seat>(b =>
             {

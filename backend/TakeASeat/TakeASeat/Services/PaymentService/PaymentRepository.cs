@@ -80,16 +80,9 @@ namespace TakeASeat.Services.PaymentService
                         .Where(s => s.isReserved == true
                         && s.isSold == false)
                         .ToList();
-
-            //var dotpay_PIN = await _context.ProtectedKeys.AsNoTracking()
-            //            .FirstOrDefaultAsync(k => k.Key == "DOTPAY_PIN");
-
-            //var dotpay_ID = await _context.ProtectedKeys.AsNoTracking()
-            //            .FirstOrDefaultAsync(k => k.Key == "DOTPAY_ID");
+                        
             var dotpay_PIN = _paymentData.PIN;
-
             var dotpay_ID = _paymentData.ID;
-
 
             if (dotpay_PIN != null && dotpay_ID != null) 
             {
@@ -128,11 +121,8 @@ namespace TakeASeat.Services.PaymentService
         }
 
         public async Task finalizeTicketOrder(ResponseFromPaymentTransaction paymentResponse)
-        {
-            //var dotpay_PIN = await _context.ProtectedKeys.AsNoTracking()
-            //            .FirstOrDefaultAsync(k => k.Key == "DOTPAY_PIN");
+        {            
             var dotpay_PIN = _paymentData.PIN;
-
 
             // Mock signature - for developer purpose only
             var signatureMockCreator = new PaymentServerResponse(dotpay_PIN, paymentResponse).createResponseSignature();
