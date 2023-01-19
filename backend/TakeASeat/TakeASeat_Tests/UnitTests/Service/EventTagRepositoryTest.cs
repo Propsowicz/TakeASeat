@@ -1,13 +1,5 @@
-﻿using AutoMapper;
-using FakeItEasy;
+﻿using FakeItEasy;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TakeASeat.Data.DatabaseContext;
 using TakeASeat.Models;
 using TakeASeat.Services.EventTagRepository;
 using TakeASeat_Tests.UnitTests.Data;

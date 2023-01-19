@@ -1,14 +1,7 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TakeASeat.Services.ShowService;
 using FakeItEasy;
 using TakeASeat.Controllers;
-using Microsoft.Extensions.DependencyInjection;
-using Azure;
 using Microsoft.AspNetCore.Mvc;
 using FluentAssertions;
 using TakeASeat.Models;

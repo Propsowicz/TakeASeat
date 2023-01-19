@@ -1,20 +1,10 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TakeASeat.Services.EventTagRepository;
 using FakeItEasy;
 using FluentAssertions;
-using TakeASeat.Services.EventService;
 using TakeASeat.Services.ShowService;
 using TakeASeat.Data;
-using X.PagedList;
 using TakeASeat.Models;
 using TakeASeat_Tests.UnitTests.Data;
-using Microsoft.EntityFrameworkCore;
-using TakeASeat.Data.DatabaseContext;
 
 namespace TakeASeat_Tests.UnitTests.Service
 {

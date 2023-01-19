@@ -1,12 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TakeASeat.Data;
-using TakeASeat.Data.DatabaseContext;
 using FakeItEasy;
 using FluentAssertions;
 using TakeASeat.Services.UserService;

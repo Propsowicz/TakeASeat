@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TakeASeat.Data.DatabaseContext;
-using TakeASeat_Tests.UnitTests.Data;
+﻿using TakeASeat_Tests.UnitTests.Data;
 using FakeItEasy;
 using FluentAssertions;
 using TakeASeat.Services.PaymentService;

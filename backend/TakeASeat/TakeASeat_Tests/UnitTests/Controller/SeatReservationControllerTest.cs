@@ -1,13 +1,7 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TakeASeat.Services.SeatReservationService;
 using FakeItEasy;
 using FluentAssertions;
-using TakeASeat.Data;
 using TakeASeat.Controllers;
 using TakeASeat.RequestUtils;
 using Microsoft.AspNetCore.Mvc;

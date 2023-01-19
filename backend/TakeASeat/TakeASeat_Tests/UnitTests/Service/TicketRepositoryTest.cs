@@ -1,13 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TakeASeat.Data;
+﻿using TakeASeat.Data;
 using TakeASeat.Data.DatabaseContext;
-using TakeASeat.Migrations;
 using TakeASeat.Services.TicketService;
 using FluentAssertions;
 using TakeASeat_Tests.UnitTests.Data;

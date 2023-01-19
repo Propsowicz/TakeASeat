@@ -1,14 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TakeASeat.Data;
-using TakeASeat.Data.DatabaseContext;
+﻿using TakeASeat.Data;
 using TakeASeat.Services.SeatService;
 using FluentAssertions;
-using Microsoft.Data.Sqlite;
 using TakeASeat_Tests.UnitTests.Data;
 
 namespace TakeASeat_Tests.UnitTests.Service

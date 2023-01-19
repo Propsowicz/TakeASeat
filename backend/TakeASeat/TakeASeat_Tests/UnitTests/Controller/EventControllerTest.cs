@@ -1,16 +1,10 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TakeASeat.Services.EventService;
 using FakeItEasy;
 using TakeASeat.Controllers;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using TakeASeat.Models;
-using System.ComponentModel.DataAnnotations;
 using TakeASeat.RequestUtils;
 using TakeASeat_Tests.UnitTests.Utils;
 

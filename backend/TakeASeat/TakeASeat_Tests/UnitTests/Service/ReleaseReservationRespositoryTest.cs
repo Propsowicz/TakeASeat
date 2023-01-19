@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TakeASeat.Data.DatabaseContext;
-using TakeASeat.Services.SeatReservationService;
+﻿using TakeASeat.Services.SeatReservationService;
 using FakeItEasy;
 using FluentAssertions;
 using TakeASeat.Data;
-using TakeASeat.BackgroundServices;
 using TakeASeat.Services.BackgroundService;
-using Azure;
 using TakeASeat_Tests.UnitTests.Data;
 
 namespace TakeASeat_Tests.UnitTests.Service
