@@ -4,6 +4,9 @@ TakeASeat is an online ticket distribution platform. The application allows the 
 
 The application has been created to learn ASP.NET Core 6 WEB API, Entity Framework and Prime React Framework. 
 
+> Home Page
+![home](https://github.com/Propsowicz/TakeASeat/blob/appPictures/home-page.png?raw=true)
+
 ## Table of content
 
 [Technologies](#technologies)
@@ -40,6 +43,7 @@ The application has been created to learn ASP.NET Core 6 WEB API, Entity Framewo
 
 ## Description
 
+The application 
 The application is intended for use by registered users only. Each registered user is assigned the "User" role. The user can buy tickets for shows. There are also "Organizer" and "Administrator" roles. Organizers can create events, shows, and audiences. Administrators can manage other user roles.
 
 In order to sell tickets, you need to follow three steps:
@@ -53,6 +57,9 @@ B[Create Show] --> C[Create Audience]
 ![organizer](https://github.com/Propsowicz/TakeASeat/blob/appPictures/create%20event.png?raw=true)
 
 2. The user can reserve seats for each show. However, the user must pay for each reserved seat within five minutes. Otherwise, the reservation is released.
+
+> Seat Reservation
+![reserve](https://github.com/Propsowicz/TakeASeat/blob/appPictures/detail.png?raw=true)
 
 3. Once the payment is accepted by both the payment provider and the TakeASeat app, the tickets are created and emailed to the user.
 
@@ -70,10 +77,12 @@ D[Show] --> Y(Audience)
 ```
 Once a show has been created, it is not yet available for sale. The organizer must create a seated audience. The seats are described by four parameters: row, column, price and color of the seat. Only after seats are created, regular users can reserve them.
 
+> Seat Audience Creation
+![seatsCreation](https://github.com/Propsowicz/TakeASeat/blob/appPictures/create-audience.png?raw=true)
+
 Reserved seats must be purchased. The user has five minutes to use the payment service and purchase tickets. Otherwise, the app will release unpaid bookings.
 
 Finally, once payment is accepted, tickets for each seat purchased are generated and emailed to the user.
-
 
 #### User Managment
 
