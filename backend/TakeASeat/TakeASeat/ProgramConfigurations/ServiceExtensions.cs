@@ -7,6 +7,7 @@ using System.Text;
 using Serilog;
 using TakeASeat.ProgramConfigurations.DTO;
 using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace TakeASeat.ProgramConfigurations
 {
@@ -101,7 +102,16 @@ namespace TakeASeat.ProgramConfigurations
                 Scheme = "Bearer"
             }
             ));
-        }
-
+        }     
+    }
+    public class PaymentServerData
+    {       
+        public string? PIN { get; set; }
+        public string? ID { get; set; }
+    }
+    public class EmailProviderData
+    {
+        public string? PASSWORD { get; set; }
+        public string? ADDRESS { get; set; }
     }
 }

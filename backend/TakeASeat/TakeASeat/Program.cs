@@ -22,6 +22,12 @@ var builder = WebApplication.CreateBuilder(args);
 /// builder.Services.Configure*** are custom methods
 builder.Services.AddControllers();
 
+// Get Keys from appsettings.json
+builder.Services.AddOptions();
+builder.Services.Configure<EmailProviderData>(
+                builder.Configuration.GetSection("EmailProviderData"));
+builder.Services.Configure<PaymentServerData>(
+                builder.Configuration.GetSection("PaymentServerData"));
 // CORS
 var corsPolicy = "_corsPolicy";
 builder.Services.ConfigureCORS(corsPolicy);

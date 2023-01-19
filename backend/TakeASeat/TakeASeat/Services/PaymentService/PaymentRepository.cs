@@ -5,6 +5,8 @@ using TakeASeat.Models;
 using TakeASeat.ProgramConfigurations.DTO;
 using TakeASeat.Services._Utils;
 using TakeASeat.Services.TicketService;
+using TakeASeat.ProgramConfigurations;
+using Microsoft.Extensions.Options;
 
 namespace TakeASeat.Services.PaymentService
 {
@@ -12,11 +14,13 @@ namespace TakeASeat.Services.PaymentService
     {
         private readonly DatabaseContext _context;
         private readonly ITicketRepository _ticketRepository;
+        private readonly PaymentServerData _paymentData;
 
-        public PaymentRepository(DatabaseContext context, ITicketRepository ticketRepository)
+        public PaymentRepository(DatabaseContext context, ITicketRepository ticketRepository, IOptions<PaymentServerData> options)
         {
             _context= context;
             _ticketRepository= ticketRepository;
+            _paymentData = options.Value;
         }
         public async Task createPaymentTransactionRecord(PaymentTransaction paymentTranscation)
         {
@@ -76,16 +80,20 @@ namespace TakeASeat.Services.PaymentService
                         .Where(s => s.isReserved == true
                         && s.isSold == false)
                         .ToList();
-            
-            var dotpay_PIN = await _context.ProtectedKeys.AsNoTracking()
-                        .FirstOrDefaultAsync(k => k.Key == "DOTPAY_PIN");
 
-            var dotpay_ID = await _context.ProtectedKeys.AsNoTracking()
-                        .FirstOrDefaultAsync(k => k.Key == "DOTPAY_ID");
+            //var dotpay_PIN = await _context.ProtectedKeys.AsNoTracking()
+            //            .FirstOrDefaultAsync(k => k.Key == "DOTPAY_PIN");
+
+            //var dotpay_ID = await _context.ProtectedKeys.AsNoTracking()
+            //            .FirstOrDefaultAsync(k => k.Key == "DOTPAY_ID");
+            var dotpay_PIN = _paymentData.PIN;
+
+            var dotpay_ID = _paymentData.ID;
+
 
             if (dotpay_PIN != null && dotpay_ID != null) 
             {
-                var paymentData = new PaymentData(dotpay_PIN.Value, dotpay_ID.Value, mainQuery, reservationsQuery);
+                var paymentData = new PaymentData(dotpay_PIN, dotpay_ID, mainQuery, reservationsQuery);
                 return paymentData.getPaymentData();
             }
             else
@@ -121,14 +129,16 @@ namespace TakeASeat.Services.PaymentService
 
         public async Task finalizeTicketOrder(ResponseFromPaymentTransaction paymentResponse)
         {
-            var dotpay_PIN = await _context.ProtectedKeys.AsNoTracking()
-                        .FirstOrDefaultAsync(k => k.Key == "DOTPAY_PIN");
+            //var dotpay_PIN = await _context.ProtectedKeys.AsNoTracking()
+            //            .FirstOrDefaultAsync(k => k.Key == "DOTPAY_PIN");
+            var dotpay_PIN = _paymentData.PIN;
+
 
             // Mock signature - for developer purpose only
-            var signatureMockCreator = new PaymentServerResponse(dotpay_PIN.Value, paymentResponse).createResponseSignature();
+            var signatureMockCreator = new PaymentServerResponse(dotpay_PIN, paymentResponse).createResponseSignature();
             paymentResponse.signature = signatureMockCreator;
 
-            PaymentServerResponse paymentServerResponse = new PaymentServerResponse(dotpay_PIN.Value, paymentResponse);
+            PaymentServerResponse paymentServerResponse = new PaymentServerResponse(dotpay_PIN, paymentResponse);
             if (paymentServerResponse.isValid())
             {
                 List<int> listOfPaidSeatsReservationsIds = PaymentDescriptionToListOfReservationsConverter.Convert(paymentResponse.description);
