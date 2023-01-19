@@ -1,16 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
 using TakeASeat.Data;
-using TakeASeat.Data.DatabaseContext;
 using TakeASeat.RequestUtils;
-using TakeASeat.Services.BackgroundService;
 using TakeASeat.Services.SeatReservationService;
-using TakeASeat.Services.SeatService;
-using TakeASeat.Services.ShowService;
-using X.PagedList;
 
 namespace TakeASeat.Controllers
 {

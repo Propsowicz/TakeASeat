@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
-using TakeASeat.Data.DatabaseContext;
 using TakeASeat.Models;
 using TakeASeat.RequestUtils;
 using TakeASeat.Services.EventService;

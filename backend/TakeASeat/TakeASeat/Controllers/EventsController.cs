@@ -1,12 +1,5 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel;
-using Microsoft.EntityFrameworkCore;
-
-using System.Linq;
-using TakeASeat.Data;
-using TakeASeat.Data.DatabaseContext;
 using TakeASeat.Models;
 using TakeASeat.RequestUtils;
 using TakeASeat.Services.EventService;

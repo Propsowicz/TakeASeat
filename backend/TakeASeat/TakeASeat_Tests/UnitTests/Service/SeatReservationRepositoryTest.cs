@@ -33,7 +33,7 @@ namespace TakeASeat_Tests.UnitTests.Service
         {
             // arrange
             var context = await _DbMock.GetDatabaseContext();
-            var repository = new SeatResRepository(context, _seatRepository);
+            var repository = new SeatResRepository(context);
             string userId = "123";
             await context.SeatReservation.AddAsync(new SeatReservation()
             {
@@ -58,7 +58,7 @@ namespace TakeASeat_Tests.UnitTests.Service
         {
             // arrange
             var context = await _DbMock.GetDatabaseContext();
-            var repository = new SeatResRepository(context, _seatRepository);
+            var repository = new SeatResRepository(context);
             string userId = "1234";
             await context.SeatReservation.AddAsync(new SeatReservation()
             {
@@ -94,7 +94,7 @@ namespace TakeASeat_Tests.UnitTests.Service
         {
             // arrange
             var context = await _DbMock.GetDatabaseContext();
-            var repository = new SeatResRepository(context, _seatRepository);
+            var repository = new SeatResRepository(context);
             string userId = "12345";
             await context.SeatReservation.AddAsync(new SeatReservation()
             {
@@ -144,7 +144,7 @@ namespace TakeASeat_Tests.UnitTests.Service
         {
             // arrange
             var context = await _DbMock.GetDatabaseContext();
-            var repository = new SeatResRepository(context, _seatRepository);
+            var repository = new SeatResRepository(context);
             string userId = "123456abc";
             await context.SeatReservation.AddAsync(new SeatReservation()
             {

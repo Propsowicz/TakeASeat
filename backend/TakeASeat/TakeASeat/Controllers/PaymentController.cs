@@ -1,15 +1,10 @@
 ﻿using AutoMapper;
-using Azure;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using TakeASeat.Models;
 using TakeASeat.RequestUtils;
 using TakeASeat.Services.PaymentService;
-using Microsoft.EntityFrameworkCore;
 using TakeASeat.Data;
 using Microsoft.AspNetCore.Authorization;
-using System.Data;
 
 namespace TakeASeat.Controllers
 {

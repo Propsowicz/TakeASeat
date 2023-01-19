@@ -1,8 +1,5 @@
 ﻿using AutoMapper;
-using Azure;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TakeASeat.Models;
 using TakeASeat.RequestUtils;
 using TakeASeat.Services.ShowService;
 

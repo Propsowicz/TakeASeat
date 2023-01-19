@@ -2,7 +2,7 @@
 {
     public class RequestPaymentParams
     {
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
     }
 
     public class RequestPaymentDeleteParams

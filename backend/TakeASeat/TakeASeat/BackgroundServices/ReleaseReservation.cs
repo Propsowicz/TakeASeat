@@ -1,9 +1,4 @@
-﻿
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using TakeASeat.Data.DatabaseContext;
-using TakeASeat.Services.BackgroundService;
-using TakeASeat.Services.SeatService;
+﻿using TakeASeat.Services.BackgroundService;
 
 namespace TakeASeat.BackgroundServices
 {

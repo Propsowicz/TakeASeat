@@ -2,22 +2,19 @@
 {
     public class RequestShowParams
     {
-        const int _maxPageSize = 20;
+        const int MAX_PAGE_SIZE = 20;
         private int _deafultPageSize = 10;
         public int PageNumber { get; set; } = 1;
         public int PageSize 
         { 
-        get
-            {
-                return _deafultPageSize;
-            }
-        set
-            {
-                if (value < _maxPageSize)
+            get => _deafultPageSize;
+            set
                 {
-                    _deafultPageSize = value;
-                }
-            } 
+                    if (value < MAX_PAGE_SIZE)
+                    {
+                        _deafultPageSize = value;
+                    }
+                } 
         }        
     }
 

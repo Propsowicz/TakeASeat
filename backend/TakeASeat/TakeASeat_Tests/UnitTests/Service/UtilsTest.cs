@@ -15,7 +15,7 @@ namespace TakeASeat_Tests.UnitTests.Service
         public void PaymentDescriptionToListOfReservationsConverter_Convert_ReturnListWithTwoIntegers()
         {
             // arrange
-            var testString = "SeatReservationsIds::2::3::";
+            var testString = "SeatReservationsIds:{2,3,}";
 
             // act
             var response = PaymentDescriptionToListOfReservationsConverter.Convert(testString);
@@ -29,7 +29,7 @@ namespace TakeASeat_Tests.UnitTests.Service
         public void PaymentDescriptionToListOfReservationsConverter_Convert_ReturnEmptyList()
         {
             // arrange
-            var testString = "SeatReservationsIds::";
+            var testString = "SeatReservationsIds:{}";
 
             // act
             var response = PaymentDescriptionToListOfReservationsConverter.Convert(testString);

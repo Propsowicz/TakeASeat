@@ -1,16 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using TakeASeat.Data.DatabaseContext;
 using TakeASeat.Data;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Serilog;
 using TakeASeat.ProgramConfigurations.DTO;
-using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.OpenApi.Models;
 
 namespace TakeASeat.ProgramConfigurations

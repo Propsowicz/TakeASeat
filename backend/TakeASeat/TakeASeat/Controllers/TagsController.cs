@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TakeASeat.Data;
 using TakeASeat.Models;
-using TakeASeat.RequestUtils;
 using TakeASeat.Services.EventTagRepository;
 using TakeASeat.Services.ShowService;
 

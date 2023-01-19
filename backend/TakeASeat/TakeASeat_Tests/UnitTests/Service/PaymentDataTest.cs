@@ -61,8 +61,8 @@ namespace TakeASeat_Tests.UnitTests.Service
             var result = paymentData.getPaymentData();
 
             // assert
-            result.chk.Should().Be("4df4a8b0f3996dd0de52a84cab450eb3d55e9c862e068d6dd15f3aa860b92a49");
-            result.description.Should().Be("SeatReservationsIds::1::2::3::4::5::6::");
+            result.chk.Should().Be("1240a881735f094cd9c0784998b5b7e31cfe6ac270c6ab8ddf59bb6e7249acbb");
+            result.description.Should().Be("SeatReservationsIds:{1,2,3,4,5,6,}");
             result.amount.Should().Be("50");
             result.currency.Should().Be("USD");
         }
@@ -111,8 +111,8 @@ namespace TakeASeat_Tests.UnitTests.Service
             var result = paymentData.getPaymentData();
 
             // assert
-            result.chk.Should().Be("fc944f2a2940666bfe7a8966b0849dd9d6507ab9b41ac00f0f75066c048f5385");
-            result.description.Should().Be("SeatReservationsIds::1::2::3::4::5::6::");
+            result.chk.Should().Be("076129e7555f90196270c5a7641bd54544f3fc9ade2df91c8231fa5ce0af144c");
+            result.description.Should().Be("SeatReservationsIds:{1,2,3,4,5,6,}");
             result.amount.Should().Be("64,03");
             result.currency.Should().Be("USD");
         }
