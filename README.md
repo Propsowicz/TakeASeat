@@ -61,6 +61,7 @@ B[Create Show] --> C[Create Audience]
 
 > Seat Reservation
 ![reserve](https://github.com/Propsowicz/TakeASeat/blob/appPictures/detail.png?raw=true)
+![reserve](https://github.com/Propsowicz/TakeASeat/blob/appPictures/2_gif_001.gif?raw=true)
 
 3. Once the payment is accepted by both the payment provider and the TakeASeat app, the tickets are created and emailed to the user.
 
@@ -80,6 +81,7 @@ Once a show has been created, it is not yet available for sale. The organizer mu
 
 > Seat Audience Creation
 ![seatsCreation](https://github.com/Propsowicz/TakeASeat/blob/appPictures/create-audience.png?raw=true)
+![seatsCreation2](https://github.com/Propsowicz/TakeASeat/blob/appPictures/3_gif_001.gif?raw=true)
 
 Reserved seats must be purchased. The user has five minutes to use the payment service and purchase tickets. Otherwise, the app will release unpaid bookings.
 
@@ -89,6 +91,9 @@ Finally, once payment is accepted, tickets for each seat purchased are generated
 
 The application allows you to create user accounts. Passwords are verified by both Prime React and ASP.NET Core.
 Authentication and authorization is performed by JW Token. Also JWT is used to transfer data between frontend and backend. The token is stored in a local store and made available to React as a context.
+
+> User Creator
+![user](https://github.com/Propsowicz/TakeASeat/blob/appPictures/1_gif_001.gif?raw=true)
 
 #### Payment
 
