@@ -100,3 +100,17 @@ The application is tested in the xUnit framework. The unit tests are made using 
 #### Docker
 
 The application is dockerized. The backend, the database and the frontend (with Nginx) are builded.
+
+```
+version: "3.8"
+	services:		
+		backend:
+			//...
+		eventsDb:
+			//...
+		frontend: 
+			//...
+		nginx:
+			//...
+```
+
