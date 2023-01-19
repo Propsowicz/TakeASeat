@@ -49,6 +49,9 @@ graph LR
 A[Create Event] --> B((circle))
 B[Create Show] --> C[Create Audience]
 ```
+> Organizer Panel
+![organizer](https://github.com/Propsowicz/TakeASeat/blob/appPictures/create%20event.png?raw=true)
+
 2. The user can reserve seats for each show. However, the user must pay for each reserved seat within five minutes. Otherwise, the reservation is released.
 
 3. Once the payment is accepted by both the payment provider and the TakeASeat app, the tickets are created and emailed to the user.
