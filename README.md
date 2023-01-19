@@ -13,6 +13,8 @@ The application has been created to learn ASP.NET Core 6 WEB API, Entity Framewo
 
 [Description](#description)
 
+[Installation](#installation)
+
 [Contributing](#contributing)
 
 [License](#license)
