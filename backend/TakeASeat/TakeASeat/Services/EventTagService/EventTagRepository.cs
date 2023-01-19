@@ -15,7 +15,7 @@ namespace TakeASeat.Services.EventTagRepository
              
         public async Task addEventTags(List<GetEventTagDTO> eventTagsDTO, int eventId)
         {
-            if (eventId < 1 || eventTagsDTO == null || eventTagsDTO.FirstOrDefault().Id < 1 )
+            if (eventId < 1 || eventTagsDTO == null )
                 {
                 return;
                 }

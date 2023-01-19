@@ -41,7 +41,7 @@ namespace TakeASeat.Services.UserService
 
             ArgumentNullException.ThrowIfNull(tempUserRoles);
 
-            await RemoveRoles(userDTO);
+            RemoveRoles(userDTO);
             await _context.UserRoles.AddRangeAsync(tempUserRoles);
             await _context.SaveChangesAsync();
         }

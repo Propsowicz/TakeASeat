@@ -1,16 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.Tracing;
-using System.Drawing.Printing;
-using System.Linq;
-//using System.Data.Entity;
 using TakeASeat.Data;
 using TakeASeat.Data.DatabaseContext;
 using TakeASeat.Models;
 using TakeASeat.RequestUtils;
 using X.PagedList;
 using TakeASeat.ProgramConfigurations.DTO;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace TakeASeat.Services.ShowService
 {
@@ -41,7 +36,7 @@ namespace TakeASeat.Services.ShowService
                     .ThenInclude(e => e.EventTags)
                         .ThenInclude(t => t.EventTag)
                 .FirstOrDefaultAsync();
-
+            ArgumentNullException.ThrowIfNull(query);
             return query;
                 
         }
@@ -64,10 +59,8 @@ namespace TakeASeat.Services.ShowService
 
             ArgumentNullException.ThrowIfNull(query);
 
-            return query.Count();
-                
+            return query.Count();                
         }
-
         public async Task<IPagedList<GetShowsDTO>> getShows(int pageNumber, int pageSize)
         {
             var query = await _context.Shows
@@ -159,7 +152,7 @@ namespace TakeASeat.Services.ShowService
 
         public async Task createShow(CreateShowDTO showDTO)
         {
-            if (showDTO.EventId < 1 || showDTO.Date == null || showDTO.Description == null)
+            if (showDTO.EventId < 1 || showDTO.Description == null)
             {
                 return;
             }

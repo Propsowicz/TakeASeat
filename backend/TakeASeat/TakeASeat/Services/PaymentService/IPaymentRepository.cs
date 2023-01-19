@@ -1,6 +1,5 @@
 ﻿using TakeASeat.Data;
 using TakeASeat.Models;
-using TakeASeat.RequestUtils;
 
 namespace TakeASeat.Services.PaymentService
 {

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Syncfusion.Pdf.Graphics;
+﻿using Syncfusion.Pdf.Graphics;
 using Syncfusion.Pdf;
 using Microsoft.EntityFrameworkCore;
 using TakeASeat.Data;
@@ -7,8 +6,6 @@ using TakeASeat.Data.DatabaseContext;
 using Syncfusion.Drawing;
 using MimeKit;
 using TakeASeat.ProgramConfigurations.DTO;
-using TakeASeat.Services.PaymentService;
-using System.Net.Mail;
 using TakeASeat.Models;
 
 namespace TakeASeat.Services.TicketService
@@ -55,8 +52,7 @@ namespace TakeASeat.Services.TicketService
         }
         private int generateTicketCode()
         {
-            Random randomObj = new Random();
-            return randomObj.Next(1000000, 9999999);
+            return new Random().Next(1000000, 9999999);
         }
         public async Task SendTicketsViaEmail(List<Ticket> listOfTickets, UserDataToSendEmailDTO userData)
         {            
@@ -72,9 +68,9 @@ namespace TakeASeat.Services.TicketService
                 throw new CantAccessDataException("Can't access Email Service Provider Data.");
             }          
             var emailMessage = await createEmail(listOfTickets, userData, emailServiceProviderAddress);
-            await sendEmail(emailServiceProviderPassword, emailServiceProviderAddress, emailMessage);            
+            sendEmail(emailServiceProviderPassword, emailServiceProviderAddress, emailMessage);            
         }
-        private async Task sendEmail(ProtectedKeys emailServiceProviderPassword, ProtectedKeys emailServiceProviderAddress, MimeMessage emailMessage)
+        private void sendEmail(ProtectedKeys emailServiceProviderPassword, ProtectedKeys emailServiceProviderAddress, MimeMessage emailMessage)
         {
             var client = new MailKit.Net.Smtp.SmtpClient();
             client.Connect("smtp.gmail.com", 465, true);
@@ -86,7 +82,6 @@ namespace TakeASeat.Services.TicketService
         }
         private async Task<MimeMessage> createEmail(List<Ticket> listOfTickets, UserDataToSendEmailDTO userData, ProtectedKeys emailServiceProviderAddress)
         {
-            // mess to clean up!!
             var emailMessage = new MimeMessage();
             emailMessage.From.Add(new MailboxAddress("TakeASeat", emailServiceProviderAddress.Value));
             emailMessage.To.Add(new MailboxAddress(userData.UserName, userData.Email));
@@ -96,13 +91,13 @@ namespace TakeASeat.Services.TicketService
                                                                                                                     $"<p>Greetings,</p><p>TakeASeat Team</p>" };
             foreach (Ticket ticket in listOfTickets)
             {
-                bodyBuilder.Attachments.Add("Ticket.pdf", await CreatePdfTicket(ticket));
+                bodyBuilder.Attachments.Add("Ticket.pdf", CreatePdfTicket(ticket));
             }
             emailMessage.Body = bodyBuilder.ToMessageBody();
             return emailMessage;
         }
 
-        public async Task<MemoryStream> CreatePdfTicket(Ticket ticket)
+        public MemoryStream CreatePdfTicket(Ticket ticket)
         {           
             PdfDocument document = new PdfDocument();
             PdfPage page = document.Pages.Add();

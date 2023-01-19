@@ -22,12 +22,13 @@ namespace TakeASeat.Services.PaymentService
             // create Params
             _paymentParams = new PaymentParamsDTO();
             _paymentParams.amount = Convert.ToString(Math.Round(_listOfPrices.Sum(), 2));
-            _paymentParams.description = $"SeatReservationsIds::";                                  
+            _paymentParams.description = "SeatReservationsIds:{";                                  
             _paymentParams.id = _DOTPAY_ID;
             foreach (var reservation in _seatReservations)
             {
-                _paymentParams.description += Convert.ToString(reservation.Id) + "::";
+                _paymentParams.description += Convert.ToString(reservation.Id) + ",";
             }
+            _paymentParams.description += "}";
         }
 
         private string createPaymentSignature()
@@ -85,30 +86,17 @@ namespace TakeASeat.Services.PaymentService
             return signature;
         }
         private bool isPaymentSuccessfull()
-        {
-            if (_paymentResponse.operation_status == "completed")
-            {
-                return true;
-            }
-            return false;
+        {            
+            return _paymentResponse.operation_status == "completed";
         }
         private bool isPaymentResponseValid ()
         {
-            string serverSignature = createResponseSignature();
-            if (serverSignature == _paymentResponse.signature)
-            {
-                return true;
-            }
-            return false;
+            return createResponseSignature() == _paymentResponse.signature;
         }
 
         public bool isValid()
-        {
-            if (isPaymentSuccessfull() && isPaymentResponseValid())
-            {
-                return true;
-            }
-            return false;
+        {            
+            return isPaymentSuccessfull() && isPaymentResponseValid();
         }
     }
 }

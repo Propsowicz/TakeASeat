@@ -1,13 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.Extensions.DependencyInjection;
-using System;
 using TakeASeat.Data;
 using TakeASeat.Data.DatabaseContext;
-using TakeASeat.Services.SeatReservationService;
 using X.PagedList;
-using Microsoft.Data.SqlClient;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Microsoft.IdentityModel.Tokens;
 
 namespace TakeASeat.Services.SeatService

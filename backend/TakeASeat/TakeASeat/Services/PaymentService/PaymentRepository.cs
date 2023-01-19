@@ -1,8 +1,6 @@
 ﻿using TakeASeat.Data;
 using TakeASeat.Data.DatabaseContext;
-using TakeASeat.RequestUtils;
 using Microsoft.EntityFrameworkCore;
-using TakeASeat.Services.SeatReservationService;
 using TakeASeat.Models;
 using TakeASeat.ProgramConfigurations.DTO;
 using TakeASeat.Services._Utils;

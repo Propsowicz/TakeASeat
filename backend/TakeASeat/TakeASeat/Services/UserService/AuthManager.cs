@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using TakeASeat.Data;
 using TakeASeat.Models;
 using TakeASeat.RequestUtils;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Security.Claims;

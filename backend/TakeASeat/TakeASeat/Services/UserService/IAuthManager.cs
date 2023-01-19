@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using TakeASeat.Models;
+﻿using TakeASeat.Models;
 using TakeASeat.RequestUtils;
 
 namespace TakeASeat.Services.UserService

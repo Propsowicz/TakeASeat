@@ -1,9 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
 using TakeASeat.Data;
 using TakeASeat.Data.DatabaseContext;
-using TakeASeat.Models;
 using TakeASeat.Services._Utils;
 using TakeASeat.Services.SeatService;
 
@@ -12,11 +9,9 @@ namespace TakeASeat.Services.SeatReservationService
     public class SeatResRepository : ISeatResRepository
     {
         private readonly DatabaseContext _context;
-        private readonly ISeatRepository _seatRepository;
-        public SeatResRepository(DatabaseContext context, ISeatRepository seatRepository)
+        public SeatResRepository(DatabaseContext context)
         {
             _context= context;
-            _seatRepository= seatRepository;
         }
         public async Task CreateSeatReservation(string userId, IEnumerable<Seat> seats)
         {

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using TakeASeat.Data;
+﻿using TakeASeat.Data;
 using TakeASeat.Models;
 
 namespace TakeASeat.Services.TicketService
