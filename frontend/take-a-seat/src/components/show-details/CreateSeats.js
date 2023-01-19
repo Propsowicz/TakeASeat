@@ -126,7 +126,7 @@ const CreateSeats = (props) => {
                     </div>                    
                         <div className="flex gap-2"> 
                             <form onSubmit={createNewRow} className="flex gap-2 add-seat-form">     
-                                <div className="flex align-items-center justify-content-center"><InputNumber name='numOfSeats' min={1} max={20} placeholder="Number of seats in a row" tooltip='Between 1 and 40 seats.' required/></div>
+                                <div className="flex align-items-center justify-content-center"><InputNumber name='numOfSeats' min={1} max={20} placeholder="Number of seats in a row" tooltip='Between 1 and 20 seats.' required/></div>
                                 <div className="flex align-items-center justify-content-center"><InputNumber name='rowPrice'  min={0} max={2000} placeholder="Tickets price in a row" tooltip='Between 0 and 2000$' currency='USD' required/></div>
                                 <div className="flex align-items-center justify-content-center"><Dropdown name='rowColor' value={seatColorTemp} options={seatsColorDropdown} onChange={(e) => setSeatsColorTemp(e.value)} placeholder="Select seats color" required/></div>
                                 <div className="flex align-items-center justify-content-center"><Button label="Add new row" /></div>
