@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using TakeASeat.Data;
 using TakeASeat.Data.DatabaseContext;
 using TakeASeat.Models;
@@ -79,7 +78,7 @@ namespace TakeASeat.Services.UserService
             return await _context.Users.CountAsync();
         }
 
-        public async Task RemoveRoles(EditUserRolesDTO userDTO)
+        public void RemoveRoles(EditUserRolesDTO userDTO)
         {
             var query = _context.UserRoles.Where(r => r.UserId == userDTO.UserId);
             _context.UserRoles.RemoveRange(query);

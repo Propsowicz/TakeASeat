@@ -11,7 +11,7 @@ namespace TakeASeat.Services.UserService
         Task<IPagedList<GetUsersToAdministratorPanelDTO>> GetUsers(RequestUserParams requestParams);
         Task<IList<IdentityRole>> GetRoles();
         Task ChangeRoles(EditUserRolesDTO userDTO);
-        Task RemoveRoles(EditUserRolesDTO userDTO);
+        void RemoveRoles(EditUserRolesDTO userDTO);
         Task AddToRoleNamedUser(User user);
         Task<int> GetUsersRecordsNumber();
 
