@@ -111,6 +111,37 @@ version: "3.8"
 		nginx:
 			//...
 ```
+## Installation
+To run application in Docker you need to create appsettings.json file inside ```backend/TakeASeat/TakeASeat/``` .
+The appsettings.json should look like this:
+```
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "server=localhost\\sqlexpress;database=TakeASeat;trusted_connection=true;TrustServerCertificate=True"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "Jwt": {
+    "Issuer": "TakeASeat",
+    "lifetime": 15
+  },
+  "AllowedHosts": "*",
+  "PaymentServerData": {
+    "PIN": "PIN",
+    "ID": "ID"
+  },
+  "EmailProviderData": {
+    "PASSWORD": "emailPassword",
+    "ADDRESS": "email@gmail.com"
+  }
+}
+```
+To run ASP.NET locally just change DefaultConnection string to ```server=localhost\\sqlexpress;database=TakeASeat;trusted_connection=true;TrustServerCertificate=True```
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
