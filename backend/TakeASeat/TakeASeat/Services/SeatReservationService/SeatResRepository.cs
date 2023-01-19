@@ -52,7 +52,7 @@ namespace TakeASeat.Services.SeatReservationService
             await _context.SaveChangesAsync();
         }
 
-        public async void DeleteEmptyReservation(int seatReservationId)
+        public async void DeleteEmptyReservation(int? seatReservationId)
         {
             var reservation = _context.SeatReservation
                                 .Include(r => r.Seats)
@@ -91,12 +91,12 @@ namespace TakeASeat.Services.SeatReservationService
                 );
             await _context.Database.CommitTransactionAsync();
         }
-        public async Task RemoveReservationFromSeat(int reservationId)
+        public async Task RemoveReservationFromSeat(int seatId)
         {
-            if (reservationId < 1) { return; }
+            if (seatId < 1) { return; }
             var seat = await _context.Seats
-                    .FirstOrDefaultAsync(s => s.Id == reservationId);
-
+                    .FirstOrDefaultAsync(s => s.Id == seatId);
+            var reservationId = seat.ReservationId;
             ArgumentNullException.ThrowIfNull(seat);
             seat.ReservationId = null;
             await _context.SaveChangesAsync();

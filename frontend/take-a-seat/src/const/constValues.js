@@ -1,5 +1,5 @@
  const url = 'https://localhost:7252';
-// dev
+
 // const url = 'http://localhost:5000';
 
  const typHeader = {

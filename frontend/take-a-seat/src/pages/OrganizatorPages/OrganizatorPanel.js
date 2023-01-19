@@ -94,7 +94,7 @@ const OrganizatorPanel = () => {
             {eventsData.map((event) => (                
                 <div className='grid'>
                     <div className='grid col-12'>
-                        <Link to={`/edit/${event.id}/`} className='col-11 grid link-button'>
+                        <Link className='col-11 grid link-button'>
                             <div className='col-12 md:col-12 lg:col-4'>
                                 <p className='col-12 md:col-12 lg:col-12'>Name</p>
                                 <p className='col-12 md:col-12 lg:col-12'>{event.name}</p>
@@ -117,7 +117,7 @@ const OrganizatorPanel = () => {
                     <Divider type='dashed'/> 
                     {event.shows.map((show) => (
                         <div className='grid col-12'>
-                            <Link className='col-11 grid link-button' name={show.Id}>
+                            <Link className='col-11 grid link-button' name={show.Id} to={`/edit/${show.id}/`} >
                                 <span className='col-12 md:col-12 lg:col-4'>{show.description}</span>
                                 <span className='col-12 md:col-12 lg:col-4'>{dateSerializer(show.date)}</span>                                                
                             </Link>
