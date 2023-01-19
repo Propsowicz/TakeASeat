@@ -43,8 +43,7 @@ The application has been created to learn ASP.NET Core 6 WEB API, Entity Framewo
 
 ## Description
 
-The application 
-The application is intended for use by registered users only. Each registered user is assigned the "User" role. The user can buy tickets for shows. There are also "Organizer" and "Administrator" roles. Organizers can create events, shows, and audiences. Administrators can manage other user roles.
+The application allows the user to search for a specific event. Each event is described by an event type and tag group. The platform is intended for use by registered users only. Each registered user is assigned the "User" role. The user can buy tickets for shows. There are also "Organizer" and "Administrator" roles. Organizers can create events, shows, and audiences. Administrators can manage other user roles.
 
 In order to sell tickets, you need to follow three steps:
 1. The organizer creates a show and enables the purchase of tickets:
