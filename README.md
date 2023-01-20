@@ -97,15 +97,15 @@ Finally, once payment is accepted, tickets for each seat purchased are generated
 
 #### User Managment
 
-The application allows you to create user accounts. Passwords are verified by both Prime React and ASP.NET Core.
-Authentication and authorization is performed by JW Token. Also JWT is used to transfer data between frontend and backend. The token is stored in a local store and made available to React as a context.
+The application allows to create user accounts. Passwords are verified by both Prime React and ASP.NET Core.
+Authentication and authorization is performed by JW Token. Also JWT is used to transfer data between frontend and backend. The token is stored in a local storage and made available to React as a context.
 
 > User Creator
 ![user](https://github.com/Propsowicz/TakeASeat/blob/appPictures/1_gif_001.gif?raw=true)
 
 #### Payment
 
-The payment for boying tickets is made by dotpay.pl service (sandbox mode is used). Payment service goes as follows:
+The payment for buying tickets is made by dotpay.pl service (sandbox mode is used). Payment service goes as follows:
 
 - After the user is ready to make payment, the order record in database is created.
 
@@ -115,11 +115,11 @@ The payment for boying tickets is made by dotpay.pl service (sandbox mode is use
 
 #### Frontend
 
-The frontend was created almost entirely in React and React Prime framework. React Router was used to manage the application urls. User's data was shared between React components via Context Provider. Every main component of the application was made mainly in RESTful API. 
+The frontend was created almost entirely in React and React Prime framework. React Router was used to manage the application urls. User's data was shared between React components via Context Provider. Every main component of the application was made in RESTful API. 
 
 #### Tests
 
-The application is tested in the xUnit framework. The unit tests are made using FakeItEasy and FluentAssertion libraries. The database is being mocked in the memory database service.
+The application is tested in the xUnit framework. The unit tests are made using FakeItEasy and FluentAssertion libraries. The database is mocked by in the memory database service.
 
 #### Docker
 
