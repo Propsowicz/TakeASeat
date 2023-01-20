@@ -116,7 +116,7 @@ const DisplaySeats = (props) => {
         if (response.status !== 202){
             console.log("error")
         }else{
-            navigator('/payment/')
+            window.location.reload()
         }        
     }
 

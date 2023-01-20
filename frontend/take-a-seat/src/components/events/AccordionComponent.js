@@ -18,7 +18,7 @@ const AccordionComponent = (props) => {
             <ShowDate date={props.date}/>
         </div>
         <div className='col-12 md:col-12 lg:col-2'>
-            <ShowAvaibleTickets seatsLeft={props.seatsLeft}/>
+            <ShowAvaibleTickets seatsLeft={props.seatsLeft} isReadyToSell={props.isReadyToSell}/>
         </div>
     </Link>       
   )

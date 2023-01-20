@@ -47,6 +47,8 @@ namespace TakeASeat.Models
         public string Description { get; set; }        
         public string EventSlug { get; set; }        
         public int SeatsLeft { get; set; }
+        public bool IsReadyToSell { get; set; }
+
     }
 
     public class GetShowsDTO

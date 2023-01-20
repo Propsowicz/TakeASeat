@@ -106,7 +106,8 @@ namespace TakeASeat.Services.ShowService
                         Date= s.Date,
                         Description= s.Description,
                         EventSlug = s.Event.EventSlug,
-                        SeatsLeft = s.Seats.Where(s => s.ReservationId == null).Count()
+                        SeatsLeft = s.Seats.Where(s => s.ReservationId == null).Count(),
+                        IsReadyToSell= s.IsReadyToSell,
                     })
                     .OrderBy(s => s.Date)                    
                     .ToPagedListAsync(1, 5);

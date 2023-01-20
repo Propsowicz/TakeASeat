@@ -137,6 +137,7 @@ const Events = () => {
         })
         if (response.status == 200){
             const data = await response.json()
+            console.log(data)
             setShowsData(data)
         }
     }
@@ -177,7 +178,7 @@ const Events = () => {
                     <AccordionTab header={`${eventData.name}`} id={eventData.id} onClick={getShowsByEvent} tabIndex={eventData.id}>
                         {showsData.map((show) => (
                             <AccordionComponent description={show.description} date={show.date} 
-                            seatsLeft={show.seatsLeft} eventSlug={show.eventSlug} id={show.id}/>
+                            seatsLeft={show.seatsLeft} eventSlug={show.eventSlug} id={show.id} isReadyToSell={show.isReadyToSell}/>
                         ))}
                     </AccordionTab>
                 ))}
