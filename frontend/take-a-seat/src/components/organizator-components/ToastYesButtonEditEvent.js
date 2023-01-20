@@ -7,7 +7,6 @@ import {useHistory} from 'react-router-dom'
 
 const ToastYesButtonEditEvent = (props) => {
     const navigate = useHistory().push
-    console.log(JSON.stringify(props.eventData));
     
     const editEvent = async () => {
         const response = await fetch(`${url}/api/Event/edit-with-tags`, {

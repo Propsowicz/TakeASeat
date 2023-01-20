@@ -63,7 +63,6 @@ const DisplaySeats = (props) => {
         if (response.status == 200) {
             const data = await response.json();
             setSeats(data);
-            console.log(data);
         } else {
             console.log(response.status);
             console.log(response.statusText);
@@ -107,7 +106,6 @@ const DisplaySeats = (props) => {
             "userId": buyerId,            
             "seats": reservedSeatsList            
         }
-        console.log(result)
         let response = await fetch(`${url}/api/SeatsReservation/create`,{
             method: 'POST',
             headers: typHeader,

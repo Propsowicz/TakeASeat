@@ -25,7 +25,6 @@ const Payment = () => {
             console.log("error")
         }else {
             const data = await response.json()
-            console.log(data)
             setOrderData(data)
         }
     }    
@@ -38,7 +37,6 @@ const Payment = () => {
             console.log("error")
         }else{
             const data = await response.json()
-            console.log(data)
             setPaymentData(data)
         }
     }

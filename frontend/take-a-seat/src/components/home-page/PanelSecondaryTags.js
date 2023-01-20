@@ -2,7 +2,6 @@
 import React from 'react'
 
 const PanelSecondaryTags = () => {
-    console.log('as')
   return (
     <div>PanelSecondaryTags</div>
   )

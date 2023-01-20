@@ -25,14 +25,12 @@ const OrganizatorPanel = () => {
 
     const getEvents = async () => {
         const response = await fetch(`${url}/api/Events/by-user?userName=${userData.UserName}`, {
-        //const response = await fetch(`${url}/api/Events/by-user?userName=LOG`, {
             method: "GET",
             headers: typHeader
         })
         if (response.status === 200){
             let data = await response.json()
             setEventsData(data)
-            console.log(data)
         }
     }
 

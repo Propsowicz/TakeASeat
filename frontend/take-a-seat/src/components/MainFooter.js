@@ -16,7 +16,6 @@ const MainFooter = () => {
         })
         if (response.status === 200) {
             let data = await response.json()
-            console.log(data)
             setEventTags(data)
         }
     }

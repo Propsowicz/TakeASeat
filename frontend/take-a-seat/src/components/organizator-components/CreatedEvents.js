@@ -23,7 +23,6 @@ const CreatedEvents = () => {
         if (response.status === 200){
             let data = await response.json()
             setEventsData(data)
-            console.log(data)
         }
     }
 
@@ -47,7 +46,6 @@ const CreatedEvents = () => {
 
     useEffect(() => {
         getEvents()
-        console.log(userData)
     }, [])
     return (
         <div className="site-main-body-created-events">

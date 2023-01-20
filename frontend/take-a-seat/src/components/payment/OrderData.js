@@ -25,8 +25,6 @@ const OrderData = (props) => {
     }
 
     const removeReservationFromSeat = async (e) => {
-        console.log(e)
-
         const response = await fetch(`${url}/api/Seats/remove-reservation`, {
             method: "POST",
             headers: typHeader,
@@ -63,9 +61,8 @@ const OrderData = (props) => {
         return <span>{rowData.price}$</span>
     }
 
-    console.log(props.data)
     useEffect(() => {
-        console.log(props.data)
+
     },[])
 
     return (

@@ -58,7 +58,6 @@ const AdminPanel = () => {
         });
         if (response.status === 200) {
             const data = await response.json();
-            console.log(data);
             setUsersList(data);
         } else {
             console.log('error');
@@ -72,7 +71,6 @@ const AdminPanel = () => {
         });
         if (response.status === 200) {
             const data = await response.json();
-            console.log(data);
             setRoles(data);
         } else {
             console.log('error');
@@ -86,7 +84,6 @@ const AdminPanel = () => {
         });
         if (response.status === 200) {
             const data = await response.json();
-            console.log(data);
             setUserRecordsNumber(data.recordsNumber);
         } else {
             console.log('error');

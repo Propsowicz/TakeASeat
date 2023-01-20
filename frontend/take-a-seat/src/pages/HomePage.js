@@ -19,7 +19,6 @@ const HomePage = () => {
         if (response.status == 200){
             let data = await response.json()
             setShows(data)
-            console.log(data)
         }else{
             console.log(response.status) 
             console.log(response.statusText) 

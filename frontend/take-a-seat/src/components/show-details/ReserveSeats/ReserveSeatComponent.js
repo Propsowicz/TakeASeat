@@ -27,7 +27,7 @@ const ReserveSeatComponent = (props) => {
     
 
     useEffect(() => {
-        console.log(reservedSeatsList)  
+        
     }, [reservedSeatsList])
 
   return (

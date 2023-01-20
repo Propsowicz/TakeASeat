@@ -7,14 +7,12 @@ import { url, typHeader } from '../../const/constValues';
 
 
 const OrderSummary = (props) => {
-    console.log('elo');
     const createPaymentTransactionRecord = async (e) => {
         const paymentData = {
             amount: e.target.amount.value,
             currency: e.target.currency.value,
             description: e.target.description.value,
         };
-        console.log(paymentData)
         const response = await fetch(`${url}/api/Payment/create`, {
             method: "POST",
             headers: typHeader,

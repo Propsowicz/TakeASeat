@@ -8,7 +8,6 @@ import {useHistory} from 'react-router-dom'
 
 const ToastYesButton = (props) => {
     const navigate = useHistory().push
-    console.log(JSON.stringify(props.eventData));
     
     const createEvent = async () => {
         const response = await fetch(`${url}/api/Event/create-with-tags`, {

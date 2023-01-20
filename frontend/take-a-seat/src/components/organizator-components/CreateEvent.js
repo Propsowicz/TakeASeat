@@ -28,7 +28,6 @@ const CreateEvent = () => {
         })
         if (response.status === 200){
             let data = await response.json()
-            console.log(data)
             setEventTags(data)
         }else{
             console.log("error")
@@ -42,7 +41,6 @@ const CreateEvent = () => {
         })
         if (response.status === 200){
             let data = await response.json()
-            console.log(data)
             setEventTypes(data)
         }else{
             console.log("error")
@@ -121,8 +119,6 @@ const CreateEvent = () => {
 
     const YesConfirmToast = async (e) => {
         NoConfirmToast()
-        console.log(createEventData)
-
     }
 
     useEffect(() => {

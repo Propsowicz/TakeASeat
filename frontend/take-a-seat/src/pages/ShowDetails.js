@@ -25,18 +25,15 @@ const ShowDetails = () => {
       if (response.status == 200){
           let data = await response.json()
           setShowDetails(data)
-          console.log(data)
       }else{
           console.log(response.status) 
           console.log(response.statusText) 
       }               
   }
     const checkIfUserIsOrganizer = () => {
-      let userRole = userData["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
-      console.log(userData)
-      console.log(userRole)
-      if (userRole.includes("Administrator") || userRole.includes("Organizer")) {
-          return true;
+      let userRole = userData["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]      
+      if (userRole) {        
+          return userRole.includes("Administrator") || userRole.includes("Organizer");
       }
       return false;
     }

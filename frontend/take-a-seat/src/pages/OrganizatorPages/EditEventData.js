@@ -51,7 +51,6 @@ const EditEventData = () => {
         })
         if (response.status === 200){
             let data = await response.json()
-            console.log(data)
             setEventTags(data)
         }else{
             console.log("error")
@@ -65,7 +64,6 @@ const EditEventData = () => {
         })
         if (response.status === 200){
             let data = await response.json()
-            console.log(data)
             setEventTypes(data)
         }else{
             console.log("error")
@@ -97,7 +95,6 @@ const EditEventData = () => {
     }
 
     const onChangeEventTag = (e) => {
-        console.log(e.value)
         setEventTagsParams(e.value)
     }
 

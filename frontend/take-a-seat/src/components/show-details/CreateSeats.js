@@ -67,7 +67,6 @@ const CreateSeats = (props) => {
                 tempSeatTable.push(seat)
             });
         });        
-        console.log(typHeader)
         const response = await fetch(`${url}/api/Seats/create-multiple`, {
             method: "POST",
             headers: typHeader,
@@ -110,7 +109,7 @@ const CreateSeats = (props) => {
     }
 
     useEffect(() => {
-        console.log(newSeats)
+        
     },[newSeats])
 
     return (
