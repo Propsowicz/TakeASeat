@@ -1,6 +1,6 @@
- const url = 'https://localhost:7252';
+ //const url = 'https://localhost:7252';
 
-// const url = 'http://localhost:5000';
+ const url = 'http://localhost:5000';
 
  const typHeader = {
      'Content-Type': 'application/json',
