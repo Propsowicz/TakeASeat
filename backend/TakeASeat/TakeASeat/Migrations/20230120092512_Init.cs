@@ -97,20 +97,6 @@ namespace TakeASeat.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProtectedKeys",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Key = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProtectedKeys", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -273,7 +259,8 @@ namespace TakeASeat.Migrations
                         name: "FK_SeatReservation_PaymentTransaction_PaymentTransactionId",
                         column: x => x.PaymentTransactionId,
                         principalTable: "PaymentTransaction",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -391,9 +378,9 @@ namespace TakeASeat.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Discriminator", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1a3b006e-24a8-42ff-bfc0-c30ed7c40044", "782c7ba2-78b0-4a32-a4c1-93c1367cb68a", "Role", "User", "USER" },
-                    { "778f28bd-3a35-4b6f-9695-9b8c403012b2", "c32f6fc2-5320-432a-b348-04d02b3e6693", "Role", "Administrator", "ADMINISTRATOR" },
-                    { "ad6eed2f-ed9d-4dd0-9779-9f1069215d5a", "5e8910ca-fb29-4aa2-b799-d7b25bc24129", "Role", "Organizer", "ORGANIZER" }
+                    { "1e445865-a24d-4543-a6c6-9443d048cdb9", "da990a50-8dd8-4f97-8448-5477f0265d61", "Role", "Administrator", "ADMINISTRATOR" },
+                    { "2e445865-a24d-4543-a6c6-9443d048cdb9", "5bcaa08b-3ca3-4d80-b561-32514f95fc17", "Role", "User", "USER" },
+                    { "3e445865-a24d-4543-a6c6-9443d048cdb9", "4c76e40b-2515-4a7d-87eb-075554cc626a", "Role", "Organizer", "ORGANIZER" }
                 });
 
             migrationBuilder.InsertData(
@@ -401,8 +388,8 @@ namespace TakeASeat.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "8e445865-a24d-4543-a6c6-9443d048cdb0", 0, "ce345e7f-d49e-4558-9076-50d626356f43", "User", null, false, "Logan", "Capuchino", false, null, null, null, "AQAAAAEAACcQAAAAEFH+dJw8S8ebZGOm/WT0MdcTkKp4Mf3v2Ww/GVoiyrVFdq9ig47t4SN5hPzt2Cp1vA==", null, false, "53c1ddee-7d68-4b5e-b8ed-c2eb92ba0269", false, "LOG" },
-                    { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "e4b81c0d-84d6-4576-954a-0556e4f83ab0", "User", null, false, "George", "Flinston", false, null, null, null, "AQAAAAEAACcQAAAAEM9AEQQUTRyuZ2+P/D/9dDNEM7+vRgMefkp1i6zqTim5e/4ipwvk1o1Pp/yP6OC2OA==", null, false, "f0b09964-2c3d-4188-9210-ecc379102f13", false, "Flinston" }
+                    { "8e445865-a24d-4543-a6c6-9443d048cdb0", 0, "116b7f7e-e677-4d86-9bbe-3d94b09b7825", "User", "somenew@zx.com", true, "Logan", "Cappa", false, null, "SOMENEW@ZX.COM", "USER1", "AQAAAAEAACcQAAAAEKZzF2LdyeaCfJLXE2HNfRpZcvmDZ6np3sk9EGYskP0cr9cnZ0lsQ8EKngk4pvgfuw==", "1234567890", true, "00000000-0000-0000-0000-000000000000", false, "User1" },
+                    { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "60bcff60-f8a8-4aa4-9955-cf7ab27ca73a", "User", "some@zx.com", true, "George", "Flinston", false, null, "SOME@ZX.COM", "EVENTSINC", "AQAAAAEAACcQAAAAENfyZ/CMju5x3ZDyTlH3E1TezzGrO/PHFEE01J8uf52DYR81dPl1NVFNSJxSQWxWAg==", "1234567890", true, "00000000-0000-0000-0000-000000000000", false, "EventsInc" }
                 });
 
             migrationBuilder.InsertData(
@@ -425,6 +412,15 @@ namespace TakeASeat.Migrations
                     { 1, "Movie" },
                     { 2, "Sport" },
                     { 3, "E-Sport" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId", "Discriminator" },
+                values: new object[,]
+                {
+                    { "2e445865-a24d-4543-a6c6-9443d048cdb9", "8e445865-a24d-4543-a6c6-9443d048cdb0", "UserRole" },
+                    { "1e445865-a24d-4543-a6c6-9443d048cdb9", "8e445865-a24d-4543-a6c6-9443d048cdb9", "UserRole" }
                 });
 
             migrationBuilder.InsertData(
@@ -591,9 +587,6 @@ namespace TakeASeat.Migrations
 
             migrationBuilder.DropTable(
                 name: "EventTagEventM2M");
-
-            migrationBuilder.DropTable(
-                name: "ProtectedKeys");
 
             migrationBuilder.DropTable(
                 name: "Seats");

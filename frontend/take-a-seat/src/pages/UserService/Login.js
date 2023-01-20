@@ -8,6 +8,7 @@ import {UserContext} from '../../context/UserContext'
 import { Message } from 'primereact/message';
 import { Messages } from 'primereact/messages';
 import {Link} from 'react-router-dom'
+import LoginHelper from '../../components/devHelper/LoginHelper';
 
 
 const Login = () => {
@@ -27,7 +28,7 @@ const Login = () => {
             <div>
                 <p>Don't have an account yet? <Link to={'/register/'}>Sign Up.</Link></p>
             </div>   
-            
+            <LoginHelper />
         </div>
     );
 };

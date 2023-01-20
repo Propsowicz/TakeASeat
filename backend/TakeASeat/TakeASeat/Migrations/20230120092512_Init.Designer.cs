@@ -12,7 +12,7 @@ using TakeASeat.Data.DatabaseContext;
 namespace TakeASeat.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230115202930_Init")]
+    [Migration("20230120092512_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -553,29 +553,6 @@ namespace TakeASeat.Migrations
                     b.ToTable("PaymentTransaction");
                 });
 
-            modelBuilder.Entity("TakeASeat.Data.ProtectedKeys", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Key")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ProtectedKeys");
-                });
-
             modelBuilder.Entity("TakeASeat.Data.Seat", b =>
                 {
                     b.Property<int>("Id")
@@ -847,22 +824,22 @@ namespace TakeASeat.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "778f28bd-3a35-4b6f-9695-9b8c403012b2",
-                            ConcurrencyStamp = "c32f6fc2-5320-432a-b348-04d02b3e6693",
+                            Id = "1e445865-a24d-4543-a6c6-9443d048cdb9",
+                            ConcurrencyStamp = "da990a50-8dd8-4f97-8448-5477f0265d61",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "1a3b006e-24a8-42ff-bfc0-c30ed7c40044",
-                            ConcurrencyStamp = "782c7ba2-78b0-4a32-a4c1-93c1367cb68a",
+                            Id = "2e445865-a24d-4543-a6c6-9443d048cdb9",
+                            ConcurrencyStamp = "5bcaa08b-3ca3-4d80-b561-32514f95fc17",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "ad6eed2f-ed9d-4dd0-9779-9f1069215d5a",
-                            ConcurrencyStamp = "5e8910ca-fb29-4aa2-b799-d7b25bc24129",
+                            Id = "3e445865-a24d-4543-a6c6-9443d048cdb9",
+                            ConcurrencyStamp = "4c76e40b-2515-4a7d-87eb-075554cc626a",
                             Name = "Organizer",
                             NormalizedName = "ORGANIZER"
                         });
@@ -889,14 +866,18 @@ namespace TakeASeat.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e4b81c0d-84d6-4576-954a-0556e4f83ab0",
-                            EmailConfirmed = false,
+                            ConcurrencyStamp = "60bcff60-f8a8-4aa4-9955-cf7ab27ca73a",
+                            Email = "some@zx.com",
+                            EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEM9AEQQUTRyuZ2+P/D/9dDNEM7+vRgMefkp1i6zqTim5e/4ipwvk1o1Pp/yP6OC2OA==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "f0b09964-2c3d-4188-9210-ecc379102f13",
+                            NormalizedEmail = "SOME@ZX.COM",
+                            NormalizedUserName = "EVENTSINC",
+                            PasswordHash = "AQAAAAEAACcQAAAAENfyZ/CMju5x3ZDyTlH3E1TezzGrO/PHFEE01J8uf52DYR81dPl1NVFNSJxSQWxWAg==",
+                            PhoneNumber = "1234567890",
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = "00000000-0000-0000-0000-000000000000",
                             TwoFactorEnabled = false,
-                            UserName = "Flinston",
+                            UserName = "EventsInc",
                             FirstName = "George",
                             LastName = "Flinston"
                         },
@@ -904,16 +885,20 @@ namespace TakeASeat.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ce345e7f-d49e-4558-9076-50d626356f43",
-                            EmailConfirmed = false,
+                            ConcurrencyStamp = "116b7f7e-e677-4d86-9bbe-3d94b09b7825",
+                            Email = "somenew@zx.com",
+                            EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEFH+dJw8S8ebZGOm/WT0MdcTkKp4Mf3v2Ww/GVoiyrVFdq9ig47t4SN5hPzt2Cp1vA==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "53c1ddee-7d68-4b5e-b8ed-c2eb92ba0269",
+                            NormalizedEmail = "SOMENEW@ZX.COM",
+                            NormalizedUserName = "USER1",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKZzF2LdyeaCfJLXE2HNfRpZcvmDZ6np3sk9EGYskP0cr9cnZ0lsQ8EKngk4pvgfuw==",
+                            PhoneNumber = "1234567890",
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = "00000000-0000-0000-0000-000000000000",
                             TwoFactorEnabled = false,
-                            UserName = "LOG",
+                            UserName = "User1",
                             FirstName = "Logan",
-                            LastName = "Capuchino"
+                            LastName = "Cappa"
                         });
                 });
 
@@ -922,6 +907,18 @@ namespace TakeASeat.Migrations
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserRole<string>");
 
                     b.HasDiscriminator().HasValue("UserRole");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
+                            RoleId = "1e445865-a24d-4543-a6c6-9443d048cdb9"
+                        },
+                        new
+                        {
+                            UserId = "8e445865-a24d-4543-a6c6-9443d048cdb0",
+                            RoleId = "2e445865-a24d-4543-a6c6-9443d048cdb9"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1015,7 +1012,8 @@ namespace TakeASeat.Migrations
                 {
                     b.HasOne("TakeASeat.Data.SeatReservation", "SeatReservation")
                         .WithMany("Seats")
-                        .HasForeignKey("ReservationId");
+                        .HasForeignKey("ReservationId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("TakeASeat.Data.Show", "Show")
                         .WithMany("Seats")
@@ -1032,7 +1030,8 @@ namespace TakeASeat.Migrations
                 {
                     b.HasOne("TakeASeat.Data.PaymentTransaction", "PaymentTransaction")
                         .WithMany("SeatReservations")
-                        .HasForeignKey("PaymentTransactionId");
+                        .HasForeignKey("PaymentTransactionId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("TakeASeat.Data.User", "User")
                         .WithMany()

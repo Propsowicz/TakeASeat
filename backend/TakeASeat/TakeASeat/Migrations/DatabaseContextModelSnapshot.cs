@@ -551,29 +551,6 @@ namespace TakeASeat.Migrations
                     b.ToTable("PaymentTransaction");
                 });
 
-            modelBuilder.Entity("TakeASeat.Data.ProtectedKeys", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Key")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ProtectedKeys");
-                });
-
             modelBuilder.Entity("TakeASeat.Data.Seat", b =>
                 {
                     b.Property<int>("Id")
@@ -845,22 +822,22 @@ namespace TakeASeat.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9ef7b03b-432e-4319-90de-13a6f3afa5f1",
-                            ConcurrencyStamp = "a9329983-5bc0-464f-bb52-a3a4d270ed76",
+                            Id = "1e445865-a24d-4543-a6c6-9443d048cdb9",
+                            ConcurrencyStamp = "da990a50-8dd8-4f97-8448-5477f0265d61",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "b94bfda4-97e7-429e-b7fe-3086becd8818",
-                            ConcurrencyStamp = "21471440-5ba0-4a83-953d-df7bf71e31bf",
+                            Id = "2e445865-a24d-4543-a6c6-9443d048cdb9",
+                            ConcurrencyStamp = "5bcaa08b-3ca3-4d80-b561-32514f95fc17",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "15806b95-b7a5-4f14-bbbb-43d63b60a1a6",
-                            ConcurrencyStamp = "570dae51-647d-474c-9eee-65f9155c45eb",
+                            Id = "3e445865-a24d-4543-a6c6-9443d048cdb9",
+                            ConcurrencyStamp = "4c76e40b-2515-4a7d-87eb-075554cc626a",
                             Name = "Organizer",
                             NormalizedName = "ORGANIZER"
                         });
@@ -887,14 +864,18 @@ namespace TakeASeat.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "618ec6bc-23aa-4385-9c4d-632969a2b3cb",
-                            EmailConfirmed = false,
+                            ConcurrencyStamp = "60bcff60-f8a8-4aa4-9955-cf7ab27ca73a",
+                            Email = "some@zx.com",
+                            EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEDGnKu7tZveK11rD7q0RxuueAoTiLFprSMTvL0g60mXqwwXqhLjcUr7WZ51wC5uiBg==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "22b3a8aa-4f3f-4f80-9421-933dfce4349b",
+                            NormalizedEmail = "SOME@ZX.COM",
+                            NormalizedUserName = "EVENTSINC",
+                            PasswordHash = "AQAAAAEAACcQAAAAENfyZ/CMju5x3ZDyTlH3E1TezzGrO/PHFEE01J8uf52DYR81dPl1NVFNSJxSQWxWAg==",
+                            PhoneNumber = "1234567890",
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = "00000000-0000-0000-0000-000000000000",
                             TwoFactorEnabled = false,
-                            UserName = "Flinston",
+                            UserName = "EventsInc",
                             FirstName = "George",
                             LastName = "Flinston"
                         },
@@ -902,16 +883,20 @@ namespace TakeASeat.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6b62db22-aa81-499b-8baf-0c53614f55ce",
-                            EmailConfirmed = false,
+                            ConcurrencyStamp = "116b7f7e-e677-4d86-9bbe-3d94b09b7825",
+                            Email = "somenew@zx.com",
+                            EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEHRdnW2n6buGy9nsg4DWlyDNkG56vdJlIT/dvABOJWcT2qmWANZIbN5yIkuox1sdzQ==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "11107314-a417-4207-81a2-90cef9f3e734",
+                            NormalizedEmail = "SOMENEW@ZX.COM",
+                            NormalizedUserName = "USER1",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKZzF2LdyeaCfJLXE2HNfRpZcvmDZ6np3sk9EGYskP0cr9cnZ0lsQ8EKngk4pvgfuw==",
+                            PhoneNumber = "1234567890",
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = "00000000-0000-0000-0000-000000000000",
                             TwoFactorEnabled = false,
-                            UserName = "LOG",
+                            UserName = "User1",
                             FirstName = "Logan",
-                            LastName = "Capuchino"
+                            LastName = "Cappa"
                         });
                 });
 
@@ -920,6 +905,18 @@ namespace TakeASeat.Migrations
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserRole<string>");
 
                     b.HasDiscriminator().HasValue("UserRole");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
+                            RoleId = "1e445865-a24d-4543-a6c6-9443d048cdb9"
+                        },
+                        new
+                        {
+                            UserId = "8e445865-a24d-4543-a6c6-9443d048cdb0",
+                            RoleId = "2e445865-a24d-4543-a6c6-9443d048cdb9"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
