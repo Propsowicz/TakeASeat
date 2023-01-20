@@ -1,6 +1,6 @@
 # Take A Seat
 
-TakeASeat is an online ticket distribution platform. The application allows the user to create event,event-related shows, and specific audiences for each show instance. 
+TakeASeat is an online ticket distribution platform. The application allows the user to create event, event-related shows, and specific audiences for each show instance. 
 
 The application has been created to learn ASP.NET Core 6 WEB API, Entity Framework and Prime React Framework. 
 
@@ -46,8 +46,9 @@ The application has been created to learn ASP.NET Core 6 WEB API, Entity Framewo
 ## Description
 
 The content of the application is displayed in two forms:
-- the main page displays the nearest shows, and also allows to filter all shows by event tags;
-- the /events page displays each event and allows you to fetch all shows related to a specific event.
+- the home page displays the nearest shows, and also allows to filter all shows by event tags;
+- the events page displays each event and allows you to fetch all shows related to a specific event.
+
 The application allows the user to search for a specific event. Each event is described by an event type and tag group. The platform is intended for use by registered users only. Each registered user is assigned the "User" role. The user can buy tickets for shows. There are also "Organizer" and "Administrator" roles. Organizers can create events, shows, and audiences. Administrators can manage other user roles.
 
 There are three steps to selling tickets:
