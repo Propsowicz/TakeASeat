@@ -28,6 +28,8 @@ builder.Services.Configure<EmailProviderData>(
                 builder.Configuration.GetSection("EmailProviderData"));
 builder.Services.Configure<PaymentServerData>(
                 builder.Configuration.GetSection("PaymentServerData"));
+builder.Services.Configure<ApiAuthKey>(
+                builder.Configuration.GetSection("ApiAuthKey"));
 // CORS
 var corsPolicy = "_corsPolicy";
 builder.Services.ConfigureCORS(corsPolicy);

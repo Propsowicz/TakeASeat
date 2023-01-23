@@ -8,6 +8,8 @@ using System.Text;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using TakeASeat.ProgramConfigurations.DTO;
+using Microsoft.Extensions.Options;
+using TakeASeat.ProgramConfigurations;
 
 namespace TakeASeat.Services.UserService
 
@@ -19,13 +21,15 @@ namespace TakeASeat.Services.UserService
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
+        private readonly ApiAuthKey _key;
         private User _user;
 
-        public AuthManager(UserManager<User> userManager, IConfiguration configuration, IMapper mapper)
+        public AuthManager(UserManager<User> userManager, IConfiguration configuration, IMapper mapper, IOptions<ApiAuthKey> options)
         {
             _userManager = userManager;
             _configuration = configuration;
             _mapper = mapper;
+            _key = options.Value;
         }
 
         public async Task<string> CreateAccessJWToken(LoginUserDTO userDTO)
@@ -39,8 +43,7 @@ namespace TakeASeat.Services.UserService
 
         private SigningCredentials GetSigningCredentials()
         {
-            var appKey = AuthKey.AppKey;
-            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appKey));
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key.API_KEY));
 
             return new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
         }

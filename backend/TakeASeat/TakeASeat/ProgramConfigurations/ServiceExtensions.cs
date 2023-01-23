@@ -10,13 +10,13 @@ using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace TakeASeat.ProgramConfigurations
-{
+{   
     public static class ServiceExtensions
     {
         public static void ConfigureJWT(this IServiceCollection services, IConfiguration Configuration)
         {
             var jwtSettings = Configuration.GetSection("Jwt");
-            var key = AuthKey.AppKey;
+            var key = Configuration.GetSection("ApiAuthKey:API_KEY").Value;
             var build = services.AddAuthentication(option =>
             {
                 option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -113,5 +113,9 @@ namespace TakeASeat.ProgramConfigurations
     {
         public string? PASSWORD { get; set; }
         public string? ADDRESS { get; set; }
+    }
+    public class ApiAuthKey
+    {
+        public string? API_KEY { get; set; } 
     }
 }
