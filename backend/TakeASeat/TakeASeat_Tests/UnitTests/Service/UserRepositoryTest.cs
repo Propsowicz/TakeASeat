@@ -35,8 +35,8 @@ namespace TakeASeat_Tests.UnitTests.Service
 
             // assert
             int newNumberOfUserRoles = context.UserRoles.Where(ur => ur.UserId == user.Id).Count();
-            oldNumberOfUserRoles.Should().Be(0);
-            newNumberOfUserRoles.Should().Be(1);
+            oldNumberOfUserRoles.Should().Be(1);
+            newNumberOfUserRoles.Should().Be(2);
         }
         [Fact]
         public async Task UserRepository_ChangeRoles_ShouldAddUserToAdminAndOrganizerRoles()
