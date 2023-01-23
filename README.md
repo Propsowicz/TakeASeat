@@ -163,6 +163,9 @@ The appsettings.json should look like this:
   "EmailProviderData": {
     "PASSWORD": "emailPassword",
     "ADDRESS": "email@gmail.com"
+  },
+  "ApiAuthKey": {
+    "API_KEY": "some-long-secret-key-1234567890?><!@#$%"
   }
 }
 ```
